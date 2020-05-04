@@ -1,0 +1,206 @@
+﻿@model Models.EF.CUSTOMER
+
+@{
+    ViewBag.Title = $"{Model.CustomerName} Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Assets/loading-spinner.css" rel="stylesheet" />
+<link href="~/Assets/css/profile-page.css" rel="stylesheet" />
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(/Assets/img/img-show.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h2>@Model.CustomerName</h2>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index", "Home")">home</a>
+                </li>
+                <li>profile details</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container bootstrap snippet ptb-80" style="margin-bottom: 50px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title mb-4">
+                        <div class="d-flex justify-content-start">
+                            <div class="image-container">
+                                <img src="http://placehold.it/150x150" style="width: 150px; height: 150px" class="img-thumbnail" />
+                            </div>
+                            <div class="userData ml-3">
+                                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="javascript:void(0);">@Model.CustomerName</a></h2>
+                                <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Product Bought</h6>
+                                <h6 class="d-block"><a href="javascript:void(0)">300</a> Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders_tab" role="tab" aria-controls="orders_tab" aria-selected="false">Order</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="something-tab" data-toggle="tab" href="#something_tab" role="tab" aria-controls="something_tab" aria-selected="false">Something</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content ml-1" id="myTabContent">
+                                <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Full Name</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CustomerName
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Username</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CustomerUsername
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Email</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CustomerEmail
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Phone</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CustomerPhone
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Address</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CustomerAdress
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Created Date</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Model.CreatedDate
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--Tab-->
+                                <div class="tab-pane fade" id="orders_tab" role="tabpanel" aria-labelledby="orders-tab">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h5>Filter:</h5>
+                                        </div>
+                                        <div class="col-lg-11">
+                                            <select id="status-select">
+                                                <option value="0">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <h5>Click (+) button to show more information!</h5>
+
+                                    <div class="loader" id="loader">
+                                        <svg class="circular">
+                                            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
+                                        </svg>
+                                    </div>
+                                    <div id="order-details-partial">
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="something_tab" role="tabpanel" aria-labelledby="something-tab">
+                                    Updating...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.get("@Url.Action("GetStatus", "Order")",
+                function (data) {
+                    var select = $("#status-select");
+                    for (i = 0; i < data.length; i++) {
+                        select.append(`<option value="${data[i].StatusID}">${data[i].StatusName}</option>`);
+                    };
+                }
+            );
+
+            $('#status-select').on('change', function () {
+                $.get("@Url.Action("OrderList", "Order")",
+                    {
+                        "StatusID": this.value
+                    },
+                    function (data) {
+                        $("#order-details-partial").empty();
+                        $("#order-details-partial").append(data);
+                        $("#loader").hide();
+                    }
+                );
+            });
+
+            $.get("@Url.Action("OrderList", "Order")",
+                {
+                    "StatusID": 0
+                },
+                function (data) {
+                    $("#order-details-partial").append(data);
+                    $("#loader").hide();
+                }
+            );
+        });
+    </script>
+}
+
+<script>
+    function CancelOrder(id) {
+        var cfirm = confirm(`Cancel order with id: ${id}!`);
+        if (cfirm == true) {
+            $.ajax({
+                type: "post",
+                url: `@Url.Action("CancelOrder", "Order")`,
+                data: "OrderID=" + id,
+                success: function (response) {
+                    if (response.Success) {
+                        window.location.reload();
+                    } else {
+                        console.log("error");
+                    }
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+        };
+    };
+</script>

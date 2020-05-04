@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CNWeb.Models.CartItemModel>
+
+<div style="overflow-y: scroll;">
+    <button class="icon-cart">
+        <i class="ti-shopping-cart"></i>
+        <span class="count-style">@Model.Count()</span>
+        <span class="count-price-add">Cart</span>
+    </button>
+    <div class="shopping-cart-content">
+        @if (Model.Count() != 0)
+        {
+            decimal total = 0;
+            <ul>
+                @foreach (var item in Model)
+                {
+                    <li class="single-shopping-cart">
+                        <div class="shopping-cart-img">
+                            <a href="#">
+                                <img alt="" src="@item.product.ShowImage_1" style="width: 80px;">
+                            </a>
+                        </div>
+                        <div class="shopping-cart-title">
+                            <h3><a href="#">@item.product.ProductName</a></h3>
+                            @if (item.product.PromotionPrice.HasValue)
+                            {
+                                <span>
+                                    Price: $@(item.product.PromotionPrice.Value * item.quantity)
+                                    @{
+                                        total += (item.product.PromotionPrice.Value * item.quantity);
+                                    }
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    Price: $@(item.product.ProductPrice * item.quantity)
+                                    @{
+                                        total += (item.product.ProductPrice * item.quantity);
+                                    }
+                                </span>
+                            }
+                            <span class="qty">Size: @item.size.Size1</span>
+                            <span class="qty">Qty: @item.quantity</span>
+                        </div>
+                        <div class="shopping-cart-delete">
+                            <a href="@Url.Action("Delete", "Cart", new { id = item.product.ProductID })" id="cart-del-btn">
+                                <i class="icofont icofont-ui-delete"></i>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <div class="shopping-cart-total">
+                <h4>total: <span>$@total</span></h4>
+            </div>
+            <div class="shopping-cart-btn">
+                <a class="btn-style cr-btn" href="@Url.Action("Cart", "Cart")">view cart</a>
+            </div>
+            <div class="shopping-cart-btn">
+                <a class="btn-style cr-btn" href="@Url.Action("Checkout", "Cart")">checkout</a>
+            </div>
+        }
+        else
+        {
+            <h2 class="text-center">Cart Empty</h2>
+            <div class="shopping-cart-btn">
+                <a class="btn-style cr-btn" href="@Url.Action("Shop", "Shop")">start shopping</a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,155 @@
+﻿@model Models.EF.CATEGORY
+@using Models.DAO;
+
+@{
+    ViewBag.Title = "Create Category";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Assets/loading-spinner.css" rel="stylesheet" />
+@*<link href="~/Areas/Admin/assets/plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" type="text/css" />*@
+
+<h2>Create Category</h2>
+
+<div class="row">
+    <div class="col-lg-3">
+        @using (Html.BeginForm("CreateCategory", "Category", FormMethod.Post, new { id = "cate-submit-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <label class="control-label col-md-6">Category Name</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-sm" id="category-partial">
+        <div class="loader" id="loader">
+            <svg class="circular">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
+            </svg>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#cate-submit-form").validate({
+                rules: {
+                    'CategoryName': "required"
+                },
+                messages: {
+                    'CategoryName': "Please enter category name!"
+                }
+            });
+
+            $.post("@Url.Action("CategoryList", "Category")",
+                function (data) {
+                    $("#category-partial").append(data);
+                    $("#loader").hide();
+                }
+            );
+        });
+
+        function DeleteItem(id) {
+            swal({
+                title: `DELETE item with id: ${id}?`,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "post",
+                            url: `@Url.Action("DeleteCategory", "Category")`,
+                            data: "id=" + id,
+                            success: function (response) {
+                                if (response.Success = 1) {
+                                    swal("Deleted!", "", "success");
+                                    window.location.reload();
+                                } else {
+                                    swal("Delete fail!", "", "error");
+                                }
+                            },
+                            error: function (error) {
+                                swal("Delete fail!", "", "error");
+                            }
+                        });
+                    }
+                });
+        };
+
+        function SaveEdit(id) {
+            swal({
+                title: `EDIT item with id: ${id}?`,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "post",
+                            url: `@Url.Action("EditCategory", "Category")`,
+                            data: {
+                                "id": id,
+                                "CategoryName": $(`#cate-${id}`).val()
+                            },
+                            success: function (response) {
+                                if (response.Success = 1) {
+                                    swal("Edit!", "", "success");
+                                    window.location.reload();
+                                } else {
+                                    swal("Edit fail!", "", "error");
+                                }
+                            },
+                            error: function (error) {
+                                swal("Edit fail!", "", "error");
+                            }
+                        });
+                    }
+                });
+        };
+
+        function EditItem(id) {
+            $(`#edit-${id}`).toggleClass('active');
+
+            if ($(`#edit-${id}`).hasClass('active')) {
+                $(`#delete-${id}`).hide();
+                $(`#save-${id}`).show();
+
+                $(`#cate-${id}-input`).show();
+                $(`#cate-${id}-text`).hide();
+
+                $(`#cate-${id}`).removeAttr('readonly');
+
+            } else {
+                $(`#delete-${id}`).show();
+                $(`#save-${id}`).hide();
+
+                $(`#cate-${id}-input`).hide();
+                $(`#cate-${id}-text`).show();
+
+                $(`#cate-${id}`).prop('readonly', 'true');
+            };
+        };
+    </script>
+}

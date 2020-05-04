@@ -1,0 +1,181 @@
+﻿@using Models.EF
+
+@{
+    ViewBag.Title = "Create Product";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css'>
+
+<h2>Create New Product</h2>
+
+<form action="#" method="post" id="create-product-form">
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Name</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="product-name" name="product-name" type="text" class="validate">
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Price</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="product-price" name="product-price" type="text" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Promotion Price</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="product-promotion" name="product-promotion" type="text" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Stock</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="product-stock" name="product-stock" type="number" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Category</label>
+        </div>
+        <div class="input-field col s12">
+            <select id="select-cate" name="select-cate">
+                @foreach (var item in ViewBag.Cate)
+                {
+                    <option value="@item.CategoryID">@item.CategoryName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Select Size</label>
+        </div>
+        <div class="input-field col s12">
+            <select multiple id="select-size-multi" name="select-size-multi">
+                @foreach (var item in ViewBag.Size)
+                {
+                    <option value="@item.SizeID">@item.Size1</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Show Image 1</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="show-image-1" type="text" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Show Image 2</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="show-image-2" type="text" class="validate">
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Status</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="status-checkbox" type="checkbox" checked="checked"  />
+            <label for="status-checkbox" id="checkbox-label">Active</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
+            <label>Decription</label>
+        </div>
+        <div class="input-field col s12">
+            <textarea placeholder="Decription" id="text-area" name="area"></textarea>
+        </div>
+    </div>
+
+    <h5 class="text-danger info-text"></h5>
+
+    <button class="btn waves-effect waves-light" type="submit" name="action">
+        <span>Submit </span><i class="mdi mdi-send"></i>
+    </button>
+</form>
+
+@section Scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            $('select').material_select();
+
+            $("#status-checkbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#checkbox-label").text("Active");
+                } else {
+                    $("#checkbox-label").text("Inactive");
+                };
+            });
+
+            $("#create-product-form").validate({
+                rules: {
+                    'product-name': "required",
+                    'product-price': {
+                        required: true
+                    },
+                    'product-stock': {
+                        digits: true
+                    }
+                },
+                messages: {
+                    'product-name': "Please enter product name",
+                    'product-price': {
+                        required: "Please enter product price"
+                    },
+                    'product-stock': "Not a correct format"
+                },
+                submitHandler: function () {
+                    let data = {
+                        "ProductName": $("#product-name").val(),
+                        "ProductPrice": $("#product-price").val(),
+                        "PromotionPrice": $("#product-promotion").val(),
+                        "ProductStock": $("#product-stock").val(),
+                        "CategoryID": $("#select-cate").val(),
+                        "Size": $("#select-size-multi").val(),
+                        "ShowImage_1": $("#show-image-1").val(),
+                        "ShowImage_2": $("#show-image-2").val(),
+                        "ProductDescription": $("#text-area").val(),
+                        "ProductStatus": $("#status-checkbox").is(":checked")
+                    };
+                    $.ajax({
+                        url: "@Url.Action("CreateProduct", "Product")",
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (response) {
+                            if (response.Success) {
+                                $('.info-text').text("Create Success");
+                                window.location.href = "@Url.Action("ProductList", "Product")";
+                            }
+                            else
+                                $('.info-text').text("Create Fail");
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+

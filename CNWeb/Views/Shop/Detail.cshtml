@@ -1,0 +1,173 @@
+﻿@model Models.EF.PRODUCT
+@using Models.EF;
+@{
+    ViewBag.Title = "Detail";
+}
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(/Assets/img/img-show.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h2>product details </h2>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index", "Home")">home</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Shop", "Shop")">Shop</a>
+                </li>
+                <li>@Model.ProductName</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="product-details-area fluid-padding-3 ptb-130">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-details-img-content">
+                    <div class="product-details-tab mr-40">
+                        <div class="product-details-large tab-content">
+                            <div class="tab-pane active" id="pro-details1">
+                                <div class="easyzoom easyzoom--overlay">
+                                    <a href="javascript:void(0);">
+                                        <img src="@Model.ShowImage_1" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="pro-details2">
+                                <div class="easyzoom easyzoom--overlay">
+                                    <a href="javascript:void(0);">
+                                        <img src="@Model.ShowImage_2" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-details-small nav mt-12 product-dec-slider owl-carousel">
+                            <a class="active" href="#pro-details1">
+                                <img src="@Model.ShowImage_1" alt="">
+                            </a>
+                            <a href="#pro-details2">
+                                <img src="@Model.ShowImage_2" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-details-content">
+                    <h2>@Model.ProductName</h2>
+                    <div class="quick-view-rating">
+                        <i class="fa fa-star reting-color"></i>
+                        <i class="fa fa-star reting-color"></i>
+                        <i class="fa fa-star reting-color"></i>
+                        <i class="fa fa-star reting-color"></i>
+                        <i class="fa fa-star reting-color"></i>
+                        <span> ( 01 Customer Review )</span>
+                    </div>
+                    <div class="product-price">
+                        <h5 class="pd-sub-title">Product Price</h5>
+                        @if (Model.PromotionPrice.HasValue)
+                        {
+                            <span>
+                                Original Price:
+                                <strike style="        color: #ff0000;
+">$@Model.ProductPrice</strike>
+                            </span><br />
+                            <span>Sale Price: $@Model.PromotionPrice</span>
+                        }
+                        else
+                        {
+                            <span>$@Model.ProductPrice</span>
+                        }
+                    </div>
+                    <div class="product-overview">
+                        <h5 class="pd-sub-title">Product Overview</h5>
+                        <p>@Model.ProductDescription</p>
+                    </div>
+                    <div class="product-color">
+                        <h5 class="pd-sub-title">Product Size</h5>
+                        <select id="select-size">
+                            @foreach (var item in ViewData["Size"] as List<SIZE>)
+                            {
+                                <option value="@item.SizeID">@item.Size1</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="quickview-plus-minus">
+                        <div class="cart-plus-minus">
+                            <input type="text" value="01" name="qtybutton" class="cart-plus-minus-box" id="quantity-input">
+                        </div>
+                        <div class="quickview-btn-cart">
+                            <a class="btn-style cr-btn" href="javascrip:void(0);" id="submit-btn"><span>add to cart</span></a>
+                        </div>
+                        <div id="alerts"></div>
+                    </div>
+                    <div class="product-share">
+                        <h5 class="pd-sub-title">Share</h5>
+                        <ul>
+                            <li>
+                                <a href="#"><i class="icofont icofont-social-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icofont icofont-social-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icofont icofont-social-pinterest"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"> <i class="icofont icofont-social-instagram"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#submit-btn').click(function () {
+
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("OrderNow", "Cart")",
+                    data: {
+                        prodId: @Model.ProductID,
+                        sizeId: $('#select-size').val(),
+                        quantity: $('#quantity-input').val()
+                    },
+                    success: function (response) {
+                        if (response.Success == true) {
+
+                            $.get("@Url.Action("CartPartial", "Cart")",
+                                function (data) {
+                                    $(".cart-partial").empty();
+                                    $(".cart-partial").html(data);
+                                    $(".icon-cart").on("click", function () {
+                                        $(this).parent().find('.shopping-cart-content').slideToggle('medium');
+                                    });
+                                }
+                            );
+
+                            $("#alerts").append(`<div class="alert
+                                                alert-success" style="width: 175px;
+                                                role="alert">
+                                                Success
+                                                </div>`);
+                            fade();
+                        } else {
+                            $("#alerts").append(`<div class="alert alert-danger" style="width: 175px; role="alert">Failed</div>`);
+                            fade();
+                        }
+                    }
+                });
+            });
+            function fade() {
+                $('.alert').delay(3000).fadeOut();
+            }
+        });
+    </script>
+}

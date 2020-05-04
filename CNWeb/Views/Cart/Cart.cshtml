@@ -1,0 +1,175 @@
+﻿@model IEnumerable<CNWeb.Models.CartItemModel>
+@{
+    ViewBag.Title = "Cart";
+}
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(/Assets/img/img-show.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h2>Cart page</h2>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index", "Home")">home</a>
+                </li>
+                <li>Cart</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="product-cart-area pt-120 pb-130">
+    <div class="container">
+        @if (Model.Count() != 0)
+        {
+            decimal total = 0;
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-content table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="product-name">products</th>
+                                    <th class="product-price">products name</th>
+                                    <th class="product-name">price</th>
+                                    <th class="product-price">quantity</th>
+                                    <th class="product-quantity">total</th>
+                                    <th class="product-subtotal">delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.product.MetaKeyword })">
+                                                <img src="@item.product.ShowImage_1" alt="" style="        width: 120px;
+">
+                                            </a>
+                                        </td>
+                                        <td class="product-name">
+                                            <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.product.MetaKeyword })">
+                                                @item.product.ProductName
+                                            </a>
+                                        </td>
+                                        <td class="product-price">
+                                            @if (item.product.PromotionPrice.HasValue)
+                                            {
+                                                <span class="amount">$@item.product.PromotionPrice</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="amount">$@item.product.ProductPrice</span>
+                                            }
+                                        </td>
+                                        <td class="product-quantity">
+                                            <div class="quantity-range">
+                                                <input class="input-text qty text" type="number" step="1" min="0" value="@item.quantity" title="Qty" size="4">
+                                            </div>
+                                        </td>
+                                        @if (item.product.PromotionPrice.HasValue)
+                                        {
+                                            <td class="product-subtotal">
+                                                $ @(item.product.PromotionPrice * item.quantity)
+                                                @{
+                                                    total += (item.product.PromotionPrice.Value * item.quantity);
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="product-subtotal">
+                                                $ @(item.product.ProductPrice * item.quantity)
+                                                @{
+                                                    total += (item.product.ProductPrice * item.quantity);
+                                                }
+                                            </td>
+
+                                        }
+                                        <td class="product-cart-icon product-subtotal">
+                                            <a href="@Url.Action("Delete", "Cart", new { id = item.product.ProductID })">
+                                                <i class="ti-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cart-shiping-update">
+                        <div class="cart-shipping">
+                            <a class="btn-style cr-btn" href="@Url.Action("Shop", "Shop")">
+                                <span>continue shopping</span>
+                            </a>
+                        </div>
+                        <div class="update-checkout-cart">
+                            <div class="update-cart">
+                                <a class="btn-style cr-btn" href="@Url.Action("Checkout", "Cart")">
+                                    <span>checkout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7 col-sm-6">
+                    <div class="discount-code">
+                        <h4>enter your discount code</h4>
+                        <div class="coupon">
+                            <input type="text">
+                            <input class="cart-submit" type="submit" value="enter">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-6">
+                    <div class="shop-total">
+                        <h3>cart total</h3>
+                        <ul>
+                            <li>
+                                sub total
+                                <span>$ @total</span>
+                            </li>
+                            <li class="order-total">
+                                shipping
+                                <span>0</span>
+                            </li>
+                            <li>
+                                order total
+                                <span>$ @total</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="cart-btn text-center mb-15">
+                        <a href="@Url.Action("Checkout", "Cart")">payment</a>
+                    </div>
+                    <div class="continue-shopping-btn text-center">
+                        <a href="@Url.Action("Shop", "Shop")">continue shopping</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1 class="text-center">
+                Cart Empty
+            </h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cart-shiping-update">
+                        <div class="cart-shipping">
+                            <a class="btn-style cr-btn" href="@Url.Action("Shop", "Shop")">
+                                <span>start shopping</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

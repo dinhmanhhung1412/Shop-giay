@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\js\\tinymce.min.min.js",
+    "inputFiles": [
+      "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\js\\tinymce.min.js"
+    ]
+  },
+  {
+    "outputFileName": "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\css\\theme.default.min.min.css",
+    "inputFiles": [
+      "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\css\\theme.default.min.css"
+    ]
+  },
+  {
+    "outputFileName": "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\pages\\admin\\script.min.js",
+    "inputFiles": [
+      "#\\CNWeb\\CNWeb\\Areas\\Admin\\assets\\pages\\admin\\script.js"
+    ]
+  }
+]

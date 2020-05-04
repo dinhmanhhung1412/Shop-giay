@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Models.EF.CATEGORY>
+
+
+<link href="~/Areas/Admin/assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Areas/Admin/assets/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Areas/Admin/assets/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<div class="card-body">
+    <table class="table table-bordered" id="category-table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    ID
+                </th>
+                <th style="display:none;"></th>
+                <th class="text-center">
+                    Name
+                </th>
+                <th class="text-center">
+                    Meta Keyword
+                </th>
+                <th class="text-center">
+                    Created Date
+                </th>
+                <th class="text-center">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row-@item.CategoryID">
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.CategoryID)
+                    </td>
+                    <td class="text-center" id="cate-@item.CategoryID-input">
+                        <input class="text-center form-control" id="cate-@item.CategoryID"
+                               value="@Html.DisplayFor(modelItem => item.CategoryName)"
+                               readonly />
+                    </td>
+                    <td class="text-center" id="cate-@item.CategoryID-text">
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.MetaKeyword)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-primary"
+                                type="submit" value="Edit"
+                                id="edit-@item.CategoryID"
+                                onclick="return EditItem('@item.CategoryID')">
+                            <i class="mdi mdi-border-color"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger"
+                                type="submit" value="Delete"
+                                id="delete-@item.CategoryID"
+                                onclick="return DeleteItem('@item.CategoryID')">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
+                        <button class="btn btn-sm btn-success"
+                                type="submit" value="Save"
+                                id="save-@item.CategoryID"
+                                onclick="return SaveEdit('@item.CategoryID')">
+                            <i class="mdi mdi-check"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/Areas/Admin/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Areas/Admin/assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="~/Areas/Admin/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="~/Areas/Admin/assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        @foreach (var item in Model)
+        {
+            <text>
+                $("#save-@item.CategoryID").hide();
+                $("#cate-@item.CategoryID-input").hide();
+            </text>
+        }
+        $(function () {
+            $('#category-table').DataTable()
+        }
+        );
+    });
+</script>

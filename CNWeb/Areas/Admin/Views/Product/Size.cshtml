@@ -1,0 +1,149 @@
+﻿@model Models.EF.SIZE
+
+@{
+    ViewBag.Title = "Size";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Assets/loading-spinner.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-lg-2">
+        @using (Html.BeginForm("CreateSize", "Product", FormMethod.Post, new { id = "size-submit-form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Size1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Size1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Size1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-sm" id="size-partial">
+        <div class="loader" id="loader">
+            <svg class="circular">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
+            </svg>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/Admin/assets/js/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#size-submit-form").validate({
+                rules: {
+                    'Size1': "required"
+                },
+                messages: {
+                    'Size1': "Please enter size number!"
+                }
+            });
+
+            $.post("@Url.Action("SizeList", "Product")",
+                function (data) {
+                    $("#size-partial").append(data);
+                    $("#loader").hide();
+                });
+        });
+
+        function DeleteItem(id) {
+            swal({
+                title: `DELETE item with id: ${id}?`,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "post",
+                            url: `@Url.Action("DeleteSize", "Product")`,
+                            data: "id=" + id,
+                            success: function (response) {
+                                if (response.Success = 1) {
+                                    swal("Deleted!", "", "success");
+                                    window.location.reload();
+                                } else {
+                                    swal("Delete fail!", "", "error");
+                                }
+                            },
+                            error: function (error) {
+                                swal("Delete fail!", "", "error");
+                            }
+                        });
+                    }
+                });
+        };
+
+        function SaveEdit(id) {
+            swal({
+                title: `EDIT item with id: ${id}?`,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "post",
+                            url: `@Url.Action("EditSize", "Product")`,
+                            data: {
+                                "id": id,
+                                "Size1": $(`#size-${id}`).val()
+                            },
+                            success: function (response) {
+                                if (response.Success = 1) {
+                                    swal("Edited!", "", "success");
+                                    window.location.reload();
+                                } else {
+                                    swal("Edit fail!", "", "error");
+                                }
+                            },
+                            error: function (error) {
+                                swal("Edit fail!", "", "error");
+                            }
+                        });
+                    }
+                });
+        };
+
+        function EditItem(id) {
+            $(`#edit-${id}`).toggleClass('active');
+
+            if ($(`#edit-${id}`).hasClass('active')) {
+                $(`#delete-${id}`).hide();
+                $(`#save-${id}`).show();
+                $(`#size-${id}-input`).show();
+                $(`#size-${id}-text`).hide();
+
+                $(`#size-${id}`).removeAttr('readonly');
+            } else {
+                $(`#delete-${id}`).show();
+                $(`#save-${id}`).hide();
+                $(`#size-${id}-input`).hide();
+                $(`#size-${id}-text`).show();
+
+                $(`#size-${id}`).prop('readonly', 'true');
+            };
+        };
+    </script>
+}
+
+
+

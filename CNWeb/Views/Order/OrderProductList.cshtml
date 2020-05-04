@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CNWeb.Models.OrderProductModel>
+
+<table class="table" style="margin-bottom: 0;">
+    <tr>
+        <th class="text-center">
+            @Html.DisplayNameFor(Model => Model.ProductID)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(Model => Model.ProductName)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(Model => Model.CategoryName)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(Model => Model.Size)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(Model => Model.Quantity)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+        </tr>
+    }
+</table>
