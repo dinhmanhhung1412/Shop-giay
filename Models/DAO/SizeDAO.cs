@@ -22,6 +22,11 @@ namespace Models.DAO
             return await db.SIZEs.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<SIZE>> LoadDataProc()
+        {
+            return await db.SIZEs.SqlQuery("SizeList").ToListAsync();
+        }
+
         public async Task<SIZE> LoadByID(int sizeID)
         {
             return await db.SIZEs.AsNoTracking().Where(x => x.SizeID == sizeID).FirstOrDefaultAsync();

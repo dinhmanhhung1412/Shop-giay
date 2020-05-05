@@ -338,15 +338,15 @@ GO
 
 
 -- Thêm sp
-CREATE PROC Create_Product @name nvarchar(250), @descript nvarchar(250), 
-@price decimal(18,0), @promotionprice,
+CREATE PROC Create_Product @id int, @name nvarchar(250), @descript nvarchar(250), 
+@price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit 
+@stock int, @meta nvarchar(250), @status bit, @cate int, @sizeID int
 AS
 BEGIN
 INSERT dbo.PRODUCT
 (
-    --ProductID - column value is auto-generated
+    ProductID,
     ProductName,
     ProductDescription,
     ProductPrice,
@@ -362,23 +362,35 @@ INSERT dbo.PRODUCT
 )
 VALUES
 (
-    @name, @descript, 
-	@price, @promotionprice , NULL 
+    @id, @name, @descript, 
+	@price, @promotionprice , 5, 
 	@img1, @img2,
-	@stock, @meta, @status, getdate(), 0  
+	@stock, @meta, @status, getdate(),@cate  
+)
+
+INSERT dbo.PRODUCTDETAIL
+(
+    --ProductDetailID - column value is auto-generated
+    ProductID,
+    SizeID
+)
+VALUES
+(
+    -- ProductDetailID - INT
+    @id, -- ProductID - INT
+    @sizeID	 -- SizeID - INT
 )
 END 
-
+GO 
 -- Update sp
-CREATE PROC Create_Product @id int, @name nvarchar(250), @descript nvarchar(250), 
-@price decimal(18,0), @promotionprice,
+Create PROC Update_Product @id int, @name nvarchar(250), @descript nvarchar(250), 
+@price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit 
+@stock int, @meta nvarchar(250), @status bit, @cate int, @sizeID int
 AS
 BEGIN
 UPDATE dbo.PRODUCT
 SET
-    --ProductID - column value is auto-generated
     dbo.PRODUCT.ProductName = @name, 
     dbo.PRODUCT.ProductDescription = @descript, 
     dbo.PRODUCT.ProductPrice = @price,
@@ -389,7 +401,13 @@ SET
     dbo.PRODUCT.MetaKeyword = @meta, 
     dbo.PRODUCT.ProductStatus = 0, 
     dbo.PRODUCT.CreatedDate = getdate(), -- DATETIME
-    dbo.PRODUCT.CategoryID = 0 
+    dbo.PRODUCT.CategoryID = @cate
+
+UPDATE dbo.PRODUCTDETAIL
+SET
+    --ProductDetailID - column value is auto-generated
+    dbo.PRODUCTDETAIL.ProductID = @id, -- INT
+    dbo.PRODUCTDETAIL.SizeID = @sizeID -- INT
 END 
 GO
 

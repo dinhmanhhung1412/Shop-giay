@@ -22,6 +22,11 @@ namespace Models.DAO
             return await db.CATEGORies.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<CATEGORY>> LoadDataProc()
+        {
+            return await db.CATEGORies.SqlQuery("CategoryList").ToListAsync();
+        }
+
         public async Task<CATEGORY> LoadByID(int id)
         {
             return await db.CATEGORies

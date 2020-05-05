@@ -10,6 +10,7 @@
 <h2>Create New Product</h2>
 
 <form action="#" method="post" id="create-product-form">
+
     <div class="row">
         <div class="input-field col-lg-2 s12">
             <label>Name</label>
@@ -90,7 +91,7 @@
             <label>Status</label>
         </div>
         <div class="input-field col s12">
-            <input id="status-checkbox" type="checkbox" checked="checked"  />
+            <input id="status-checkbox" type="checkbox" checked="checked" />
             <label for="status-checkbox" id="checkbox-label">Active</label>
         </div>
     </div>
@@ -127,6 +128,7 @@
 
             $("#create-product-form").validate({
                 rules: {
+                    
                     'product-name': "required",
                     'product-price': {
                         required: true
@@ -136,6 +138,7 @@
                     }
                 },
                 messages: {
+                    
                     'product-name': "Please enter product name",
                     'product-price': {
                         required: "Please enter product price"
@@ -144,6 +147,7 @@
                 },
                 submitHandler: function () {
                     let data = {
+                        
                         "ProductName": $("#product-name").val(),
                         "ProductPrice": $("#product-price").val(),
                         "PromotionPrice": $("#product-promotion").val(),

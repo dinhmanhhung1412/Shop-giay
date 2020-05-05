@@ -21,3 +21,16 @@ C:\Users\FR\Desktop\TTCSDL\cong-nghe-web\Models\obj\Debug\Models.csproj.CoreComp
 C:\Users\FR\Desktop\TTCSDL\cong-nghe-web\Models\obj\Debug\Models.csproj.CopyComplete
 C:\Users\FR\Desktop\TTCSDL\cong-nghe-web\Models\obj\Debug\Models.dll
 C:\Users\FR\Desktop\TTCSDL\cong-nghe-web\Models\obj\Debug\Models.pdb
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\Models.dll.config
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\Models.dll
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\Models.pdb
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\EntityFramework.dll
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\EntityFramework.xml
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\FR\Desktop\Shop-Giay\Models\obj\Debug\Models.csprojAssemblyReference.cache
+C:\Users\FR\Desktop\Shop-Giay\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+C:\Users\FR\Desktop\Shop-Giay\Models\obj\Debug\Models.csproj.CopyComplete
+C:\Users\FR\Desktop\Shop-Giay\Models\obj\Debug\Models.dll
+C:\Users\FR\Desktop\Shop-Giay\Models\obj\Debug\Models.pdb
+C:\Users\FR\Desktop\Shop-Giay\Models\bin\Debug\SlugGenerator.dll

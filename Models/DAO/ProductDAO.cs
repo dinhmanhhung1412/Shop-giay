@@ -3,10 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
-
 namespace Models.DAO
 {
     public class ProductDAO
@@ -30,6 +28,25 @@ namespace Models.DAO
             {
                 return 0;
             }
+        }
+
+        public async Task<int> CreateProductProc(PRODUCT model)
+        {
+            SqlParameter[] param =
+                {
+                    new SqlParameter("@name",model.ProductName),
+                    new SqlParameter("@description",model.ProductDescription),
+                    new SqlParameter("@price",model.ProductPrice),
+                    new SqlParameter("@promotionprice",model.PromotionPrice),
+                    new SqlParameter("@img1",model.ShowImage_1),
+                    new SqlParameter("@img2",model.ShowImage_2),
+                    new SqlParameter("@stock",model.ProductStock),
+                    new SqlParameter("@meta",model.MetaKeyword),
+                    new SqlParameter("@status",model.ProductStatus),
+                    new SqlParameter("@cate",model.CategoryID),
+                };
+            int result = await db.Database.ExecuteSqlCommandAsync("EXEC Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", param);
+            return result;
         }
 
         public async Task<bool> DeleteProduct(int ID)
@@ -74,7 +91,12 @@ namespace Models.DAO
         {
             return await db.PRODUCTs.AsNoTracking().ToListAsync();
         }
-       
+
+        public async Task<List<PRODUCT>> LoadProductProc()
+        {
+            return await db.PRODUCTs.SqlQuery("ProductList").ToListAsync();
+        }
+
         public async Task<List<PRODUCT>> LoadName(string prefix)
         {
             return await db.PRODUCTs.AsNoTracking().Where(x => x.ProductName.Contains(prefix)).ToListAsync();

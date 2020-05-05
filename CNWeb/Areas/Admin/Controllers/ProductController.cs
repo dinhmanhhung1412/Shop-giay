@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace CNWeb.Areas.Admin.Controllers
 {
@@ -37,7 +39,7 @@ namespace CNWeb.Areas.Admin.Controllers
         {
             if (await new ProductDAO().LoadByID(id) == null)
             {
-                return Json(new { Success = 0}, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
             if (!(await new ProductDAO().DeleteProductProc<PRODUCT>(id)))
             {
@@ -53,12 +55,12 @@ namespace CNWeb.Areas.Admin.Controllers
 
         public async Task<ActionResult> ProductList()
         {
-            return View(await new ProductDAO().LoadProduct());
+            return View(await new ProductDAO().LoadProductProc());
         }
 
         public async Task<ActionResult> CreateProduct()
         {
-            ViewBag.Cate = await new CategoryDAO().LoadData();
+            ViewBag.Cate = await new CategoryDAO().LoadDataProc();
             ViewBag.Size = await new SizeDAO().LoadData();
             return View();
         }
@@ -69,8 +71,7 @@ namespace CNWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var prod = new PRODUCT
-                {
-                    ProductID=model.ProductID,
+                {                 
                     ProductName = model.ProductName,
                     ProductPrice = model.ProductPrice,
                     ProductDescription = model.ProductDescription,
@@ -83,8 +84,11 @@ namespace CNWeb.Areas.Admin.Controllers
                     ProductStatus = model.ProductStatus,
                     CreatedDate = DateTime.Now
                 };
-                int result = await new ProductDAO().CreateProduct(prod);
+                int result = await new ProductDAO().CreateProductProc(prod);
                 var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
+
+                //int result = await new ProductDAO().CreateProductProc(prod);
+                //var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
                 return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
