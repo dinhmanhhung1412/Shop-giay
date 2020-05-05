@@ -20,7 +20,7 @@ GO
 
 CREATE TABLE [PRODUCT]
 (
-    ProductID INT PRIMARY KEY IDENTITY(1, 1),
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
     ProductName NVARCHAR(250) NOT NULL,
     ProductDescription NVARCHAR(4000),
     ProductPrice DECIMAL(18, 0) NOT NULL,
@@ -338,15 +338,15 @@ GO
 
 
 -- Thêm sp
-CREATE PROC Create_Product @id int, @name nvarchar(250), @descript nvarchar(250), 
+CREATE PROC Create_Product  @name nvarchar(250), @description nvarchar(250), 
 @price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit, @cate int, @sizeID int
+@stock int, @meta nvarchar(250), @status bit, @cate int
 AS
 BEGIN
 INSERT dbo.PRODUCT
 (
-    ProductID,
+    
     ProductName,
     ProductDescription,
     ProductPrice,
@@ -362,37 +362,30 @@ INSERT dbo.PRODUCT
 )
 VALUES
 (
-    @id, @name, @descript, 
+     @name, @description, 
 	@price, @promotionprice , 5, 
 	@img1, @img2,
 	@stock, @meta, @status, getdate(),@cate  
 )
-
-INSERT dbo.PRODUCTDETAIL
-(
-    --ProductDetailID - column value is auto-generated
-    ProductID,
-    SizeID
-)
-VALUES
-(
-    -- ProductDetailID - INT
-    @id, -- ProductID - INT
-    @sizeID	 -- SizeID - INT
-)
 END 
 GO 
+
+
+EXEC Create_Product 'giay','giay',20,20,'','',50,'giay',1,1
+
+
+SELECT * FROM PRODUCT
 -- Update sp
-Create PROC Update_Product @id int, @name nvarchar(250), @descript nvarchar(250), 
+CREATE PROC Update_Product @id int, @name nvarchar(250), @description nvarchar(250), 
 @price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit, @cate int, @sizeID int
+@stock int, @meta nvarchar(250), @status bit, @cate int
 AS
 BEGIN
 UPDATE dbo.PRODUCT
 SET
     dbo.PRODUCT.ProductName = @name, 
-    dbo.PRODUCT.ProductDescription = @descript, 
+    dbo.PRODUCT.ProductDescription = @description, 
     dbo.PRODUCT.ProductPrice = @price,
     dbo.PRODUCT.PromotionPrice = @promotionprice,
     dbo.PRODUCT.ShowImage_1 = @img1,
@@ -402,14 +395,10 @@ SET
     dbo.PRODUCT.ProductStatus = 0, 
     dbo.PRODUCT.CreatedDate = getdate(), -- DATETIME
     dbo.PRODUCT.CategoryID = @cate
-
-UPDATE dbo.PRODUCTDETAIL
-SET
-    --ProductDetailID - column value is auto-generated
-    dbo.PRODUCTDETAIL.ProductID = @id, -- INT
-    dbo.PRODUCTDETAIL.SizeID = @sizeID -- INT
-END 
+	WHERE dbo.PRODUCT.ProductID=@id
+END
 GO
+
 
 -- Delete sp
 CREATE PROC Delete_Product @id int
@@ -420,6 +409,28 @@ END
 GO 
 
 
+CREATE PROC ProductList
+AS
+BEGIN
+SELECT * FROM dbo.PRODUCT p
+END 
+GO 
 
+CREATE PROC CategoryList
+AS 
+BEGIN
+SELECT * FROM dbo.CATEGORY c
+END
+GO 
 
+CREATE PROC SizeList
+AS 
+BEGIN
+SELECT * FROM dbo.SIZE s
+END 
+GO 
+
+EXEC SizeList
+
+SELECT * FROM dbo.PRODUCT p
 

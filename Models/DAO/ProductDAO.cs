@@ -32,20 +32,19 @@ namespace Models.DAO
 
         public async Task<int> CreateProductProc(PRODUCT model)
         {
-            SqlParameter[] param =
-                {
-                    new SqlParameter("@name",model.ProductName),
-                    new SqlParameter("@description",model.ProductDescription),
-                    new SqlParameter("@price",model.ProductPrice),
-                    new SqlParameter("@promotionprice",model.PromotionPrice),
-                    new SqlParameter("@img1",model.ShowImage_1),
-                    new SqlParameter("@img2",model.ShowImage_2),
-                    new SqlParameter("@stock",model.ProductStock),
-                    new SqlParameter("@meta",model.MetaKeyword),
-                    new SqlParameter("@status",model.ProductStatus),
-                    new SqlParameter("@cate",model.CategoryID),
-                };
-            int result = await db.Database.ExecuteSqlCommandAsync("EXEC Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", param);
+
+            var name = new SqlParameter("@name", model.ProductName);
+            var des = new SqlParameter("@description", model.ProductDescription);
+            var price = new SqlParameter("@price", model.ProductPrice);
+            var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
+            var img1 = new SqlParameter("@img1", model.ShowImage_1);
+            var img2 =new SqlParameter("@img2", model.ShowImage_2);
+            var stock =new SqlParameter("@stock", model.ProductStock);
+            var meta =new SqlParameter("@meta", model.MetaKeyword);
+            var status =new SqlParameter("@status", model.ProductStatus);
+            var cate =new SqlParameter("@cate", model.CategoryID);
+               
+            int result = await db.Database.ExecuteSqlCommandAsync("EXEC Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name,des,price,promotion,img1,img2,stock,meta,status,cate);
             return result;
         }
 
@@ -94,7 +93,7 @@ namespace Models.DAO
 
         public async Task<List<PRODUCT>> LoadProductProc()
         {
-            return await db.PRODUCTs.SqlQuery("ProductList").ToListAsync();
+            return await db.Database.SqlQuery<PRODUCT>("ProductList").ToListAsync();
         }
 
         public async Task<List<PRODUCT>> LoadName(string prefix)

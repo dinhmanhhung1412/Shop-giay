@@ -66,25 +66,38 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CreateProduct(ProductModel model)
+        public JsonResult CreateProduct(ProductModel model)
         {
             if (ModelState.IsValid)
             {
-                var prod = new PRODUCT
-                {                 
-                    ProductName = model.ProductName,
-                    ProductPrice = model.ProductPrice,
-                    ProductDescription = model.ProductDescription,
-                    PromotionPrice = model.PromotionPrice,
-                    ProductStock = model.ProductStock,
-                    CategoryID = model.CategoryID,
-                    MetaKeyword = SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName),
-                    ShowImage_1 = model.ShowImage_1,
-                    ShowImage_2 = model.ShowImage_2,
-                    ProductStatus = model.ProductStatus,
-                    CreatedDate = DateTime.Now
-                };
-                int result = await new ProductDAO().CreateProductProc(prod);
+                //var prod = new PRODUCT
+                //{                 
+                //    ProductName = model.ProductName,
+                //    ProductPrice = model.ProductPrice,
+                //    ProductDescription = model.ProductDescription,
+                //    PromotionPrice = model.PromotionPrice,
+                //    ProductStock = model.ProductStock,
+                //    CategoryID = model.CategoryID,
+                //    MetaKeyword = SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName),
+                //    ShowImage_1 = model.ShowImage_1,
+                //    ShowImage_2 = model.ShowImage_2,
+                //    ProductStatus = model.ProductStatus,
+                //    CreatedDate = DateTime.Now
+                //};
+                //int result = await new ProductDAO().CreateProductProc(prod);
+                var db = new CNWebDbContext();
+                var name = new SqlParameter("@name", model.ProductName);
+                var des = new SqlParameter("@description", model.ProductDescription);
+                var price = new SqlParameter("@price", model.ProductPrice);
+                var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
+                var img1 = new SqlParameter("@img1", model.ShowImage_1);
+                var img2 = new SqlParameter("@img2", model.ShowImage_2);
+                var stock = new SqlParameter("@stock", model.ProductStock);
+                var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
+                var status = new SqlParameter("@status", model.ProductStatus);
+                var cate = new SqlParameter("@cate", model.CategoryID);
+
+                var result = db.Database.ExecuteSqlCommand("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
                 var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
 
                 //int result = await new ProductDAO().CreateProductProc(prod);
