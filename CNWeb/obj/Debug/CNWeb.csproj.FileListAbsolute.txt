@@ -258,3 +258,6 @@ C:\Users\FR\Desktop\Shop-Giay\CNWeb\bin\Newtonsoft.Json.xml
 C:\Users\FR\Desktop\Shop-Giay\CNWeb\bin\Antlr3.Runtime.pdb
 C:\Users\FR\Desktop\Shop-Giay\CNWeb\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\FR\Desktop\Shop-Giay\CNWeb\obj\Debug\CNWeb.csproj.CopyComplete
+C:\Users\BUI HUONG\Desktop\Shop-giay\CNWeb\obj\Debug\CNWeb.csprojResolveAssemblyReference.cache
+C:\Users\BUI HUONG\Desktop\Shop-giay\CNWeb\obj\Debug\CNWeb.dll
+C:\Users\BUI HUONG\Desktop\Shop-giay\CNWeb\obj\Debug\CNWeb.pdb
