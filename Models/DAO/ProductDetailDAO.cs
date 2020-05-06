@@ -33,13 +33,13 @@ namespace Models.DAO
             }
         }
 
-        public async Task<List<SIZE>> LoadSize(int prodID)
+        public  List<SIZE> LoadSize(int prodID)
         {
             var list = new List<SIZE>();
             var dbs = new SizeDAO();
             foreach (var item in db.PRODUCTDETAILs.AsNoTracking().Where(x => x.ProductID == prodID).ToList())
             {
-                list.Add(await dbs.LoadByID(item.SizeID.Value));
+                list.Add(dbs.LoadByID(item.SizeID.Value));
             }
             return list;
         }

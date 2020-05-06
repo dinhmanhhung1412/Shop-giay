@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,29 +18,23 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<List<SIZE>> LoadData()
-        {
-            return await db.SIZEs.AsNoTracking().ToListAsync();
-        }
-
         public async Task<List<SIZE>> LoadDataProc()
         {
-            return await db.SIZEs.SqlQuery("SizeList").ToListAsync();
+            return await db.SIZEs.ToListAsync();
         }
 
-        public async Task<SIZE> LoadByID(int sizeID)
+        public  SIZE LoadByID(int sizeID)
         {
-            return await db.SIZEs.AsNoTracking().Where(x => x.SizeID == sizeID).FirstOrDefaultAsync();
+            return  db.SIZEs.AsNoTracking().Where(x => x.SizeID == sizeID).FirstOrDefault();
         }
 
-        public async Task<int> CreateSize(SIZE model)
+        public int CreateSizeProc(SIZE model)
         {
             try
             {
-                model.CreatedDate = DateTime.Now;
-                db.SIZEs.Add(model);
-                await db.SaveChangesAsync();
-                return model.SizeID;
+                var param = new SqlParameter("@sizeName", model.Size1);
+                var res = db.Database.ExecuteSqlCommand("Create_Size @sizeName", param);
+                return res;
             }
             catch
             {
@@ -47,13 +42,12 @@ namespace Models.DAO
             }
         }
 
-        public async Task<bool> DeleteSize(int ID)
+        public bool DeleteSizeProc(int ID)
         {
             try
             {
-                var prod = await db.SIZEs.Where(x => x.SizeID == ID).SingleOrDefaultAsync();
-                db.SIZEs.Remove(prod);
-                await db.SaveChangesAsync();
+                var param = new SqlParameter("@sizeID", ID);
+                var res = db.Database.ExecuteSqlCommand("Delete_Size @sizeID", param);
                 return true;
             }
             catch
@@ -62,18 +56,14 @@ namespace Models.DAO
             }
         }
 
-        public async Task<int> EditSize(SIZE model, int ID)
+        public int EditSizeProc(SIZE model, int ID)
         {
             try
             {
-                var item = await db.SIZEs.FindAsync(ID);
-                if (item == null)
-                {
-                    return 0;
-                }
-                item.Size1 = model.Size1;
-                await db.SaveChangesAsync();
-                return item.SizeID;
+                var id = new SqlParameter("@sizeID", ID);
+                var name = new SqlParameter("@sizeName", model.Size1);
+                var res = db.Database.ExecuteSqlCommand("Update_Size @sizeID,@sizeName", id, name);
+                return res;
             }
             catch
             {

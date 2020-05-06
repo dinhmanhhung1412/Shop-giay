@@ -35,22 +35,22 @@ namespace CNWeb.Areas.Admin.Controllers
         //}
 
         [HttpPost]
-        public async Task<JsonResult> DeleteProduct(int id)
+        public JsonResult DeleteProduct(int id)
         {
-            if (await new ProductDAO().LoadByID(id) == null)
+            if ( new ProductDAO().LoadByID(id) == null)
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
-            if (!(await new ProductDAO().DeleteProductProc<PRODUCT>(id)))
+            if (!(new ProductDAO().DeleteProductProc<PRODUCT>(id)))
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { Success = 1 }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> ProductDetail(int id)
+        public  ActionResult ProductDetail(int id)
         {
-            return View(await new ProductDAO().LoadByID(id));
+            return View( new ProductDAO().LoadByID(id));
         }
 
         public async Task<ActionResult> ProductList()
@@ -61,43 +61,44 @@ namespace CNWeb.Areas.Admin.Controllers
         public async Task<ActionResult> CreateProduct()
         {
             ViewBag.Cate = await new CategoryDAO().LoadDataProc();
-            ViewBag.Size = await new SizeDAO().LoadData();
+            ViewBag.Size = await new SizeDAO().LoadDataProc();
             return View();
         }
 
+        public string checkdes(string des)
+        {
+            if (des == null) return ""; else return des;
+        }
+        public string checkimg1(string img)
+        {
+            if (img == null) return ""; else return img;
+        }
+        public string checkimg2(string img)
+        {
+            if (img == null) return ""; else return img;
+        }
         [HttpPost]
         public JsonResult CreateProduct(ProductModel model)
         {
             if (ModelState.IsValid)
             {
-                //var prod = new PRODUCT
-                //{                 
-                //    ProductName = model.ProductName,
-                //    ProductPrice = model.ProductPrice,
-                //    ProductDescription = model.ProductDescription,
-                //    PromotionPrice = model.PromotionPrice,
-                //    ProductStock = model.ProductStock,
-                //    CategoryID = model.CategoryID,
-                //    MetaKeyword = SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName),
-                //    ShowImage_1 = model.ShowImage_1,
-                //    ShowImage_2 = model.ShowImage_2,
-                //    ProductStatus = model.ProductStatus,
-                //    CreatedDate = DateTime.Now
-                //};
-                //int result = await new ProductDAO().CreateProductProc(prod);
+                string descript = checkdes(model.ProductDescription);
+                string img_1 = checkimg1(model.ShowImage_1);
+                string img_2 = checkimg2(model.ShowImage_2);
                 var db = new CNWebDbContext();
                 var name = new SqlParameter("@name", model.ProductName);
-                var des = new SqlParameter("@description", model.ProductDescription);
+                var des = new SqlParameter("@description", descript);
                 var price = new SqlParameter("@price", model.ProductPrice);
                 var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
-                var img1 = new SqlParameter("@img1", model.ShowImage_1);
-                var img2 = new SqlParameter("@img2", model.ShowImage_2);
+                var img1 = new SqlParameter("@img1", img_1);
+                var img2 = new SqlParameter("@img2",img_2);
                 var stock = new SqlParameter("@stock", model.ProductStock);
                 var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
                 var status = new SqlParameter("@status", model.ProductStatus);
                 var cate = new SqlParameter("@cate", model.CategoryID);
 
                 var result = db.Database.ExecuteSqlCommand("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
+
                 var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
 
                 //int result = await new ProductDAO().CreateProductProc(prod);
@@ -118,11 +119,11 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateSize(SIZE model)
+        public ActionResult CreateSize(SIZE model)
         {
             if (ModelState.IsValid)
             {
-                int result = await new SizeDAO().CreateSize(model);
+                int result =  new SizeDAO().CreateSizeProc(model);
                 return RedirectToAction("Size");
             }
             return View(model);
@@ -131,17 +132,17 @@ namespace CNWeb.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> SizeList()
         {
-            return PartialView("SizeList", await new SizeDAO().LoadData());
+            return PartialView("SizeList", await new SizeDAO().LoadDataProc());
         }
 
         [HttpPost]
-        public async Task<JsonResult> DeleteSize(int id)
+        public JsonResult DeleteSize(int id)
         {
-            if (await new SizeDAO().LoadByID(id) == null)
+            if ( new SizeDAO().LoadByID(id) == null)
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
-            if (!(await new SizeDAO().DeleteSize(id)))
+            if (!( new SizeDAO().DeleteSizeProc(id)))
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
@@ -149,11 +150,11 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditSize(SIZE model, int id)
+        public  JsonResult EditSize(SIZE model, int id)
         {
             if (ModelState.IsValid)
             {
-                int result = await new SizeDAO().EditSize(model, id);
+                int result =  new SizeDAO().EditSizeProc(model, id);
                 if (result == 0)
                 {
                     return Json(new { Success = false, id }, JsonRequestBehavior.AllowGet);

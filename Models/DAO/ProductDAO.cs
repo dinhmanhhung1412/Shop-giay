@@ -16,53 +16,31 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<int> CreateProduct(PRODUCT model)
+        public int CreateProduct(PRODUCT model)
         {
             try
             {
-                db.PRODUCTs.Add(model);
-                await db.SaveChangesAsync();
-                return model.ProductID;
+                var db = new CNWebDbContext();
+                var name = new SqlParameter("@name", model.ProductName);
+                var des = new SqlParameter("@description", model.ProductDescription);
+                var price = new SqlParameter("@price", model.ProductPrice);
+                var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
+                var img1 = new SqlParameter("@img1", model.ShowImage_1);
+                var img2 = new SqlParameter("@img2", model.ShowImage_2);
+                var stock = new SqlParameter("@stock", model.ProductStock);
+                var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
+                var status = new SqlParameter("@status", model.ProductStatus);
+                var cate = new SqlParameter("@cate", model.CategoryID);
+
+                var result = db.Database.ExecuteSqlCommand("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
+                return result;
             }
             catch
             {
                 return 0;
             }
         }
-
-        public async Task<int> CreateProductProc(PRODUCT model)
-        {
-
-            var name = new SqlParameter("@name", model.ProductName);
-            var des = new SqlParameter("@description", model.ProductDescription);
-            var price = new SqlParameter("@price", model.ProductPrice);
-            var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
-            var img1 = new SqlParameter("@img1", model.ShowImage_1);
-            var img2 =new SqlParameter("@img2", model.ShowImage_2);
-            var stock =new SqlParameter("@stock", model.ProductStock);
-            var meta =new SqlParameter("@meta", model.MetaKeyword);
-            var status =new SqlParameter("@status", model.ProductStatus);
-            var cate =new SqlParameter("@cate", model.CategoryID);
-               
-            int result = await db.Database.ExecuteSqlCommandAsync("EXEC Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name,des,price,promotion,img1,img2,stock,meta,status,cate);
-            return result;
-        }
-
-        public async Task<bool> DeleteProduct(int ID)
-        {
-            try
-            {
-                var prod = await db.PRODUCTs.Where(x => x.ProductID == ID).SingleOrDefaultAsync();
-                db.PRODUCTs.Remove(prod);
-                await db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public async Task<bool> DeleteProductProc<T>(int ID)
+        public bool DeleteProductProc<T>(int ID)
         {
             try
             {
@@ -70,7 +48,7 @@ namespace Models.DAO
                 if (prod != null)
                 {
                     var id = new SqlParameter("@id", ID);
-                    await new CNWebDbContext().Database.SqlQuery<T>("Delete_Product @id", id).FirstOrDefaultAsync();
+                    new CNWebDbContext().Database.SqlQuery<T>("Delete_Product @id", id).FirstOrDefaultAsync();
                     return true;
                 }
                 else
@@ -81,14 +59,9 @@ namespace Models.DAO
                 return false;
             }
         }
-        public async Task<PRODUCT> LoadByID(int ID)
+        public PRODUCT LoadByID(int ID)
         {
-            return await db.PRODUCTs.AsNoTracking().Where(x => x.ProductID.Equals(ID)).FirstAsync();
-        }
-
-        public async Task<List<PRODUCT>> LoadProduct()
-        {
-            return await db.PRODUCTs.AsNoTracking().ToListAsync();
+            return db.PRODUCTs.AsNoTracking().Where(x => x.ProductID.Equals(ID)).FirstOrDefault();
         }
 
         public async Task<List<PRODUCT>> LoadProductProc()
@@ -144,9 +117,9 @@ namespace Models.DAO
             return await list.Skip(pageindex * pagesize).Take(pagesize).ToListAsync();
         }
 
-        public async Task<PRODUCT> LoadByMeta(string meta)
+        public PRODUCT LoadByMeta(string meta)
         {
-            return await db.PRODUCTs.AsNoTracking().Where(x => x.MetaKeyword == meta).FirstOrDefaultAsync();
+            return db.PRODUCTs.AsNoTracking().Where(x => x.MetaKeyword == meta).FirstOrDefault();
         }
     }
 }

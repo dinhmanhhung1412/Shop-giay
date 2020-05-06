@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Models.EF;
+using System.Data.SqlClient;
 
 namespace CNWeb.Controllers
 {
@@ -13,14 +15,14 @@ namespace CNWeb.Controllers
     {
         [AllowAnonymous]
         [Route("cart")]
-        public async Task<ActionResult> Cart()
+        public ActionResult Cart()
         {
-            return View(await GetCartItem());
+            return View(GetCartItem());
         }
 
         [Authorize]
         [Route("checkout")]
-        public async Task<ActionResult> Checkout()
+        public  ActionResult Checkout()
         {
             if (Session["cart"] == null)
             {
@@ -30,7 +32,7 @@ namespace CNWeb.Controllers
             CustomerViewModel model = null;
             if (!string.IsNullOrEmpty(customer))
             {
-                var item = await new CustomerDAO().LoadByUsername(customer);
+                var item =  new CustomerDAO().LoadByUsernameProc(customer);
                 model = new CustomerViewModel()
                 {
                     CustomerID = item.CustomerID,
@@ -41,7 +43,7 @@ namespace CNWeb.Controllers
                 };
             }
             ViewData["Customer"] = model;
-            return View(await GetCartItem());
+            return View(GetCartItem());
         }
 
         [HttpPost]
@@ -92,12 +94,12 @@ namespace CNWeb.Controllers
             return -1;
         }
 
-        public async Task<ActionResult> CartPartial()
+        public  ActionResult CartPartial()
         {
-            return PartialView("_Cart", await GetCartItem());
+            return PartialView("_Cart",  GetCartItem());
         }
 
-        public async Task<List<CartItemModel>> GetCartItem()
+        public  List<CartItemModel> GetCartItem()
         {
             var list = new List<CartItemModel>();
             var session = (List<CartSession>)Session["cart"];
@@ -106,26 +108,26 @@ namespace CNWeb.Controllers
                 foreach (var item in session)
                 {
                     list.Add(new CartItemModel(
-                        await new ProductDAO().LoadByID(item.ProductID),
-                        await new SizeDAO().LoadByID(item.SizeID),
+                         new ProductDAO().LoadByID(item.ProductID),
+                         new SizeDAO().LoadByID(item.SizeID),
                         item.Quantity));
                 }
             }
             return list;
         }
 
-        public async Task<JsonResult> SubmitCheckout()
+        public  JsonResult SubmitCheckout()
         {
             try
-            {
-                var customer = await new CustomerDAO().LoadByUsername(HttpContext.User.Identity.Name);
-                var order = await new OrderDAO().AddOrder(customer.CustomerID, await GetTotal());
-                if (order != 0)
+            {      
+                var customer = new CustomerDAO().LoadByUsernameProc(HttpContext.User.Identity.Name);           
+                var order = new OrderDAO().AddOrderProc(customer.CustomerID, GetTotal());
+                if (order!= 0)
                 {
                     var orderdetail = new OrderDetailDAO();
                     foreach (var item in (List<CartSession>)Session["cart"])
                     {
-                        await orderdetail.AddOrderDetail(order, item.ProductID, item.SizeID, item.Quantity);
+                        _ = orderdetail.AddOrderDetailProc(order, item.ProductID, item.SizeID, item.Quantity);
                     }
                     Session["cart"] = null;
                     return Json(new { Success = true, ID = order }, JsonRequestBehavior.AllowGet);
@@ -138,7 +140,7 @@ namespace CNWeb.Controllers
             }
         }
 
-        public async Task<decimal> GetTotal()
+        public decimal GetTotal()
         {
             decimal total = 0;
             
@@ -148,7 +150,7 @@ namespace CNWeb.Controllers
                 var dao = new ProductDAO();
                 foreach (var item in cart)
                 {
-                    var product = await dao.LoadByID(item.ProductID);
+                    var product = dao.LoadByID(item.ProductID);
                     if (product.PromotionPrice.HasValue)
                     {
                         total += product.PromotionPrice.Value * item.Quantity;

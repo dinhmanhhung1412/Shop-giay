@@ -24,12 +24,12 @@ namespace CNWeb.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> OrderList(int? StatusID)
+        public ActionResult OrderList(int? StatusID)
         {
             var membername = HttpContext.User.Identity.Name;
-            var customer = await new CustomerDAO().LoadByUsername(membername);
+            var customer =  new CustomerDAO().LoadByUsernameProc(membername);
 
-            var list = await new OrderDAO().LoadOrder<OrderModel>(customer.CustomerID);
+            var list =  new OrderDAO().LoadOrder<OrderModel>(customer.CustomerID);
 
             if (!StatusID.Equals(0))
             {
@@ -47,7 +47,7 @@ namespace CNWeb.Controllers
 
         public async Task<JsonResult> GetStatus()
         {
-            var status = await new OrderStatusDAO().LoadStatus();
+            var status = await new OrderStatusDAO().LoadStatusProc();
             return Json(status, JsonRequestBehavior.AllowGet);
         }
     }

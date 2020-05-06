@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,20 +18,16 @@ namespace Models.DAO
             db = new CNWebDbContext();
             db.Configuration.ProxyCreationEnabled = false;
         }
-
-        public async Task<int> AddOrderDetail(int OrderID, int ProductID, int SizeID, int Quanity)
+        public int AddOrderDetailProc(int OrderID, int ProductID, int SizeID, int Quanity)
         {
-            try {
-                var order = new ORDERDETAIL()
-                {
-                    OrderID = OrderID,
-                    ProductID = ProductID,
-                    Quantity = Quanity,
-                    SizeID = SizeID
-                };
-                db.ORDERDETAILs.Add(order);
-                await db.SaveChangesAsync();
-                return order.DetailID;
+            try
+            {
+                var orderid = new SqlParameter("@orderID", OrderID);
+                var prodID = new SqlParameter("@prodID", ProductID);
+                var sizeID = new SqlParameter("@sizeID", SizeID);
+                var quantity = new SqlParameter("@quantity", Quanity);
+                var res = db.Database.ExecuteSqlCommand("Add_OrderDetail @orderID,@prodID,@sizeID,@quantity", orderid, prodID, sizeID, quantity);
+                return res;
             }
             catch
             {
@@ -37,9 +35,17 @@ namespace Models.DAO
             }
         }
 
-        public async Task<List<ORDERDETAIL>> LoadOrderDetail(int OrderID)
+        public  List<ORDERDETAIL> LoadOrderDetail(int OrderID)
         {
-            return await db.ORDERDETAILs.AsNoTracking().Where(x => x.OrderID == OrderID).ToListAsync();
+            return  db.ORDERDETAILs.AsNoTracking().Where(x => x.OrderID == OrderID).ToList();
+        }
+
+        public List<ORDERDETAIL> LoadOrderDetailProc(int OrderID)
+        {
+            var param = new SqlParameter("@orderID", OrderID);
+            return db.Database.SqlQuery<ORDERDETAIL>("LoadOrderDetail @orderID", param).ToList();
+
+            //return db.ORDERDETAILs.AsNoTracking().Where(x => x.OrderID == OrderID).ToList();
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Data.SqlClient;
+using System.Data.Entity.Core.Common.CommandTrees;
 
 namespace CNWeb.Controllers
 {
@@ -37,22 +38,32 @@ namespace CNWeb.Controllers
                 return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
         }
 
+        public string checknullphone(string phone)
+        {
+            if (phone == null) return ""; else return phone;            
+        }
+        public string checknullmail(string mail)
+        {
+            if (mail == null) return ""; else return mail;
+        }
+
         [HttpPost]
-        public async Task<JsonResult> RegisterCustomer(RegisterCustomer model)
+        public  JsonResult RegisterCustomer(RegisterCustomer model)
         {
             var dao = new CustomerDAO();
-            if (!await dao.CheckUser(model.CustomerUsername))
+            if (!dao.CheckUser(model.CustomerUsername))
             {
                 try
                 {
-                    int result = await new CustomerDAO().Register(new CUSTOMER()
+                    string checkmail = checknullmail(model.CustomerEmail);
+                    string checkphone = checknullphone(model.CustomerPhone);
+                    int result = new CustomerDAO().RegisterProc(new CUSTOMER()
                     {
                         CustomerUsername = model.CustomerUsername,
                         CustomerPassword = model.CustomerPassword,
                         CustomerName = model.CustomerName,
-                        CustomerPhone = model.CustomerPhone,
-                        CustomerEmail = model.CustomerEmail,
-                        CreatedDate = DateTime.Now
+                        CustomerPhone = checkphone,
+                        CustomerEmail = checkmail
                     });
                     return Json(new { ReturnID = 1 }, JsonRequestBehavior.AllowGet);
                 }
@@ -75,14 +86,14 @@ namespace CNWeb.Controllers
 
         [Authorize]
         [Route("profile/{username}")]
-        public async Task<ActionResult> CustomerProfile(string username)
+        public  ActionResult CustomerProfile(string username)
         {
             var membername = HttpContext.User.Identity.Name;
             if (!membername.Equals(username))
             {
-                return View(await new CustomerDAO().LoadByUsername(membername));
+                return View( new CustomerDAO().LoadByUsernameProc(membername));
             }
-            return View(await new CustomerDAO().LoadByUsername(username));
+            return View( new CustomerDAO().LoadByUsernameProc(username));
         }
     }
 }

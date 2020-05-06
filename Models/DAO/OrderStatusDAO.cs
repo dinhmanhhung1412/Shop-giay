@@ -17,9 +17,9 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<List<ORDERSTATU>> LoadStatus()
+        public async Task<List<ORDERSTATU>> LoadStatusProc()
         {
-            return await db.ORDERSTATUS.AsNoTracking().ToListAsync();
+            return await db.ORDERSTATUS.SqlQuery("LoadOrderStatus").ToListAsync();          
         }
     }
 }

@@ -30,14 +30,14 @@ namespace CNWeb.Controllers
 
         [HttpGet]
         [Route("san-pham/{prodmeta}")]
-        public async Task<ActionResult> Detail(string prodmeta)
+        public  ActionResult Detail(string prodmeta)
         {
             try
             {
-                var prod = await new ProductDAO().LoadByMeta(prodmeta);
+                var prod = new ProductDAO().LoadByMeta(prodmeta);
 
                 //ViewData["Img"] = new ImageDAO().LoadImage(prod.ProductID);
-                ViewData["Size"] = await new ProductDetailDAO().LoadSize(prod.ProductID);
+                ViewData["Size"] =  new ProductDetailDAO().LoadSize(prod.ProductID);
                 return View(prod);
             }
             catch

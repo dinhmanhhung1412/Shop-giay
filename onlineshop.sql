@@ -69,10 +69,10 @@ CREATE TABLE [CUSTOMER]
     CustomerID INT PRIMARY KEY IDENTITY(1, 1),
     CustomerUsername NVARCHAR(250) UNIQUE NOT NULL,
     CustomerPassword NVARCHAR(250) NOT NULL,
-    CustomerEmail NVARCHAR(250),
+    CustomerEmail NVARCHAR(250) DEFAULT N'',
     CustomerName NVARCHAR(250) NOT NULL,
-    CustomerPhone NVARCHAR(20),
-    CustomerAdress NVARCHAR(250),
+    CustomerPhone NVARCHAR(20) DEFAULT N'',
+    CustomerAdress NVARCHAR(250) DEFAULT N'',
     CreatedDate DATETIME DEFAULT GETDATE()
 )
 GO
@@ -309,11 +309,9 @@ BEGIN
 END
 
 EXEC SelectAllProduct
-
+ 
 --------------------------------------------
-
 select * from CUSTOMER
-
 delete from [CATEGORY]
 where [CATEGORY].[CategoryID] = 3
 delete from [PRODUCTIMAGE]
@@ -334,8 +332,6 @@ GO
 --update					-> truyền id và 1 đối tượng		-> trả về đối tượng
 
 --crud
-
-
 
 -- Thêm sp
 CREATE PROC Create_Product  @name nvarchar(250), @description nvarchar(250), 
@@ -369,12 +365,6 @@ VALUES
 )
 END 
 GO 
-
-
-EXEC Create_Product 'giay','giay',20,20,'','',50,'giay',1,1
-
-
-SELECT * FROM PRODUCT
 -- Update sp
 CREATE PROC Update_Product @id int, @name nvarchar(250), @description nvarchar(250), 
 @price decimal(18,0), @promotionprice decimal(18,2),
@@ -398,8 +388,6 @@ SET
 	WHERE dbo.PRODUCT.ProductID=@id
 END
 GO
-
-
 -- Delete sp
 CREATE PROC Delete_Product @id int
 AS
@@ -407,30 +395,147 @@ BEGIN
 DELETE dbo.PRODUCT WHERE dbo.PRODUCT.ProductID=@id
 END
 GO 
-
-
 CREATE PROC ProductList
 AS
 BEGIN
 SELECT * FROM dbo.PRODUCT p
 END 
 GO 
-
 CREATE PROC CategoryList
 AS 
 BEGIN
 SELECT * FROM dbo.CATEGORY c
 END
 GO 
-
 CREATE PROC SizeList
 AS 
 BEGIN
 SELECT * FROM dbo.SIZE s
 END 
 GO 
+GO 
+CREATE PROC Add_Order @cusID int, @total decimal(18,2)
+AS
+BEGIN
+INSERT dbo.[ORDER]
+(
+    --OrderID - column value is auto-generated
+    OrderDate,
+    DeliveryDate,
+    Total,
+    OrderStatusID,
+    CustomerID
+)
+VALUES
+(
+    -- OrderID - INT
+    GETDATE(), -- OrderDate - DATETIME
+    GETDATE(), -- DeliveryDate - DATETIME
+    @total, -- Total - DECIMAL
+    1, -- OrderStatusID - INT
+    @cusID -- CustomerID - INT
+)
+END 
+GO 
+CREATE PROC Add_OrderDetail @orderID int,@prodID int, @sizeID int, @quantity int
+AS
+BEGIN
+INSERT dbo.ORDERDETAIL
+(
+    --DetailID - column value is auto-generated
+    Quantity,
+    OrderID,
+    SizeID,
+    ProductID
+)
+VALUES
+(
+    -- DetailID - int
+    @quantity, -- Quantity - int
+    @orderID, -- OrderID - int
+    @sizeID, -- SizeID - int
+    @prodID -- ProductID - int
+)
+END
+GO 
+CREATE PROC LoadOrderDetail @orderID int
+AS
+BEGIN
+SELECT * FROM dbo.ORDERDETAIL o
+WHERE o.OrderID=@orderID
+END
+GO 
+CREATE PROC Create_Size @sizeName nvarchar(250)
+AS
+BEGIN
+INSERT dbo.SIZE
+(
+    --SizeID - column value is auto-generated
+    Size,
+    CreatedDate
+)
+VALUES
+(
+    -- SizeID - INT
+    @sizeName, -- Size - NVARCHAR
+    GETDATE() -- CreatedDate - DATETIME
+)
+END 
+GO 
+CREATE PROC Delete_Size @sizeID int
+AS
+BEGIN
+DELETE dbo.SIZE WHERE dbo.SIZE.SizeID=@sizeID
+END
+GO 
+CREATE PROC Update_Size @sizeID int, @sizeName varchar(2)
+AS
+BEGIN
+UPDATE dbo.SIZE
+SET
+    --SizeID - column value is auto-generated
+    dbo.SIZE.Size =@sizeName, -- NVARCHAR
+    dbo.SIZE.CreatedDate = GETDATE() -- DATETIME
+	WHERE dbo.SIZE.SizeID=@sizeID
+END
+GO 
+CREATE PROC LoadOrderStatus
+AS
+BEGIN
+SELECT * FROM dbo.ORDERSTATUS o
+END
+GO 
 
-EXEC SizeList
+create PROC Create_Customer @username nvarchar(250), @pass nchar(250),@name nvarchar(250),
+							@phone nvarchar(20),@mail nvarchar(250)
+AS
+BEGIN
+INSERT dbo.CUSTOMER
+(
+    --CustomerID - column value is auto-generated
+    CustomerUsername,
+    CustomerPassword,
+    CustomerEmail,
+    CustomerName,
+    CustomerPhone,
+    CreatedDate
+)
+VALUES
+(
+    -- CustomerID - INT
+    @username, -- CustomerUsername - NVARCHAR
+    @pass, -- CustomerPassword - NVARCHAR
+    @mail, -- CustomerEmail - NVARCHAR
+    @name, -- CustomerName - NVARCHAR
+    @phone, -- CustomerPhone - NVARCHAR
+    GETDATE() -- CreatedDate - DATETIME
+)
+END 
+GO 
 
-SELECT * FROM dbo.PRODUCT p
-
+CREATE PROC LoadByUserName @username nvarchar(250)
+AS
+BEGIN
+SELECT *FROM dbo.CUSTOMER c
+WHERE c.CustomerUsername=@username
+END 

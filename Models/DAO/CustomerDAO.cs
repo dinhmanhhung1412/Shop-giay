@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace Models.DAO
 {
@@ -27,7 +28,7 @@ namespace Models.DAO
         {
             try
             {
-                var cus = await db.CUSTOMERs.Where(x => x.CustomerID== ID).SingleOrDefaultAsync();
+                var cus = await db.CUSTOMERs.Where(x => x.CustomerID == ID).SingleOrDefaultAsync();
                 db.CUSTOMERs.Remove(cus);
                 await db.SaveChangesAsync();
                 return true;
@@ -38,9 +39,9 @@ namespace Models.DAO
             }
         }
 
-        public async Task<bool> CheckUser(string username)
+        public bool CheckUser(string username)
         {
-            return await db.CUSTOMERs.AsNoTracking().AnyAsync(x => x.CustomerUsername == username);
+            return db.CUSTOMERs.AsNoTracking().Any(x => x.CustomerUsername == username);
         }
 
         public async Task<CUSTOMER> LoadByID(int id)
@@ -48,10 +49,11 @@ namespace Models.DAO
             return await db.CUSTOMERs.AsNoTracking().Where(x => x.CustomerID == id).SingleOrDefaultAsync();
         }
 
-        public async Task<CUSTOMER> LoadByUsername(string username)
+        public CUSTOMER LoadByUsernameProc(string username)
         {
-            return await db.CUSTOMERs.AsNoTracking().Where(x => x.CustomerUsername.Equals(username)).SingleOrDefaultAsync();
-        }
+            var param = new SqlParameter("@username", username);
+            return db.CUSTOMERs.SqlQuery("LoadByUserName @username", param).SingleOrDefault();
+        } 
 
         public async Task<bool> LoginAsync(string username, string password)
         {
@@ -73,15 +75,26 @@ namespace Models.DAO
                 return false;
         }
 
-        public async Task<int> Register(CUSTOMER cus)
+        public  int Register(CUSTOMER cus)
         {
             cus.CustomerPassword = EncryptPassword(cus.CustomerPassword);
             db.CUSTOMERs.Add(cus);
-            await db.SaveChangesAsync();
+             db.SaveChanges();
             return cus.CustomerID;
         }
+        public int RegisterProc(CUSTOMER cus)
+        {
+            var db = new CNWebDbContext();
+            var username = new SqlParameter("@username", cus.CustomerUsername);
+            var pass = new SqlParameter("@pass", new CustomerDAO().EncryptPassword(cus.CustomerPassword));
+            var mail = new SqlParameter("@mail", cus.CustomerEmail);
+            var name = new SqlParameter("@name", cus.CustomerName);
+            var phone = new SqlParameter("@phone", cus.CustomerPhone);
 
-        public static string EncryptPassword(string text)
+            var res = db.Database.ExecuteSqlCommand("Create_Customer @username,@pass,@name,@phone,@mail", username, pass, name, phone, mail);
+            return res;
+        }
+        public string EncryptPassword(string text)
         {
             string password = "";
             if (!string.IsNullOrEmpty(text))

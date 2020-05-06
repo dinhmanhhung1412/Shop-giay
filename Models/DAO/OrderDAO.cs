@@ -18,21 +18,14 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<int> AddOrder(int CustomerID, decimal total)
+        public int AddOrderProc(int CustomerID, decimal total)
         {
             try
             {
-                var order = new ORDER
-                {
-                    Total = total,
-                    OrderDate = DateTime.Now,
-                    OrderStatusID = 1,
-                    DeliveryDate = DateTime.Now.AddDays(4),
-                    CustomerID = CustomerID
-                };
-                db.ORDERs.Add(order);
-                await db.SaveChangesAsync();
-                return order.OrderID;
+                var cusID = new SqlParameter("@cusID", CustomerID);
+                var tot = new SqlParameter("@total", total);
+                var res =  db.Database.ExecuteSqlCommand("Add_Order @cusID, @total", cusID, tot);
+                return res;
             }
             catch
             {
@@ -50,11 +43,11 @@ namespace Models.DAO
             return await db.ORDERs.AsNoTracking().Where(x => x.CustomerID == CustomerID).ToListAsync();
         }
 
-        public async Task<List<T>> LoadOrder<T>(int CustomerID)
+        public  List<T> LoadOrder<T>(int CustomerID)
         {
             var Param = new SqlParameter("@CustomerID", CustomerID);
 
-            return await new CNWebDbContext().Database.SqlQuery<T>("SelectOrder @CustomerID", Param).ToListAsync();
+            return  new CNWebDbContext().Database.SqlQuery<T>("SelectOrder @CustomerID", Param).ToList();
         }
 
         public async Task<List<T>> LoadProductOrder<T>(int OrderID)
