@@ -15,7 +15,7 @@ namespace CNWeb.Controllers
         [Authorize]
         public async Task<JsonResult> CancelOrder(int OrderID)
         {
-            var result = await new OrderDAO().CancelOrder(OrderID);
+            var result = await new OrderDAO().CancelOrderProc(OrderID);
             if (result == 0)
             {
                 return Json(new { Success = false }, JsonRequestBehavior.AllowGet);

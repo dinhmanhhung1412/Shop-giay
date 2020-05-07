@@ -400,6 +400,8 @@
     <Content Include="Areas\Admin\Views\Customer\CustomerList.cshtml" />
     <Content Include="Areas\Admin\assets\plugins\datatables\json\scroller-demo.json" />
     <Content Include="Areas\Admin\Views\Admin\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Order.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\OrderList.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -445,7 +447,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\Base\" />
-    <Folder Include="Areas\Admin\Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

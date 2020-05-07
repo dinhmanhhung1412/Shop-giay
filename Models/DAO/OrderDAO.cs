@@ -15,7 +15,12 @@ namespace Models.DAO
         public OrderDAO()
         {
             db = new CNWebDbContext();
-            db.Configuration.ProxyCreationEnabled = false;
+           
+        }
+
+        public async Task<List<ORDER>>  LoadOrderProc()
+        {
+            return await db.ORDERs.SqlQuery("Load_Order").AsNoTracking().ToListAsync();
         }
 
         public int AddOrderProc(int CustomerID, decimal total)
@@ -32,15 +37,11 @@ namespace Models.DAO
                 return 0;
             }
         }
-
-        public async Task<ORDER> LoadByID(int OrderID)
-        {
-            return await db.ORDERs.AsNoTracking().Where(x => x.OrderID == OrderID).FirstOrDefaultAsync();
-        }
-
+  
         public async Task<List<ORDER>> LoadOrder(int CustomerID)
         {
-            return await db.ORDERs.AsNoTracking().Where(x => x.CustomerID == CustomerID).ToListAsync();
+            var param = new SqlParameter("@cusID", CustomerID);
+            return await db.Database.SqlQuery<ORDER>("Load_CustomerOrder @cusID", param).ToListAsync();
         }
 
         public  List<T> LoadOrder<T>(int CustomerID)
@@ -59,18 +60,26 @@ namespace Models.DAO
                  .ToListAsync();
         }
 
-        public async Task<int> CancelOrder(int OrderID)
+        public async Task<int> CancelOrderProc(int OrderID)
         {
             try
             {
-                var order = await db.ORDERs.FindAsync(OrderID);
-                if (order == null)
-                {
-                    return 0;
-                }
-                order.OrderStatusID = 5;
-                await db.SaveChangesAsync();
-                return order.OrderID;
+                var ID = new SqlParameter("@orderID", OrderID);
+                return await db.Database.ExecuteSqlCommandAsync("Cancel_Order @orderID", ID);               
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public async Task<int> ChangeOrderProc(int OrderID, int StatusID)
+        {
+            try
+            {
+                var orderID = new SqlParameter("@orderID", OrderID);
+                var statusID = new SqlParameter("@statusID", StatusID);
+                return await db.Database.ExecuteSqlCommandAsync("Change_Order @orderID,@statusID", orderID, statusID);
             }
             catch
             {

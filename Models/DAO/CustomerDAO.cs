@@ -90,7 +90,6 @@ namespace Models.DAO
             var mail = new SqlParameter("@mail", cus.CustomerEmail);
             var name = new SqlParameter("@name", cus.CustomerName);
             var phone = new SqlParameter("@phone", cus.CustomerPhone);
-
             var res = db.Database.ExecuteSqlCommand("Create_Customer @username,@pass,@name,@phone,@mail", username, pass, name, phone, mail);
             return res;
         }

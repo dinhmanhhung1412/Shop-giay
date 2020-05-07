@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CNWeb.Areas.Admin.Controllers
 {
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
         public ActionResult Index()
         {

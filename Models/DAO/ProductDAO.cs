@@ -16,30 +16,6 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public int CreateProduct(PRODUCT model)
-        {
-            try
-            {
-                var db = new CNWebDbContext();
-                var name = new SqlParameter("@name", model.ProductName);
-                var des = new SqlParameter("@description", model.ProductDescription);
-                var price = new SqlParameter("@price", model.ProductPrice);
-                var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
-                var img1 = new SqlParameter("@img1", model.ShowImage_1);
-                var img2 = new SqlParameter("@img2", model.ShowImage_2);
-                var stock = new SqlParameter("@stock", model.ProductStock);
-                var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
-                var status = new SqlParameter("@status", model.ProductStatus);
-                var cate = new SqlParameter("@cate", model.CategoryID);
-
-                var result = db.Database.ExecuteSqlCommand("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
-                return result;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
         public bool DeleteProductProc<T>(int ID)
         {
             try

@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SqlClient;
 namespace Models.DAO
 {
     public class UserDAO
@@ -25,6 +25,15 @@ namespace Models.DAO
             else
                 return false;
         }
+
+        //public bool LoginProc(string username, string password)
+        //{
+        //    string encrypt = new CustomerDAO().EncryptPassword(password);
+        //    var usrname = new SqlParameter("@username", username);
+        //    var pass = new SqlParameter("@pass", encrypt);
+        //    var res = db.Database.SqlQuery<bool>("Login_Admin @username,@pass", usrname, pass).FirstOrDefault();
+        //    return res;
+        //}
 
         public async Task<bool> CheckUser(string username)
         {

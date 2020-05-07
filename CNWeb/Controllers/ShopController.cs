@@ -35,8 +35,6 @@ namespace CNWeb.Controllers
             try
             {
                 var prod = new ProductDAO().LoadByMeta(prodmeta);
-
-                //ViewData["Img"] = new ImageDAO().LoadImage(prod.ProductID);
                 ViewData["Size"] =  new ProductDetailDAO().LoadSize(prod.ProductID);
                 return View(prod);
             }

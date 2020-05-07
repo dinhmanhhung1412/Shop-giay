@@ -33,6 +33,23 @@ namespace Models.DAO
             }
         }
 
+        public async Task<bool> AddProductDetailProc(int prodID, List<string> sizesID)
+        {
+            try
+            {
+                foreach (var item in sizesID)
+                {
+                    db.PRODUCTDETAILs.Add(new PRODUCTDETAIL { ProductID = prodID, SizeID = Int32.Parse(item) });
+                }
+                await db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public  List<SIZE> LoadSize(int prodID)
         {
             var list = new List<SIZE>();

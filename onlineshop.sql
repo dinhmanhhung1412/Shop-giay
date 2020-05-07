@@ -539,3 +539,59 @@ BEGIN
 SELECT *FROM dbo.CUSTOMER c
 WHERE c.CustomerUsername=@username
 END 
+GO
+
+CREATE PROC Login_Admin @username nvarchar(250),@pass nvarchar(250)
+AS
+BEGIN
+	DECLARE @count int
+	DECLARE @res bit
+	SELECT @count = count(*) FROM dbo.[USER] u 
+	WHERE u.UserUsername=@username AND u.UserPassword=@pass
+	IF @count > 0 
+		SET @res=1
+	ELSE
+		SET @res=0
+	RETURN @res
+END
+GO
+
+CREATE PROC Create_Category @name nvarchar(250),@cate nvarchar(250)
+AS
+BEGIN
+INSERT dbo.CATEGORY
+(
+    --CategoryID - column value is auto-generated
+    CategoryName,
+    MetaKeyword,
+    CreatedDate
+)
+VALUES
+(
+    -- CategoryID - INT
+    @name, -- CategoryName - NVARCHAR
+    @cate, -- MetaKeyword - NVARCHAR
+    GETDATE() -- CreatedDate - DATETIME
+)
+END
+GO
+
+CREATE PROC Delete_Category @id int
+AS
+BEGIN
+DELETE dbo.CATEGORY WHERE dbo.CATEGORY.CategoryID=@id
+END
+GO 
+
+CREATE PROC Edit_Category @id int, @name nvarchar(250), @meta nvarchar(250)
+AS
+BEGIN
+UPDATE dbo.CATEGORY
+SET
+    --CategoryID - column value is auto-generated
+    dbo.CATEGORY.CategoryName = @name, -- NVARCHAR
+    dbo.CATEGORY.MetaKeyword = @meta, -- NVARCHAR
+    dbo.CATEGORY.CreatedDate = GETDATE() -- DATETIME
+	WHERE dbo.CATEGORY.CategoryID=@id
+END
+GO 

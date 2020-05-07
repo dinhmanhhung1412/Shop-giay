@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace CNWeb.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         public ActionResult CreateCategory()
         {
@@ -22,8 +22,8 @@ namespace CNWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.MetaKeyword = SlugGenerator.SlugGenerator.GenerateSlug(model.CategoryName);
-                model.CreatedDate = DateTime.Now;
-                int result = await new CategoryDAO().CreateCate(model);
+                
+                int result = await new CategoryDAO().CreateCateProc(model);
                 return RedirectToAction("CreateCategory");
             }
             return View();
@@ -35,7 +35,7 @@ namespace CNWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.MetaKeyword = SlugGenerator.SlugGenerator.GenerateSlug(model.CategoryName);
-                int result = await new CategoryDAO().EditCate(model, id);
+                int result = await new CategoryDAO().EditCateProc(model, id);
                 if (result == 0)
                 {
                     return Json(new { Success = false, id }, JsonRequestBehavior.AllowGet);
@@ -48,7 +48,7 @@ namespace CNWeb.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CategoryList()
         {
-            return PartialView("CategoryList", await new CategoryDAO().LoadData());
+            return PartialView("CategoryList", await new CategoryDAO().LoadDataProc());
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace CNWeb.Areas.Admin.Controllers
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
-            if (!(await new CategoryDAO().DeleteCate(id)))
+            if (!(await new CategoryDAO().DeleteCateProc(id)))
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }

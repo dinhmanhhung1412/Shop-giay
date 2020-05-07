@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,13 +44,13 @@ namespace Models.DAO
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<int> CreateCate(CATEGORY cate)
+        public async Task<int> CreateCateProc(CATEGORY cate)
         {
             try
             {
-                db.CATEGORies.Add(cate);
-                await db.SaveChangesAsync();
-                return cate.CategoryID;
+                var name = new SqlParameter("@name", cate.CategoryName);
+                var meta = new SqlParameter("@meta", cate.MetaKeyword);
+                return await db.Database.ExecuteSqlCommandAsync("Create_Category @name,@meta", name, meta);
             }
             catch
             {
@@ -57,34 +58,30 @@ namespace Models.DAO
             }
         }
 
-        public async Task<bool> DeleteCate(int ID)
+        public async Task<bool> DeleteCateProc(int ID)
         {
             try
             {
-                var prod = await db.CATEGORies.Where(x => x.CategoryID == ID).SingleOrDefaultAsync();
-                db.CATEGORies.Remove(prod);
-                await db.SaveChangesAsync();
+                var cate = LoadByID(ID);
+                var param = new SqlParameter("@id", ID);
+                var res = await db.Database.ExecuteSqlCommandAsync("Delete_Category @id", param);
                 return true;
             }
             catch
             {
                 return false;
             }
+           
         }
 
-        public async Task<int> EditCate(CATEGORY cate, int ID)
+        public async Task<int> EditCateProc(CATEGORY cate, int ID)
         {
             try
             {
-                var item = db.CATEGORies.Find(ID);
-                if (item == null)
-                {
-                    return 0;
-                }
-                item.CategoryName = cate.CategoryName;
-                item.MetaKeyword = cate.MetaKeyword;
-                await db.SaveChangesAsync();
-                return item.CategoryID;
+                var id = new SqlParameter("@id", ID);
+                var name = new SqlParameter("@name", cate.CategoryName);
+                var meta = new SqlParameter("@meta", cate.MetaKeyword);
+                return await db.Database.ExecuteSqlCommandAsync("Edit_Category @id,@name,@meta", id, name, meta);
             }
             catch
             {

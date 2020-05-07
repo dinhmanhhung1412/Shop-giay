@@ -13,7 +13,7 @@ using System.Data.SqlClient;
 
 namespace CNWeb.Areas.Admin.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         /// <summary>
         /// Product
@@ -46,11 +46,6 @@ namespace CNWeb.Areas.Admin.Controllers
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { Success = 1 }, JsonRequestBehavior.AllowGet);
-        }
-
-        public  ActionResult ProductDetail(int id)
-        {
-            return View( new ProductDAO().LoadByID(id));
         }
 
         public async Task<ActionResult> ProductList()

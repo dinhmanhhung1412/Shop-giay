@@ -19,7 +19,7 @@ namespace Models.DAO
 
         public async Task<List<ORDERSTATU>> LoadStatusProc()
         {
-            return await db.ORDERSTATUS.SqlQuery("LoadOrderStatus").ToListAsync();          
+            return await db.ORDERSTATUS.SqlQuery("LoadOrderStatus").AsNoTracking().ToListAsync();          
         }
     }
 }

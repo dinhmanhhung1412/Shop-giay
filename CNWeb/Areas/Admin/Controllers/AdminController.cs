@@ -18,7 +18,7 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ValidateAdmin(USER model)
+        public async Task<JsonResult>  ValidateAdmin(USER model)
         {
             if (ModelState.IsValid)
             {
