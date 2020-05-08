@@ -82,7 +82,7 @@ namespace CNWeb.Areas.Admin.Controllers
 
                 var result = await db.Database.ExecuteSqlCommandAsync("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
 
-                var res = new ProductDetailDAO().AddProductDetailProc(result, model.Size);
+                var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
 
                 return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
             }
@@ -145,42 +145,50 @@ namespace CNWeb.Areas.Admin.Controllers
             return Json(new { Success = false, id }, JsonRequestBehavior.AllowGet);
         }
 
-        //public async Task<ActionResult> EditProduct(int id)
-        //{
-        //    ViewBag.Cate = await new CategoryDAO().LoadDataProc();
-        //    ViewBag.Size = await new SizeDAO().LoadDataProc();
-        //    return View();
-        //}
+        public async Task<ActionResult> EditProduct(int id)
+        {
+            var prod = await new ProductDAO().LoadByIDProc(id);
+            ViewBag.Name = prod.ProductName;
+            ViewBag.Description = prod.ProductDescription;
+            ViewBag.Price = prod.ProductPrice;
+            ViewBag.PromotionPrice = prod.PromotionPrice;
+            ViewBag.Img1 = prod.ShowImage_1;
+            ViewBag.Img2 = prod.ShowImage_2;
+            ViewBag.Stock = prod.ProductStock;
+            ViewBag.Cate = await new CategoryDAO().LoadDataProc();
+            ViewBag.Size = await new SizeDAO().LoadDataProc();
+            return View();
+        }
 
-        //[HttpPost]
-        //public async Task<JsonResult> EditProduct(ProductModel model,int id)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var prod = new ProductDAO().LoadNameByID(id);
-                
-        //        string descript = checkdes(model.ProductDescription);
-        //        string img_1 = checkimg1(model.ShowImage_1);
-        //        string img_2 = checkimg2(model.ShowImage_2);
-        //        var db = new CNWebDbContext();
-        //        var name = new SqlParameter("@name", model.ProductName);
-        //        var des = new SqlParameter("@description", descript);
-        //        var price = new SqlParameter("@price", model.ProductPrice);
-        //        var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
-        //        var img1 = new SqlParameter("@img1", img_1);
-        //        var img2 = new SqlParameter("@img2", img_2);
-        //        var stock = new SqlParameter("@stock", model.ProductStock);
-        //        var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
-        //        var status = new SqlParameter("@status", model.ProductStatus);
-        //        var cate = new SqlParameter("@cate", model.CategoryID);
+        [HttpPost]
+        public async Task<JsonResult> EditProduct(ProductModel model, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                string descript = new ProductDAO().checkdes(model.ProductDescription);
+                string img_1 = new ProductDAO().checkimg1(model.ShowImage_1);
+                string img_2 = new ProductDAO().checkimg2(model.ShowImage_2);
+            
+                var db = new CNWebDbContext();
+                var prodID = new SqlParameter("@id", id);
+                var name = new SqlParameter("@name", model.ProductName);
+                var des = new SqlParameter("@description", descript);
+                var price = new SqlParameter("@price", model.ProductPrice);
+                var promotion = new SqlParameter("@promotionprice", model.PromotionPrice);
+                var img1 = new SqlParameter("@img1", img_1);
+                var img2 = new SqlParameter("@img2", img_2);
+                var stock = new SqlParameter("@stock", model.ProductStock);
+                var meta = new SqlParameter("@meta", SlugGenerator.SlugGenerator.GenerateSlug(model.ProductName));
+                var status = new SqlParameter("@status", model.ProductStatus);
+                var cate = new SqlParameter("@cate", model.CategoryID);
 
-        //        var result = await db.Database.ExecuteSqlCommandAsync("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
+                var result = await db.Database.ExecuteSqlCommandAsync("Update_Product @id,@name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", prodID, name, des, price, promotion, img1, img2, stock, meta, status, cate);
+                var del = new ProductDetailDAO().DeleteProductDetail(result);
+                var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
 
-        //        var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
-
-        //        return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
-        //}
+                return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

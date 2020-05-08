@@ -308,14 +308,8 @@ BEGIN
 	
 END
 
-EXEC SelectAllProduct
  
 --------------------------------------------
-select * from CUSTOMER
-delete from [CATEGORY]
-where [CATEGORY].[CategoryID] = 3
-delete from [PRODUCTIMAGE]
-where [PRODUCTIMAGE].ImageID = 3
 
  --public void FixEfProviderServicesProblem()
  --        {
@@ -382,7 +376,7 @@ SET
     dbo.PRODUCT.ShowImage_2 = @img2, 
     dbo.PRODUCT.ProductStock = @stock, 
     dbo.PRODUCT.MetaKeyword = @meta, 
-    dbo.PRODUCT.ProductStatus = 0, 
+    dbo.PRODUCT.ProductStatus = @status, 
     dbo.PRODUCT.CreatedDate = getdate(), -- DATETIME
     dbo.PRODUCT.CategoryID = @cate
 	WHERE dbo.PRODUCT.ProductID=@id
@@ -426,6 +420,24 @@ VALUES
 )
 END
 GO
+
+CREATE PROC Update_ProductDetail @prodID int, @sizeID int
+AS
+BEGIN
+UPDATE dbo.PRODUCTDETAIL
+SET
+    dbo.PRODUCTDETAIL.SizeID = @sizeID-- INT
+	WHERE dbo.PRODUCTDETAIL.ProductID=@prodID
+END
+GO
+
+CREATE PROC Delete_ProductDetail @prodID int
+AS
+BEGIN
+DELETE FROM dbo.PRODUCTDETAIL
+WHERE dbo.PRODUCTDETAIL.ProductID=@prodID
+END
+GO 
 
 CREATE PROC LoadSize_ByProdID @prodID int
 AS
@@ -541,13 +553,7 @@ SELECT * FROM dbo.SIZE s
 WHERE s.SizeID=@id
 END
 GO
-EXEC LoadSize_ByID 1
-CREATE PROC LoadOrderStatus
-AS
-BEGIN
-SELECT * FROM dbo.ORDERSTATUS o
-END
-GO 
+
 
 CREATE PROC Create_Customer @username nvarchar(250), @pass nchar(250),@name nvarchar(250),
 							@phone nvarchar(20),@mail nvarchar(250)
@@ -678,6 +684,12 @@ SELECT * FROM dbo.[ORDER] o
 END 
 GO 
 
+CREATE PROC LoadOrderStatus
+AS
+BEGIN
+SELECT * FROM dbo.ORDERSTATUS o
+END
+
 CREATE PROC Cancel_Order @orderID int
 AS
 BEGIN 
@@ -722,5 +734,4 @@ WHERE p.MetaKeyword=@meta
 END
 GO
 
-
-   
+SELECT * FROM dbo.PRODUCTDETAIL p

@@ -14,86 +14,93 @@
     <p class="text-muted">
         @Html.ActionLink("Create New", "CreateProduct")
     </p>
-    <table class="table table-bordered" id="product-table">
-        <thead>
-            <tr>
-                <th>
-                    Image
-                </th>
-                <th class="text-center">
-                    ID
-                </th>
-                <th class="text-center">
-                    Name
-                </th>
-                <th class="text-center">
-                    Price
-                </th>
-                <th class="text-center">
-                    Stock
-                </th>
-                <th class="text-center">
-                    Category
-                </th>
-                <th class="text-center">
-                    Status
-                </th>
-                <th class="text-center">
-                    Created Date
-                </th>
-                <th class="text-center">
-                    Options
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    
+        <table class="table table-bordered" id="product-table">
+            <thead>
                 <tr>
-                    <td>
-                        <img src="@item.ShowImage_1" style="max-height: 50px;" />
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.ProductID)
-                    </td>
-                    <td class="text-center">
-                        <a href="@Url.Action("ProductDetail", "Product", new { id = item.ProductID })">
-                            @Html.DisplayFor(modelItem => item.ProductName)
-                        </a>
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.ProductPrice)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.ProductStock)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.CategoryID)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.ProductStatus)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary"
-                                type="submit" value="Edit"
-                                id="edit-@item.ProductID"
-                                onclick="return EditItem('@item.ProductID')">
-                            <i class="mdi mdi-border-color"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger"
-                                type="submit" value="Delete"
-                                id="delete-@item.ProductID"
-                                onclick="return DeleteItem('@item.ProductID')">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </td>
+                    <th>
+                        Image
+                    </th>
+                    <th class="text-center">
+                        ID
+                    </th>
+                    <th class="text-center">
+                        Name
+                    </th>
+                    <th class="text-center">
+                        Price
+                    </th>
+                    <th class="text-center">
+                        Stock
+                    </th>
+                    <th class="text-center">
+                        Category
+                    </th>
+                    <th class="text-center">
+                        Status
+                    </th>
+                    <th class="text-center">
+                        Created Date
+                    </th>
+                    <th class="text-center">
+                        Options
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    
+                <tr>
+                    <form action="/Admin/Product/EditProduct/@item.ProductID">
+                        <td>
+                            <img src="@item.ShowImage_1" style="max-height: 50px;" />
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductID)
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("ProductDetail", "Product", new { id = item.ProductID })">
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductPrice)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductStock)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.CategoryID)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductStatus)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                        </td>
+                        <td class="text-center">
+
+                            <button class="btn btn-sm btn-primary"
+                                    type="submit" value="Edit"
+                                    id="edit-@item.ProductID"
+                                    onclick="return EditItem('@item.ProductID')">
+                                <i class="mdi mdi-border-color"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                                    type="button" value="Delete"
+                                    id="delete-@item.ProductID"
+                                    onclick="return DeleteItem('@item.ProductID')">
+                                <i class="mdi mdi-delete"></i>
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+                    
+                }
+            </tbody>
+        </table>
+        
 </div>
 
 @section Scripts{
@@ -124,18 +131,19 @@
             };
         };
 
-        function EditItem(id) {
+        @*function EditItem(id) {
             console.log(id);
-            @*$.ajax({
+            $.ajax({
                 type: "post",
-                url: `@Url.Action("DeleteProduct", "Product")`,
+                url: `@Url.Action("EditProduct", "Product",new {id="id"})`,
                 data: "id="+ id,
                 success: function (response) {
                     if (response.Success = 1) {
-                        window.location.reload();
+                        window.location.href="@Url.Action("EditProduct", "Product", new { id = "id" })";
                     }
                 }
-            });*@
-        };
+            });
+            @Html.ActionLink("EditProduct", "Product", new { id = "id" });
+        };*@
     </script>
 }

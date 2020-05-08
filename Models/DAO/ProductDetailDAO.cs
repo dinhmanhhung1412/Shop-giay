@@ -18,6 +18,23 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
+        public async Task<bool> AddProductDetail(int prodID, List<string> sizesID)
+        {
+            try
+            {
+                foreach (var item in sizesID)
+                {
+                    db.PRODUCTDETAILs.Add(new PRODUCTDETAIL() { ProductID = prodID, SizeID = int.Parse(item) });
+                }
+                await db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> AddProductDetailProc(int prodID, List<string> sizesID)
         {
             try
@@ -36,6 +53,40 @@ namespace Models.DAO
             }
         }
 
+        public async Task<bool> UpdateProductDetailProc(int prodID, List<string> sizesID)
+        {
+            try
+            {
+                foreach (var item in sizesID)
+                {
+                    SqlParameter[] param =
+                    {
+                         new SqlParameter {ParameterName = "@prodID", Value = prodID },
+                         new SqlParameter {ParameterName = "@sizeID", Value = int.Parse(item) }
+                    };
+                    await db.Database.ExecuteSqlCommandAsync("Update_ProductDetail @prodID, @sizeID", param);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteProductDetail(int prodID)
+        {
+            try
+            {
+                var param = new SqlParameter("@prodID", prodID);
+                await db.Database.ExecuteSqlCommandAsync("Delete_ProductDetail @prodID", prodID);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         //public async Task<List<SIZE>> LoadSize(int prodID)
         //{
         //    var list = new List<SIZE>();

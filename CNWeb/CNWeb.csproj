@@ -401,6 +401,7 @@
     <Content Include="Areas\Admin\Views\Admin\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Order.cshtml" />
     <Content Include="Areas\Admin\Views\Order\OrderList.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\EditProduct.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
