@@ -13,6 +13,16 @@
 
     <div class="row">
         <div class="input-field col-lg-2 s12">
+            <label>ID</label>
+        </div>
+        <div class="input-field col s12">
+            <input id="product-id" name="product-id" type="text" class="validate">
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="input-field col-lg-2 s12">
             <label>Name</label>
         </div>
         <div class="input-field col s12">
@@ -128,7 +138,8 @@
 
             $("#create-product-form").validate({
                 rules: {
-                    
+
+                    'product-id': "required",
                     'product-name': "required",
                     'product-price': {
                         required: true
@@ -138,7 +149,7 @@
                     }
                 },
                 messages: {
-                    
+                    'product-id': "Please enter product ID",
                     'product-name': "Please enter product name",
                     'product-price': {
                         required: "Please enter product price"
@@ -147,7 +158,7 @@
                 },
                 submitHandler: function () {
                     let data = {
-                        
+                        "ProductID": $("#product-id").val(),
                         "ProductName": $("#product-name").val(),
                         "ProductPrice": $("#product-price").val(),
                         "PromotionPrice": $("#product-promotion").val(),

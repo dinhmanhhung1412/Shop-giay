@@ -45,6 +45,7 @@ namespace CNWeb.Areas.Admin.Controllers
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
+            var del = new ProductDetailDAO().DeleteProductDetail(id);
             return Json(new { Success = 1 }, JsonRequestBehavior.AllowGet);
         }
 
@@ -69,6 +70,7 @@ namespace CNWeb.Areas.Admin.Controllers
                 string img_1 = new ProductDAO().checkimg1(model.ShowImage_1);
                 string img_2 = new ProductDAO().checkimg2(model.ShowImage_2);
                 var db = new CNWebDbContext();
+                var id = new SqlParameter("@id", model.ProductID);
                 var name = new SqlParameter("@name", model.ProductName);
                 var des = new SqlParameter("@description", descript);
                 var price = new SqlParameter("@price", model.ProductPrice);
@@ -80,9 +82,9 @@ namespace CNWeb.Areas.Admin.Controllers
                 var status = new SqlParameter("@status", model.ProductStatus);
                 var cate = new SqlParameter("@cate", model.CategoryID);
 
-                var result = await db.Database.ExecuteSqlCommandAsync("Create_Product @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", name, des, price, promotion, img1, img2, stock, meta, status, cate);
+                var result = await db.Database.ExecuteSqlCommandAsync("Create_Product @id, @name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", id, name, des, price, promotion, img1, img2, stock, meta, status, cate);
 
-                var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
+                var res = new ProductDetailDAO().AddProductDetail(model.ProductID, model.Size);
 
                 return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
             }
@@ -183,8 +185,8 @@ namespace CNWeb.Areas.Admin.Controllers
                 var cate = new SqlParameter("@cate", model.CategoryID);
 
                 var result = await db.Database.ExecuteSqlCommandAsync("Update_Product @id,@name,@description,@price,@promotionprice,@img1,@img2,@stock,@meta,@status,@cate", prodID, name, des, price, promotion, img1, img2, stock, meta, status, cate);
-                var del = new ProductDetailDAO().DeleteProductDetail(result);
-                var res = new ProductDetailDAO().AddProductDetail(result, model.Size);
+                var del = new ProductDetailDAO().DeleteProductDetail(id);
+                var res = new ProductDetailDAO().AddProductDetail(id, model.Size);
 
                 return Json(new { Success = true, id = 1 }, JsonRequestBehavior.AllowGet);
             }
