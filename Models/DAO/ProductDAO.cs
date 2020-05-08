@@ -16,15 +16,15 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public bool DeleteProductProc<T>(int ID)
+        public async Task<bool> DeleteProductProc<T>(int ID)
         {
             try
             {
-                var prod = LoadByID(ID);
+                var prod = LoadByIDProc(ID);
                 if (prod != null)
                 {
                     var id = new SqlParameter("@id", ID);
-                    new CNWebDbContext().Database.SqlQuery<T>("Delete_Product @id", id).FirstOrDefaultAsync();
+                    await new CNWebDbContext().Database.SqlQuery<T>("Delete_Product @id", id).FirstOrDefaultAsync();
                     return true;
                 }
                 else
@@ -35,9 +35,11 @@ namespace Models.DAO
                 return false;
             }
         }
-        public PRODUCT LoadByID(int ID)
+
+        public async Task<PRODUCT> LoadByIDProc(int ID)
         {
-            return db.PRODUCTs.AsNoTracking().Where(x => x.ProductID.Equals(ID)).FirstOrDefault();
+            var param = new SqlParameter("@id", ID);
+            return await db.Database.SqlQuery<PRODUCT>("LoadProd_ByID @id", param).FirstOrDefaultAsync();
         }
 
         public async Task<List<PRODUCT>> LoadProductProc()
@@ -93,9 +95,29 @@ namespace Models.DAO
             return await list.Skip(pageindex * pagesize).Take(pagesize).ToListAsync();
         }
 
-        public PRODUCT LoadByMeta(string meta)
+        public async Task<PRODUCT>  LoadByMeta(string meta)
         {
-            return db.PRODUCTs.AsNoTracking().Where(x => x.MetaKeyword == meta).FirstOrDefault();
+            return await db.PRODUCTs.AsNoTracking().Where(x => x.MetaKeyword == meta).FirstOrDefaultAsync();
         }
+
+        public async Task<PRODUCT> LoadByMetaProc(string meta)
+        {
+            var param = new SqlParameter("@meta", meta);
+            return await db.Database.SqlQuery<PRODUCT>("LoadByMeta_Prod @meta", param).FirstOrDefaultAsync();
+        }
+
+        public string checkdes(string des)
+        {
+            if (des == null) return ""; else return des;
+        }
+        public string checkimg1(string img)
+        {
+            if (img == null) return ""; else return img;
+        }
+        public string checkimg2(string img)
+        {
+            if (img == null) return ""; else return img;
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Models.EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,32 +18,16 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<bool> AddProductDetail(int prodID, List<string> sizesID)
-        {
-            try
-            {
-                foreach (var item in sizesID)
-                {
-                    db.PRODUCTDETAILs.Add(new PRODUCTDETAIL { ProductID = prodID, SizeID = Int32.Parse(item) });
-                }
-                await db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public async Task<bool> AddProductDetailProc(int prodID, List<string> sizesID)
         {
             try
             {
                 foreach (var item in sizesID)
                 {
-                    db.PRODUCTDETAILs.Add(new PRODUCTDETAIL { ProductID = prodID, SizeID = Int32.Parse(item) });
+                    var prod = new SqlParameter("@prodID", prodID);
+                    var size = new SqlParameter("@sizeID", int.Parse(item));
+                    await db.Database.ExecuteSqlCommandAsync("Add_ProductDetail @prodID, @sizeID", prod, size);
                 }
-                await db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -50,13 +36,30 @@ namespace Models.DAO
             }
         }
 
-        public  List<SIZE> LoadSize(int prodID)
+        //public async Task<List<SIZE>> LoadSize(int prodID)
+        //{
+        //    var list = new List<SIZE>();
+        //    var dbs = new SizeDAO();
+        //    foreach (var item in db.PRODUCTDETAILs.AsNoTracking().Where(x => x.ProductID == prodID).ToList())
+        //    {
+        //        list.Add(await dbs.LoadByID(item.SizeID.Value));
+        //    }
+        //    return list;
+        //}
+
+        public List<PRODUCTDETAIL> LoadByProductID(int prodID)
+        {
+            var param = new SqlParameter("@prodID", prodID);
+            return db.Database.SqlQuery<PRODUCTDETAIL>("LoadSize_ByProdID @prodID", param).ToList();
+        }
+
+        public async Task<List<SIZE>> LoadSizeProc(int prodID)
         {
             var list = new List<SIZE>();
             var dbs = new SizeDAO();
-            foreach (var item in db.PRODUCTDETAILs.AsNoTracking().Where(x => x.ProductID == prodID).ToList())
+            foreach (var item in LoadByProductID(prodID))
             {
-                list.Add(dbs.LoadByID(item.SizeID.Value));
+                list.Add(await dbs.LoadByIDProc(item.SizeID.Value));
             }
             return list;
         }

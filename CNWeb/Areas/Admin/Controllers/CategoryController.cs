@@ -54,7 +54,7 @@ namespace CNWeb.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> DeleteCategory(int id)
         {
-            if (await new CategoryDAO().LoadByID(id) == null)
+            if (await new CategoryDAO().LoadByIDProc(id) == null)
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }

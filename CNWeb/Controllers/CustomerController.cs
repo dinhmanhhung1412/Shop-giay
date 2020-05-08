@@ -48,7 +48,7 @@ namespace CNWeb.Controllers
         }
 
         [HttpPost]
-        public  JsonResult RegisterCustomer(RegisterCustomer model)
+        public async Task<JsonResult> RegisterCustomer(RegisterCustomer model)
         {
             var dao = new CustomerDAO();
             if (!dao.CheckUser(model.CustomerUsername))
@@ -57,7 +57,7 @@ namespace CNWeb.Controllers
                 {
                     string checkmail = checknullmail(model.CustomerEmail);
                     string checkphone = checknullphone(model.CustomerPhone);
-                    int result = new CustomerDAO().RegisterProc(new CUSTOMER()
+                    int result = await new CustomerDAO().RegisterProc(new CUSTOMER()
                     {
                         CustomerUsername = model.CustomerUsername,
                         CustomerPassword = model.CustomerPassword,
@@ -86,14 +86,14 @@ namespace CNWeb.Controllers
 
         [Authorize]
         [Route("profile/{username}")]
-        public  ActionResult CustomerProfile(string username)
+        public async Task<ActionResult>  CustomerProfile(string username)
         {
             var membername = HttpContext.User.Identity.Name;
             if (!membername.Equals(username))
             {
-                return View( new CustomerDAO().LoadByUsernameProc(membername));
+                return View( await new CustomerDAO().LoadByUsernameProc(membername));
             }
-            return View( new CustomerDAO().LoadByUsernameProc(username));
+            return View( await new CustomerDAO().LoadByUsernameProc(username));
         }
     }
 }

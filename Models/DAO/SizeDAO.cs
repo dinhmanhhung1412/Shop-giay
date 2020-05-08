@@ -23,17 +23,30 @@ namespace Models.DAO
             return await db.SIZEs.ToListAsync();
         }
 
-        public  SIZE LoadByID(int sizeID)
+        public async Task<SIZE> LoadByID(int sizeID)
         {
-            return  db.SIZEs.AsNoTracking().Where(x => x.SizeID == sizeID).FirstOrDefault();
+            return await db.SIZEs.AsNoTracking().Where(x => x.SizeID == sizeID).FirstOrDefaultAsync();
         }
 
-        public int CreateSizeProc(SIZE model)
+        public async Task<SIZE> LoadByIDProc(int sizeID)
+        {
+            try
+            {
+                var param = new SqlParameter("@id", sizeID);
+                return await db.Database.SqlQuery<SIZE>("LoadSize_ByID @id", param).FirstOrDefaultAsync();
+            }
+            catch
+            {
+                return await LoadByID(sizeID);
+            }
+        }
+
+        public async Task<int> CreateSizeProc(SIZE model)
         {
             try
             {
                 var param = new SqlParameter("@sizeName", model.Size1);
-                var res = db.Database.ExecuteSqlCommand("Create_Size @sizeName", param);
+                var res = await db.Database.ExecuteSqlCommandAsync("Create_Size @sizeName", param);
                 return res;
             }
             catch
@@ -42,12 +55,12 @@ namespace Models.DAO
             }
         }
 
-        public bool DeleteSizeProc(int ID)
+        public async Task<bool> DeleteSizeProc(int ID)
         {
             try
             {
                 var param = new SqlParameter("@sizeID", ID);
-                var res = db.Database.ExecuteSqlCommand("Delete_Size @sizeID", param);
+                var res = await db.Database.ExecuteSqlCommandAsync("Delete_Size @sizeID", param);
                 return true;
             }
             catch
@@ -56,13 +69,13 @@ namespace Models.DAO
             }
         }
 
-        public int EditSizeProc(SIZE model, int ID)
+        public async Task<int> EditSizeProc(SIZE model, int ID)
         {
             try
             {
                 var id = new SqlParameter("@sizeID", ID);
                 var name = new SqlParameter("@sizeName", model.Size1);
-                var res = db.Database.ExecuteSqlCommand("Update_Size @sizeID,@sizeName", id, name);
+                var res = await db.Database.ExecuteSqlCommandAsync("Update_Size @sizeID,@sizeName", id, name);
                 return res;
             }
             catch

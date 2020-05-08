@@ -23,13 +23,13 @@ namespace Models.DAO
             return await db.ORDERs.SqlQuery("Load_Order").AsNoTracking().ToListAsync();
         }
 
-        public int AddOrderProc(int CustomerID, decimal total)
+        public async Task<int> AddOrderProc(int CustomerID, decimal total)
         {
             try
             {
                 var cusID = new SqlParameter("@cusID", CustomerID);
                 var tot = new SqlParameter("@total", total);
-                var res =  db.Database.ExecuteSqlCommand("Add_Order @cusID, @total", cusID, tot);
+                var res = await db.Database.ExecuteSqlCommandAsync("Add_Order @cusID, @total", cusID, tot);
                 return res;
             }
             catch
@@ -44,11 +44,11 @@ namespace Models.DAO
             return await db.Database.SqlQuery<ORDER>("Load_CustomerOrder @cusID", param).ToListAsync();
         }
 
-        public  List<T> LoadOrder<T>(int CustomerID)
+        public async Task<List<T>> LoadOrder<T>(int CustomerID)
         {
             var Param = new SqlParameter("@CustomerID", CustomerID);
 
-            return  new CNWebDbContext().Database.SqlQuery<T>("SelectOrder @CustomerID", Param).ToList();
+            return await new CNWebDbContext().Database.SqlQuery<T>("SelectOrder @CustomerID", Param).ToListAsync();
         }
 
         public async Task<List<T>> LoadProductOrder<T>(int OrderID)

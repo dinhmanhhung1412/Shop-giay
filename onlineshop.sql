@@ -395,12 +395,46 @@ BEGIN
 DELETE dbo.PRODUCT WHERE dbo.PRODUCT.ProductID=@id
 END
 GO 
+CREATE PROC LoadProd_ByID @id int
+AS
+BEGIN
+SELECT * FROM dbo.PRODUCT p
+WHERE p.ProductID=@id
+END
+GO
 CREATE PROC ProductList
 AS
 BEGIN
 SELECT * FROM dbo.PRODUCT p
 END 
 GO 
+
+CREATE PROC Add_ProductDetail @prodID int, @sizeID int
+AS
+BEGIN
+INSERT dbo.PRODUCTDETAIL
+(
+    --ProductDetailID - column value is auto-generated
+    ProductID,
+    SizeID
+)
+VALUES
+(
+    -- ProductDetailID - INT
+    @prodID, -- ProductID - INT
+    @sizeID -- SizeID - INT
+)
+END
+GO
+
+CREATE PROC LoadSize_ByProdID @prodID int
+AS
+BEGIN
+SELECT * FROM dbo.PRODUCTDETAIL p
+WHERE p.ProductID=@prodID
+END
+GO
+
 CREATE PROC CategoryList
 AS 
 BEGIN
@@ -499,6 +533,15 @@ SET
 	WHERE dbo.SIZE.SizeID=@sizeID
 END
 GO 
+
+CREATE PROC LoadSize_ByID @id int
+AS
+BEGIN
+SELECT * FROM dbo.SIZE s
+WHERE s.SizeID=@id
+END
+GO
+EXEC LoadSize_ByID 1
 CREATE PROC LoadOrderStatus
 AS
 BEGIN
@@ -506,7 +549,7 @@ SELECT * FROM dbo.ORDERSTATUS o
 END
 GO 
 
-create PROC Create_Customer @username nvarchar(250), @pass nchar(250),@name nvarchar(250),
+CREATE PROC Create_Customer @username nvarchar(250), @pass nchar(250),@name nvarchar(250),
 							@phone nvarchar(20),@mail nvarchar(250)
 AS
 BEGIN
@@ -533,6 +576,14 @@ VALUES
 END 
 GO 
 
+CREATE PROC Delete_Customer @id int
+AS
+BEGIN
+DELETE FROM dbo.CUSTOMER 
+WHERE dbo.CUSTOMER.CustomerID=@id
+END
+go
+
 CREATE PROC LoadByUserName @username nvarchar(250)
 AS
 BEGIN
@@ -540,6 +591,22 @@ SELECT *FROM dbo.CUSTOMER c
 WHERE c.CustomerUsername=@username
 END 
 GO
+
+CREATE PROC	Load_Customer
+AS 
+BEGIN
+SELECT * FROM dbo.CUSTOMER c
+END
+GO
+
+CREATE PROC LoadCustomer_ByID @id int
+AS
+BEGIN
+SELECT * FROM dbo.CUSTOMER c
+WHERE c.CustomerID =@id
+END
+GO
+
 
 CREATE PROC Login_Admin @username nvarchar(250),@pass nvarchar(250)
 AS
@@ -595,3 +662,65 @@ SET
 	WHERE dbo.CATEGORY.CategoryID=@id
 END
 GO 
+
+CREATE PROC LoadMeta_ByID @id int
+AS
+BEGIN 
+SELECT * FROM dbo.CATEGORY c
+WHERE c.CategoryID=@id
+END 
+GO
+
+CREATE PROC Load_Order
+AS
+BEGIN 
+SELECT * FROM dbo.[ORDER] o
+END 
+GO 
+
+CREATE PROC Cancel_Order @orderID int
+AS
+BEGIN 
+UPDATE dbo.[ORDER]
+SET
+    dbo.[ORDER].OrderStatusID = 5
+WHERE dbo.[ORDER].OrderID=@orderID
+END 
+GO
+
+CREATE PROC Change_Order @orderID int, @statusID int
+AS
+BEGIN
+UPDATE dbo.[ORDER]
+SET
+    dbo.[ORDER].OrderStatusID = @statusID
+	WHERE dbo.[ORDER].OrderID=@orderID
+END
+GO 
+
+CREATE PROC Load_CustomerOrder @cusID int
+AS
+BEGIN
+SELECT *FROM dbo.[ORDER] o
+WHERE o.CustomerID=@cusID
+END
+GO
+
+CREATE PROC LoadByMeta_Cate @meta nvarchar(250)
+AS
+BEGIN 
+SELECT * FROM dbo.CATEGORY c
+WHERE c.MetaKeyword=@meta
+END
+GO 
+
+CREATE PROC LoadByMeta_Prod @meta nvarchar(250)
+AS
+BEGIN
+SELECT * FROM dbo.PRODUCT p
+WHERE p.MetaKeyword=@meta
+END
+GO
+
+
+   

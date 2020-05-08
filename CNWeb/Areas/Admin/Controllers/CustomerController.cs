@@ -18,17 +18,17 @@ namespace CNWeb.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CustomerList()
         {
-            return PartialView("CustomerList", await new CustomerDAO().LoadCustomer());
+            return PartialView("CustomerList", await new CustomerDAO().LoadCustomerProc());
         }
 
         [HttpPost]
         public async Task<JsonResult> DeleteCustomer(int id)
         {
-            if (await new CustomerDAO().LoadByID(id) == null)
+            if (await new CustomerDAO().LoadByIDProc(id) == null)
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }
-            if (!(await new CustomerDAO().DeleteCustomer(id)))
+            if (!(await new CustomerDAO().DeleteCustomerProc(id)))
             {
                 return Json(new { Success = 0 }, JsonRequestBehavior.AllowGet);
             }

@@ -18,30 +18,21 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<List<CATEGORY>> LoadData()
-        {
-            return await db.CATEGORies.AsNoTracking().ToListAsync();
-        }
-
         public async Task<List<CATEGORY>> LoadDataProc()
         {
             return await db.CATEGORies.SqlQuery("CategoryList").ToListAsync();
         }
 
-        public async Task<CATEGORY> LoadByID(int id)
+        public async Task<CATEGORY> LoadByIDProc(int id)
         {
-            return await db.CATEGORies
-                .AsNoTracking()
-                .Where(x => x.CategoryID.Equals(id))
-                .SingleOrDefaultAsync();
+            var param = new SqlParameter("@id", id);
+            return await db.Database.SqlQuery<CATEGORY>("LoadMeta_ByID @id", param).SingleOrDefaultAsync();
         }
 
-        public async Task<CATEGORY> LoadByMeta(string meta)
+        public async Task<CATEGORY> LoadByMetaProc(string meta)
         {
-            return await db.CATEGORies
-                .AsNoTracking()
-                .Where(x => x.MetaKeyword.Equals(meta))
-                .SingleOrDefaultAsync();
+            var param = new SqlParameter("@meta", meta);
+            return await db.Database.SqlQuery<CATEGORY>("LoadByMeta_Cate @meta", param).SingleOrDefaultAsync();
         }
 
         public async Task<int> CreateCateProc(CATEGORY cate)
@@ -62,7 +53,7 @@ namespace Models.DAO
         {
             try
             {
-                var cate = LoadByID(ID);
+                var cate = LoadByIDProc(ID);
                 var param = new SqlParameter("@id", ID);
                 var res = await db.Database.ExecuteSqlCommandAsync("Delete_Category @id", param);
                 return true;

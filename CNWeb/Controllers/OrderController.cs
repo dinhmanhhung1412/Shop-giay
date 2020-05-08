@@ -24,12 +24,12 @@ namespace CNWeb.Controllers
         }
 
         [Authorize]
-        public ActionResult OrderList(int? StatusID)
+        public async Task<ActionResult>  OrderList(int? StatusID)
         {
             var membername = HttpContext.User.Identity.Name;
-            var customer =  new CustomerDAO().LoadByUsernameProc(membername);
+            var customer = await new CustomerDAO().LoadByUsernameProc(membername);
 
-            var list =  new OrderDAO().LoadOrder<OrderModel>(customer.CustomerID);
+            var list = await new OrderDAO().LoadOrder<OrderModel>(customer.CustomerID);
 
             if (!StatusID.Equals(0))
             {

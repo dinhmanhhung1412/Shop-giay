@@ -18,7 +18,7 @@ namespace Models.DAO
             db = new CNWebDbContext();
             db.Configuration.ProxyCreationEnabled = false;
         }
-        public int AddOrderDetailProc(int OrderID, int ProductID, int SizeID, int Quanity)
+        public async Task<int>  AddOrderDetailProc(int OrderID, int ProductID, int SizeID, int Quanity)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace Models.DAO
                 var prodID = new SqlParameter("@prodID", ProductID);
                 var sizeID = new SqlParameter("@sizeID", SizeID);
                 var quantity = new SqlParameter("@quantity", Quanity);
-                var res = db.Database.ExecuteSqlCommand("Add_OrderDetail @orderID,@prodID,@sizeID,@quantity", orderid, prodID, sizeID, quantity);
+                var res = await db.Database.ExecuteSqlCommandAsync("Add_OrderDetail @orderID,@prodID,@sizeID,@quantity", orderid, prodID, sizeID, quantity);
                 return res;
             }
             catch

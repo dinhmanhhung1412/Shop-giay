@@ -15,14 +15,14 @@ namespace CNWeb.Controllers
     {
         [AllowAnonymous]
         [Route("cart")]
-        public ActionResult Cart()
+        public async Task<ActionResult>  Cart()
         {
-            return View(GetCartItem());
+            return View(await GetCartItem());
         }
 
         [Authorize]
         [Route("checkout")]
-        public  ActionResult Checkout()
+        public async Task<ActionResult>  Checkout()
         {
             if (Session["cart"] == null)
             {
@@ -32,7 +32,7 @@ namespace CNWeb.Controllers
             CustomerViewModel model = null;
             if (!string.IsNullOrEmpty(customer))
             {
-                var item =  new CustomerDAO().LoadByUsernameProc(customer);
+                var item = await new CustomerDAO().LoadByUsernameProc(customer);
                 model = new CustomerViewModel()
                 {
                     CustomerID = item.CustomerID,
@@ -43,7 +43,7 @@ namespace CNWeb.Controllers
                 };
             }
             ViewData["Customer"] = model;
-            return View(GetCartItem());
+            return View(await GetCartItem());
         }
 
         [HttpPost]
@@ -94,12 +94,12 @@ namespace CNWeb.Controllers
             return -1;
         }
 
-        public  ActionResult CartPartial()
+        public async Task<ActionResult>  CartPartial()
         {
-            return PartialView("_Cart",  GetCartItem());
+            return PartialView("_Cart", await GetCartItem());
         }
 
-        public  List<CartItemModel> GetCartItem()
+        public async Task<List<CartItemModel>> GetCartItem()
         {
             var list = new List<CartItemModel>();
             var session = (List<CartSession>)Session["cart"];
@@ -108,26 +108,26 @@ namespace CNWeb.Controllers
                 foreach (var item in session)
                 {
                     list.Add(new CartItemModel(
-                         new ProductDAO().LoadByID(item.ProductID),
-                         new SizeDAO().LoadByID(item.SizeID),
+                         await new ProductDAO().LoadByIDProc(item.ProductID),
+                         await new SizeDAO().LoadByID(item.SizeID),
                         item.Quantity));
                 }
             }
             return list;
         }
 
-        public  JsonResult SubmitCheckout()
+        public async Task<JsonResult> SubmitCheckout()
         {
             try
             {      
-                var customer = new CustomerDAO().LoadByUsernameProc(HttpContext.User.Identity.Name);           
-                var order = new OrderDAO().AddOrderProc(customer.CustomerID, GetTotal());
+                var customer = await new CustomerDAO().LoadByUsernameProc(HttpContext.User.Identity.Name);           
+                var order = await new OrderDAO().AddOrderProc(customer.CustomerID, await GetTotal());
                 if (order!= 0)
                 {
                     var orderdetail = new OrderDetailDAO();
                     foreach (var item in (List<CartSession>)Session["cart"])
                     {
-                        _ = orderdetail.AddOrderDetailProc(order, item.ProductID, item.SizeID, item.Quantity);
+                        _ = await orderdetail.AddOrderDetailProc(order, item.ProductID, item.SizeID, item.Quantity);
                     }
                     Session["cart"] = null;
                     return Json(new { Success = true, ID = order }, JsonRequestBehavior.AllowGet);
@@ -140,7 +140,7 @@ namespace CNWeb.Controllers
             }
         }
 
-        public decimal GetTotal()
+        public async Task<decimal>  GetTotal()
         {
             decimal total = 0;
             
@@ -150,7 +150,7 @@ namespace CNWeb.Controllers
                 var dao = new ProductDAO();
                 foreach (var item in cart)
                 {
-                    var product = dao.LoadByID(item.ProductID);
+                    var product = await dao.LoadByIDProc(item.ProductID);
                     if (product.PromotionPrice.HasValue)
                     {
                         total += product.PromotionPrice.Value * item.Quantity;

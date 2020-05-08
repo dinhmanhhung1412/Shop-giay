@@ -31,7 +31,7 @@ namespace CNWeb.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> NavbarCategory()
         {
-            return PartialView("_NavbarCategory", await new CategoryDAO().LoadData());
+            return PartialView("_NavbarCategory", await new CategoryDAO().LoadDataProc());
         }
     }
 }

@@ -23,19 +23,19 @@ namespace CNWeb.Controllers
         [Route("cate/{meta}")]
         public async Task<ActionResult> ShopCategory(string meta, string sort)
         {
-            ViewBag.meta = await new CategoryDAO().LoadByMeta(meta);
+            ViewBag.meta = await new CategoryDAO().LoadByMetaProc(meta);
             ViewBag.sort = sort;
             return View();
         }
 
         [HttpGet]
         [Route("san-pham/{prodmeta}")]
-        public  ActionResult Detail(string prodmeta)
+        public async Task<ActionResult> Detail(string prodmeta)
         {
             try
             {
-                var prod = new ProductDAO().LoadByMeta(prodmeta);
-                ViewData["Size"] =  new ProductDetailDAO().LoadSize(prod.ProductID);
+                var prod = await new ProductDAO().LoadByMetaProc(prodmeta);
+                ViewData["Size"] = await new ProductDetailDAO().LoadSizeProc(prod.ProductID);
                 return View(prod);
             }
             catch

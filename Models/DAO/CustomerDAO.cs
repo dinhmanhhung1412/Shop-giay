@@ -19,9 +19,9 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<List<CUSTOMER>> LoadCustomer()
+        public async Task<List<CUSTOMER>> LoadCustomerProc()
         {
-            return await db.CUSTOMERs.AsNoTracking().ToListAsync();
+            return await db.Database.SqlQuery<CUSTOMER>("Load_Customer").ToListAsync();
         }
 
         public async Task<bool> DeleteCustomer(int ID)
@@ -39,20 +39,35 @@ namespace Models.DAO
             }
         }
 
+        public async Task<bool> DeleteCustomerProc(int ID)
+        {
+            try
+            {
+                var param = new SqlParameter("@id", ID);
+                var res = await db.Database.ExecuteSqlCommandAsync("Delete_Customer @id", param);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool CheckUser(string username)
         {
             return db.CUSTOMERs.AsNoTracking().Any(x => x.CustomerUsername == username);
         }
 
-        public async Task<CUSTOMER> LoadByID(int id)
+        public async Task<CUSTOMER> LoadByIDProc(int id)
         {
-            return await db.CUSTOMERs.AsNoTracking().Where(x => x.CustomerID == id).SingleOrDefaultAsync();
+            var param = new SqlParameter("@id", id);
+            return await db.Database.SqlQuery<CUSTOMER>("LoadCustomer_ByID @id", param).SingleOrDefaultAsync();
         }
 
-        public CUSTOMER LoadByUsernameProc(string username)
+        public async Task<CUSTOMER> LoadByUsernameProc(string username)
         {
             var param = new SqlParameter("@username", username);
-            return db.CUSTOMERs.SqlQuery("LoadByUserName @username", param).SingleOrDefault();
+            return await db.CUSTOMERs.SqlQuery("LoadByUserName @username", param).SingleOrDefaultAsync();
         } 
 
         public async Task<bool> LoginAsync(string username, string password)
@@ -75,14 +90,14 @@ namespace Models.DAO
                 return false;
         }
 
-        public  int Register(CUSTOMER cus)
+        public async Task<int> Register(CUSTOMER cus)
         {
             cus.CustomerPassword = EncryptPassword(cus.CustomerPassword);
             db.CUSTOMERs.Add(cus);
-             db.SaveChanges();
+            await db.SaveChangesAsync();
             return cus.CustomerID;
         }
-        public int RegisterProc(CUSTOMER cus)
+        public async Task<int>  RegisterProc(CUSTOMER cus)
         {
             var db = new CNWebDbContext();
             var username = new SqlParameter("@username", cus.CustomerUsername);
@@ -90,7 +105,7 @@ namespace Models.DAO
             var mail = new SqlParameter("@mail", cus.CustomerEmail);
             var name = new SqlParameter("@name", cus.CustomerName);
             var phone = new SqlParameter("@phone", cus.CustomerPhone);
-            var res = db.Database.ExecuteSqlCommand("Create_Customer @username,@pass,@name,@phone,@mail", username, pass, name, phone, mail);
+            var res = await db.Database.ExecuteSqlCommandAsync("Create_Customer @username,@pass,@name,@phone,@mail", username, pass, name, phone, mail);
             return res;
         }
         public string EncryptPassword(string text)
