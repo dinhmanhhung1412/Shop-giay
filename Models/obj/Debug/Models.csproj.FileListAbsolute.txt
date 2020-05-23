@@ -45,3 +45,15 @@ C:\Users\BUI HUONG\Desktop\Shop-giay\Models\bin\Debug\EntityFramework.SqlServer.
 C:\Users\BUI HUONG\Desktop\Shop-giay\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
 C:\Users\BUI HUONG\Desktop\Shop-giay\Models\obj\Debug\Models.dll
 C:\Users\BUI HUONG\Desktop\Shop-giay\Models\obj\Debug\Models.pdb
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\Models.dll.config
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\Models.dll
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\Models.pdb
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\EntityFramework.dll
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\SlugGenerator.dll
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\EntityFramework.xml
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\obj\Debug\Models.csprojAssemblyReference.cache
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\obj\Debug\Models.csproj.CopyComplete
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\obj\Debug\Models.dll
+C:\Users\Hoang Nguyen\Desktop\Shop-giay\Models\obj\Debug\Models.pdb

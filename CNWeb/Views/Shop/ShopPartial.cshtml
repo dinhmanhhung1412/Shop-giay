@@ -5,7 +5,7 @@
     <div class="product-width col-md-6 col-xl-4 col-lg-6">
         <div class="product-wrapper mb-35">
             <div class="product-img">
-                <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.MetaKeyword })">
+                <a href="@Url.Action("Detail", "Shop", new { id = item.ProductID, url = item.MetaKeyword })">
                     <img src="@item.ShowImage_1" alt="@item.ShowImage_2">
                 </a>
                 <div class="product-item-dec">
@@ -15,14 +15,14 @@
                 </div>
                 <div class="product-action">
                     <a class="action-plus-2 p-action-none" title="Add To Cart"
-                       href="@Url.Action("Detail", "Shop", new { prodmeta = item.MetaKeyword })">
+                       href="@Url.Action("Detail", "Shop", new { id = item.ProductID, url = item.MetaKeyword })">
                         <i class=" ti-shopping-cart"></i>
                     </a>
                 </div>
                 <div class="product-content-wrapper">
                     <div class="product-title-spreed">
                         <h4>
-                            <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.MetaKeyword })">
+                            <a href="@Url.Action("Detail", "Shop", new { id = item.ProductID, url = item.MetaKeyword })">
                                 @item.ProductName
                             </a>
                         </h4>
@@ -42,7 +42,7 @@
             </div>
             <div class="product-list-details">
                 <h2>
-                    <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.MetaKeyword })">
+                    <a href="@Url.Action("Detail", "Shop", new { id = item.ProductID, url = item.MetaKeyword })">
                         @item.ProductName
                     </a>
                 </h2>
@@ -65,7 +65,7 @@
                 </div>
                 <p>@item.ProductDescription</p>
                 <div class="shop-list-cart">
-                    <a href="@Url.Action("Detail", "Shop", new { prodmeta = item.MetaKeyword })"><i class="ti-shopping-cart"></i> Add to cart</a>
+                    <a href="@Url.Action("Detail", "Shop", new { id = item.ProductID, url = item.MetaKeyword })"><i class="ti-shopping-cart"></i> Add to cart</a>
                 </div>
             </div>
         </div>

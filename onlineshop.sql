@@ -735,3 +735,48 @@ END
 GO
 SELECT * FROM dbo.PRODUCT p
 SELECT * FROM dbo.PRODUCTDETAIL p
+
+go
+CREATE PROC SelectPaging
+    @PageSize INT,
+    @PageIndex INT,
+    @Sort nvarchar(10),
+    @Search nvarchar(255) = NULL,
+    @Cate INT = NULL
+AS
+BEGIN
+    IF(@Cate IS NULL)
+    BEGIN
+        SELECT *
+        FROM [PRODUCT]
+        WHERE(@Search IS NULL OR [PRODUCT].[ProductName] LIKE '%'+@Search+'%')
+        ORDER BY
+        CASE 
+            WHEN @Sort = 'name_desc' THEN ProductName END DESC,
+        CASE 
+            WHEN @Sort = 'name_asc' THEN ProductName END ASC,
+        CASE 
+            WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
+        CASE 
+            WHEN @Sort = 'price_asc' THEN ProductName END ASC
+        OFFSET @PageSize * @PageIndex ROWS
+        FETCH NEXT @PageSize ROWS ONLY
+    END
+    ELSE
+    BEGIN
+        SELECT *
+        FROM [PRODUCT]
+        WHERE [PRODUCT].CategoryID = @Cate
+        ORDER BY
+        CASE 
+            WHEN @Sort = 'name_desc' THEN ProductName END DESC,
+        CASE 
+            WHEN @Sort = 'name_asc' THEN ProductName END ASC,
+        CASE 
+            WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
+        CASE 
+            WHEN @Sort = 'price_asc' THEN ProductName END ASC
+        OFFSET @PageSize * @PageIndex ROWS
+        FETCH NEXT @PageSize ROWS ONLY
+    END
+END

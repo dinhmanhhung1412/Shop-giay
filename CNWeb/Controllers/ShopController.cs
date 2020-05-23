@@ -20,22 +20,31 @@ namespace CNWeb.Controllers
         }
 
         [HttpGet]
-        [Route("cate/{meta}")]
-        public async Task<ActionResult> ShopCategory(string meta, string sort)
+        [Route("cate/{url}-{id:int}")]
+        public async Task<ActionResult> ShopCategory(int id, string url, string sort)
         {
-            ViewBag.meta = await new CategoryDAO().LoadByMetaProc(meta);
+            var cate = await new CategoryDAO().LoadByIDProc(id);
+            if (cate == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.meta = cate;
             ViewBag.sort = sort;
             return View();
         }
 
         [HttpGet]
-        [Route("san-pham/{prodmeta}")]
-        public async Task<ActionResult> Detail(string prodmeta)
+        [Route("san-pham/{url}-{id:int}")]
+        public async Task<ActionResult> Detail(int id, string url)
         {
             try
             {
-                var prod = await new ProductDAO().LoadByMetaProc(prodmeta);
-                ViewData["Size"] = await new ProductDetailDAO().LoadSizeProc(prod.ProductID);
+                var prod = await new ProductDAO().LoadByIDProc(id);
+                if (prod == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewData["Size"] = await new ProductDetailDAO().LoadSizeProc(id);
                 return View(prod);
             }
             catch
@@ -45,12 +54,12 @@ namespace CNWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ShopPartial(string meta, string search, string sort, int pageindex)
+        public async Task<ActionResult> ShopPartial(int? cate, string search, string sort, int pageindex)
         {
             search = HttpUtility.UrlDecode(search);
             int pagesize = 16;
             return PartialView("ShopPartial",
-                await new ProductDAO().LoadProduct(meta, search, sort, pagesize, pageindex));
+                await new ProductDAO().LoadProductProc(cate, search, sort, pagesize, pageindex));
         }
 
         [HttpPost]

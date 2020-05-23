@@ -42,6 +42,11 @@ namespace Models.DAO
             return await db.Database.SqlQuery<PRODUCT>("LoadProd_ByID @id", param).FirstOrDefaultAsync();
         }
 
+        public async Task<PRODUCT> LoadByID(int ID)
+        {
+            return await db.PRODUCTs.FindAsync(ID);
+        }
+
         public async Task<List<PRODUCT>> LoadProductProc()
         {
             return await db.Database.SqlQuery<PRODUCT>("ProductList").ToListAsync();
@@ -57,15 +62,14 @@ namespace Models.DAO
             return await db.PRODUCTs.AsNoTracking().Where(x => x.ProductID == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<PRODUCT>> LoadProduct(string meta, string searchString, string sort, int pagesize, int pageindex)
+        public async Task<List<PRODUCT>> LoadProduct(int? cate, string searchString, string sort, int pagesize, int pageindex)
         {
-            // get list
+            //get list
             var list = (from s in db.PRODUCTs select s).AsNoTracking();
 
-            if (!String.IsNullOrEmpty(meta))
+            if (!String.IsNullOrEmpty(cate.ToString()))
             {
-                var cate = db.CATEGORies.AsNoTracking().Where(c => c.MetaKeyword.Equals(meta)).First().CategoryID;
-                list = list.Where(x => x.CategoryID.Equals(cate));
+                list = list.Where(x => x.CategoryID == cate);
             }
 
             //filter
@@ -93,6 +97,17 @@ namespace Models.DAO
             }
             //return
             return await list.Skip(pageindex * pagesize).Take(pagesize).ToListAsync();
+        }
+
+        public async Task<List<PRODUCT>> LoadProductProc(int? cate, string searchString, string sort, int pagesize, int pageindex)
+        {
+            var PageSize = new SqlParameter("@PageSize", pagesize);
+            var PageIndex = new SqlParameter("@PageIndex", pageindex);
+            var Sort = new SqlParameter("@Sort", sort ?? (object)DBNull.Value);
+            var Search = new SqlParameter("@Search", searchString ?? (object)DBNull.Value);
+            var Cate = new SqlParameter("@Cate", cate ?? (object)DBNull.Value);
+
+            return await db.Database.SqlQuery<PRODUCT>("SelectPaging @PageSize, @PageIndex, @Sort, @Search, @Cate", PageSize, PageIndex, Sort, Search, Cate).ToListAsync();
         }
 
         public async Task<PRODUCT>  LoadByMeta(string meta)

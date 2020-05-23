@@ -95,8 +95,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             let sort = "@ViewBag.sort";
-            let meta = "@ViewBag.meta.MetaKeyword";
-            console.log(meta);
+            let cate = "@ViewBag.meta.CategoryID";
             let pageindex = 0;
 
              $.get("@Url.Action("NavbarCategory", "Home")",
@@ -107,7 +106,7 @@
 
             $.get("@Url.Action("ShopPartial", "Shop")",
                 {
-                    "meta": meta,
+                    "cate": cate,
                     "sort": sort,
                     "pageindex": pageindex
                 },
@@ -146,7 +145,7 @@
                 pageindex += 1;
                 $.get("@Url.Action("ShopPartial", "Shop")",
                     {
-                        "meta": meta,
+                        "cate": cate,
                         "sort": sort,
                         "pageindex": pageindex
                     },

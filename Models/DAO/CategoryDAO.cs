@@ -23,10 +23,19 @@ namespace Models.DAO
             return await db.CATEGORies.SqlQuery("CategoryList").ToListAsync();
         }
 
+        public async Task<List<CATEGORY>> LoadData()
+        {
+            return await db.CATEGORies.ToListAsync();
+        }
+
         public async Task<CATEGORY> LoadByIDProc(int id)
         {
             var param = new SqlParameter("@id", id);
             return await db.Database.SqlQuery<CATEGORY>("LoadMeta_ByID @id", param).SingleOrDefaultAsync();
+        }
+        public async Task<CATEGORY> LoadByID(int id)
+        {
+            return await db.CATEGORies.FindAsync(id);
         }
 
         public async Task<CATEGORY> LoadByMetaProc(string meta)
