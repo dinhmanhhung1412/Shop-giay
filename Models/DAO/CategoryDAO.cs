@@ -28,7 +28,7 @@ namespace Models.DAO
             return await db.CATEGORies.ToListAsync();
         }
 
-        public async Task<CATEGORY> LoadByIDProc(int id)
+        public async Task<CATEGORY> LoadByIDProc(string id)
         {
             var param = new SqlParameter("@id", id);
             return await db.Database.SqlQuery<CATEGORY>("LoadMeta_ByID @id", param).SingleOrDefaultAsync();
@@ -48,9 +48,10 @@ namespace Models.DAO
         {
             try
             {
+                var id = new SqlParameter("@id", cate.CategoryID);
                 var name = new SqlParameter("@name", cate.CategoryName);
                 var meta = new SqlParameter("@meta", cate.MetaKeyword);
-                return await db.Database.ExecuteSqlCommandAsync("Create_Category @name,@meta", name, meta);
+                return await db.Database.ExecuteSqlCommandAsync("Create_Category  @id,@name,@meta", id, name, meta);
             }
             catch
             {
@@ -58,11 +59,11 @@ namespace Models.DAO
             }
         }
 
-        public async Task<bool> DeleteCateProc(int ID)
+        public async Task<bool> DeleteCateProc(string ID)
         {
             try
             {
-                var cate = LoadByIDProc(ID);
+                var cat = LoadByIDProc(ID);
                 var param = new SqlParameter("@id", ID);
                 var res = await db.Database.ExecuteSqlCommandAsync("Delete_Category @id", param);
                 return true;
@@ -74,7 +75,7 @@ namespace Models.DAO
            
         }
 
-        public async Task<int> EditCateProc(CATEGORY cate, int ID)
+        public async Task<int> EditCateProc(CATEGORY cate, string ID)
         {
             try
             {

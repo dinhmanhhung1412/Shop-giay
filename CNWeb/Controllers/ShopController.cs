@@ -21,7 +21,7 @@ namespace CNWeb.Controllers
 
         [HttpGet]
         [Route("cate/{url}-{id:int}")]
-        public async Task<ActionResult> ShopCategory(int id, string url, string sort)
+        public async Task<ActionResult> ShopCategory(string id, string url, string sort)
         {
             var cate = await new CategoryDAO().LoadByIDProc(id);
             if (cate == null)
@@ -35,7 +35,7 @@ namespace CNWeb.Controllers
 
         [HttpGet]
         [Route("san-pham/{url}-{id:int}")]
-        public async Task<ActionResult> Detail(int id, string url)
+        public async Task<ActionResult> Detail(string id, string url)
         {
             try
             {

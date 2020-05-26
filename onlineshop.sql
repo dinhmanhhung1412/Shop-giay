@@ -1,6 +1,6 @@
---USE master
---alter database ONLINESHOP set single_user with rollback immediate
---drop database ONLINESHOP
+USE master
+alter database ONLINESHOP set single_user with rollback immediate
+drop database ONLINESHOP
 
 CREATE DATABASE ONLINESHOP
 GO
@@ -10,7 +10,7 @@ GO
 
 CREATE TABLE [CATEGORY]
 (
-    CategoryID INT PRIMARY KEY IDENTITY(1, 1),
+    CategoryID varchar(20) PRIMARY KEY,
     CategoryName NVARCHAR(250) UNIQUE NOT NULL,
     MetaKeyword NVARCHAR(50),
 
@@ -20,7 +20,7 @@ GO
 
 CREATE TABLE [PRODUCT]
 (
-    ProductID INT PRIMARY KEY IDENTITY(1,1),
+    ProductID varchar(20) PRIMARY KEY,
     ProductName NVARCHAR(250) NOT NULL,
     ProductDescription NVARCHAR(4000),
     ProductPrice DECIMAL(18, 0) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE [PRODUCT]
     ProductStatus BIT,
     CreatedDate DATETIME DEFAULT GETDATE(),
 
-    CategoryID INT CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
+    CategoryID varchar(20) CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
 )
 GO
 
@@ -43,14 +43,13 @@ CREATE TABLE [PRODUCTIMAGE]
     DetailImage_1 NVARCHAR(4000) DEFAULT N'',
     DetailImage_2 NVARCHAR(4000) DEFAULT N'',
     DetailImage_3 NVARCHAR(4000) DEFAULT N'',
-
-    ProductID INT CONSTRAINT fk_pi_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE
+    ProductID varchar(20) CONSTRAINT fk_pi_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE
 )
 GO
 
 CREATE TABLE [SIZE]
 (
-    SizeID INT PRIMARY KEY IDENTITY(1, 1),
+    SizeID int PRIMARY KEY,
     Size NVARCHAR(2),
     CreatedDate DATETIME DEFAULT GETDATE()
 )
@@ -59,7 +58,7 @@ GO
 CREATE TABLE [PRODUCTDETAIL]
 (
     ProductDetailID INT PRIMARY KEY IDENTITY(1, 1),
-    ProductID INT CONSTRAINT fk_pd_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE,
+    ProductID varchar(20) CONSTRAINT fk_pd_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE,
     SizeID INT REFERENCES [SIZE](SizeID)
 )
 GO
@@ -104,7 +103,7 @@ CREATE TABLE [ORDERDETAIL]
     Quantity INT,
     OrderID INT CONSTRAINT fk_od_odid FOREIGN KEY (OrderID) REFERENCES [ORDER](OrderID) ON DELETE CASCADE,
     SizeID INT REFERENCES [SIZE](SizeID),
-    ProductID INT CONSTRAINT fk_od_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE
+    ProductID varchar(20) CONSTRAINT fk_od_pdid FOREIGN KEY (ProductID) REFERENCES [PRODUCT](ProductID) ON DELETE CASCADE
 )
 GO
 
@@ -114,31 +113,30 @@ CREATE TABLE [USER]
     UserUsername NVARCHAR(250) UNIQUE NOT NULL,
     UserPassword NVARCHAR(250) NOT NULL,
     UserName NVARCHAR(250),
-
     CreatedDate DATETIME
 )
 GO
-
+SELECT * FROM dbo.CATEGORY c
 INSERT INTO [CATEGORY]
 VALUES
-    (N'Giày da', N'giay-da', GETDATE()),
-    (N'Giày thể thao', N'giay-the-thao', GETDATE()),
-    (N'Giày lifestyle', N'giay-lifestyle', GETDATE()),
-    (N'Giày boots', N'giay-boots', GETDATE())
+    ('1',N'Giày da', N'giay-da', GETDATE()),
+    ('2',N'Giày thể thao', N'giay-the-thao', GETDATE()),
+    ('3',N'Giày lifestyle', N'giay-lifestyle', GETDATE()),
+    ('4',N'Giày boots', N'giay-boots', GETDATE())
 GO
 
 INSERT INTO [SIZE]
 VALUES
-    (34, GETDATE()),
-    (35, GETDATE()),
-    (36, GETDATE()),
-    (37, GETDATE()),
-    (38, GETDATE()),
-    (39, GETDATE()),
-    (40, GETDATE()),
-    (41, GETDATE()),
-    (42, GETDATE()),
-    (43, GETDATE())
+    (1,34, GETDATE()),
+    (2,35, GETDATE()),
+    (3,36, GETDATE()),
+    (4,37, GETDATE()),
+    (5,38, GETDATE()),
+    (6,39, GETDATE()),
+    (7,40, GETDATE()),
+    (8,41, GETDATE()),
+    (9,42, GETDATE()),
+    (10,43, GETDATE())
 GO
 
 INSERT INTO [ORDERSTATUS]
@@ -152,7 +150,7 @@ GO
 
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Nike', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+	('1',N'Nike', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
 		200, 150, 3,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
@@ -161,7 +159,7 @@ VALUES
 
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Adidas', N'Phong cách sắc nét,có phần trên bằng da mềm mại cho hình bóng sạch sẽ,tạo cảm giác thể thao',
+	('2',N'Adidas', N'Phong cách sắc nét,có phần trên bằng da mềm mại cho hình bóng sạch sẽ,tạo cảm giác thể thao',
 		150, null, 4,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
@@ -169,28 +167,28 @@ VALUES
 
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Converse', N'giày có thiết kế đơn giản, sang trọng, gam màu pastel nhẹ nhàng- mang dấu ấn đặc biệt của Converse,giúp người dùng có được sự thoải mái tối đa khi sử dụng. Chất liệu da sang trọng, dễ vệ sinh',
+	('3',N'Converse', N'giày có thiết kế đơn giản, sang trọng, gam màu pastel nhẹ nhàng- mang dấu ấn đặc biệt của Converse,giúp người dùng có được sự thoải mái tối đa khi sử dụng. Chất liệu da sang trọng, dễ vệ sinh',
 		25, 20, 1,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		15, N'giay-converse', 1, GETDATE(), 1)
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
+	('4',N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
 		300, 200, 4,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		25, N'giay-da', 1, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
+	('5',N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
 		20, null, 5,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		40, N'giay-cao-got', 1, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
-	(N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
+	('6',N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
 		300, null, 1,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
@@ -291,15 +289,16 @@ BEGIN
 END
 GO
 CREATE TRIGGER tr_update_product_meta
-ON [PRODUCT]
+ON dbo.PRODUCT
 AFTER INSERT
 AS
 BEGIN
     UPDATE PRODUCT
-SET [MetaKeyword] = [MetaKeyword] + '-' + CAST([ProductID] AS NVARCHAR(10))
-    WHERE [ProductID] = IDENT_CURRENT('PRODUCT')
+SET [MetaKeyword] = [MetaKeyword] + '-' + CAST([ProductID] )
+    WHERE [ProductID] = IDENT_CURRENT('PRODUCT') 
 END
 GO
+
 
 CREATE PROC SelectAllProduct
 AS
@@ -328,7 +327,7 @@ GO
 --crud
 
 -- Thêm sp
-CREATE PROC Create_Product  @name nvarchar(250), @description nvarchar(250), 
+CREATE PROC Create_Product @id varchar(20), @name nvarchar(250), @description nvarchar(250), 
 @price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
 @stock int, @meta nvarchar(250), @status bit, @cate int
@@ -336,7 +335,7 @@ AS
 BEGIN
 INSERT dbo.PRODUCT
 (
-    
+    ProductID,
     ProductName,
     ProductDescription,
     ProductPrice,
@@ -352,7 +351,7 @@ INSERT dbo.PRODUCT
 )
 VALUES
 (
-     @name, @description, 
+     @id, @name, @description, 
 	@price, @promotionprice , 5, 
 	@img1, @img2,
 	@stock, @meta, @status, getdate(),@cate  
@@ -360,7 +359,7 @@ VALUES
 END 
 GO 
 -- Update sp
-CREATE PROC Update_Product @id int, @name nvarchar(250), @description nvarchar(250), 
+CREATE PROC Update_Product @id varchar(20), @name nvarchar(250), @description nvarchar(250),
 @price decimal(18,0), @promotionprice decimal(18,2),
 @img1 nvarchar(250), @img2 nvarchar(250),
 @stock int, @meta nvarchar(250), @status bit, @cate int
@@ -379,17 +378,17 @@ SET
     dbo.PRODUCT.ProductStatus = @status, 
     dbo.PRODUCT.CreatedDate = getdate(), -- DATETIME
     dbo.PRODUCT.CategoryID = @cate
-	WHERE dbo.PRODUCT.ProductID=@id
+	WHERE dbo.PRODUCT.ProductID = @id
 END
 GO
 -- Delete sp
-CREATE PROC Delete_Product @id int
+CREATE PROC Delete_Product @id varchar(20)
 AS
 BEGIN
 DELETE dbo.PRODUCT WHERE dbo.PRODUCT.ProductID=@id
 END
 GO 
-CREATE PROC LoadProd_ByID @id int
+CREATE PROC LoadProd_ByID @id varchar(20)
 AS
 BEGIN
 SELECT * FROM dbo.PRODUCT p
@@ -403,7 +402,7 @@ SELECT * FROM dbo.PRODUCT p
 END 
 GO 
 
-CREATE PROC Add_ProductDetail @prodID int, @sizeID int
+CREATE PROC Add_ProductDetail @prodID varchar(20), @sizeID int
 AS
 BEGIN
 INSERT dbo.PRODUCTDETAIL
@@ -421,7 +420,7 @@ VALUES
 END
 GO
 
-CREATE PROC Update_ProductDetail @prodID int, @sizeID int
+CREATE PROC Update_ProductDetail @prodID varchar(20), @sizeID int
 AS
 BEGIN
 UPDATE dbo.PRODUCTDETAIL
@@ -431,7 +430,7 @@ SET
 END
 GO
 
-CREATE PROC Delete_ProductDetail @prodID int
+CREATE PROC Delete_ProductDetail @prodID varchar(20)
 AS
 BEGIN
 DELETE FROM dbo.PRODUCTDETAIL
@@ -439,7 +438,7 @@ WHERE dbo.PRODUCTDETAIL.ProductID=@prodID
 END
 GO 
 
-CREATE PROC LoadSize_ByProdID @prodID int
+CREATE PROC LoadSize_ByProdID @prodID varchar(20)
 AS
 BEGIN
 SELECT * FROM dbo.PRODUCTDETAIL p
@@ -459,7 +458,7 @@ BEGIN
 SELECT * FROM dbo.SIZE s
 END 
 GO 
-GO 
+
 CREATE PROC Add_Order @cusID int, @total decimal(18,2)
 AS
 BEGIN
@@ -483,7 +482,7 @@ VALUES
 )
 END 
 GO 
-CREATE PROC Add_OrderDetail @orderID int,@prodID int, @sizeID int, @quantity int
+CREATE PROC Add_OrderDetail @orderID int,@prodID varchar(20), @sizeID int, @quantity int
 AS
 BEGIN
 INSERT dbo.ORDERDETAIL
@@ -511,18 +510,18 @@ SELECT * FROM dbo.ORDERDETAIL o
 WHERE o.OrderID=@orderID
 END
 GO 
-CREATE PROC Create_Size @sizeName nvarchar(250)
+CREATE PROC Create_Size @id int, @sizeName nvarchar(250)
 AS
 BEGIN
 INSERT dbo.SIZE
 (
-    --SizeID - column value is auto-generated
+    SizeID,
     Size,
     CreatedDate
 )
 VALUES
 (
-    -- SizeID - INT
+    @id,
     @sizeName, -- Size - NVARCHAR
     GETDATE() -- CreatedDate - DATETIME
 )
@@ -629,19 +628,19 @@ BEGIN
 END
 GO
 
-CREATE PROC Create_Category @name nvarchar(250),@cate nvarchar(250)
+CREATE PROC Create_Category @id varchar(20), @name nvarchar(250),@cate nvarchar(250)
 AS
 BEGIN
 INSERT dbo.CATEGORY
 (
-    --CategoryID - column value is auto-generated
+    CategoryID,
     CategoryName,
     MetaKeyword,
     CreatedDate
 )
 VALUES
 (
-    -- CategoryID - INT
+    @id,
     @name, -- CategoryName - NVARCHAR
     @cate, -- MetaKeyword - NVARCHAR
     GETDATE() -- CreatedDate - DATETIME
@@ -649,14 +648,15 @@ VALUES
 END
 GO
 
-CREATE PROC Delete_Category @id int
+CREATE PROC Delete_Category @id varchar(20)
 AS
 BEGIN
 DELETE dbo.CATEGORY WHERE dbo.CATEGORY.CategoryID=@id
 END
 GO 
-
-CREATE PROC Edit_Category @id int, @name nvarchar(250), @meta nvarchar(250)
+EXEC Delete_Category 12
+SELECT * FROM dbo.CATEGORY c
+CREATE PROC Edit_Category @id varchar(20), @name nvarchar(250), @meta nvarchar(250)
 AS
 BEGIN
 UPDATE dbo.CATEGORY
@@ -669,7 +669,7 @@ SET
 END
 GO 
 
-CREATE PROC LoadMeta_ByID @id int
+CREATE PROC LoadMeta_ByID @id varchar(20)
 AS
 BEGIN 
 SELECT * FROM dbo.CATEGORY c

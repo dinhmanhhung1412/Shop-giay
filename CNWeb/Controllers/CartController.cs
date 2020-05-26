@@ -47,7 +47,7 @@ namespace CNWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult OrderNow(int prodId, int sizeId, int quantity)
+        public JsonResult OrderNow(string prodId, int sizeId, int quantity)
         {
             if (Session["cart"] == null)
             {
@@ -73,7 +73,7 @@ namespace CNWeb.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             int index = IsExist(id);
             List<CartSession> cart = (List<CartSession>)Session["cart"];
@@ -85,7 +85,7 @@ namespace CNWeb.Controllers
             return RedirectToAction("Cart", "Cart");
         }
 
-        private int IsExist(int id)
+        private int IsExist(string id)
         {
             var cart = (List<CartSession>)Session["cart"];
             for (int i = 0; i < cart.Count; i++)

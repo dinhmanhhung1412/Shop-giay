@@ -16,7 +16,7 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public PRODUCTIMAGE LoadImage(int id)
+        public PRODUCTIMAGE LoadImage(string id)
         {
             return db.PRODUCTIMAGEs.ToList().Find(x => x.ProductID == id);
         }

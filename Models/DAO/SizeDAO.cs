@@ -45,8 +45,9 @@ namespace Models.DAO
         {
             try
             {
-                var param = new SqlParameter("@sizeName", model.Size1);
-                var res = await db.Database.ExecuteSqlCommandAsync("Create_Size @sizeName", param);
+                var id = new SqlParameter("@id", model.SizeID);
+                var size = new SqlParameter("@sizeName", model.Size1);
+                var res = await db.Database.ExecuteSqlCommandAsync("Create_Size @id, @sizeName", id,size);
                 return res;
             }
             catch

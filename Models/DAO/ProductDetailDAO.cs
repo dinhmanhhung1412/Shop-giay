@@ -18,7 +18,7 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<bool> AddProductDetail(int prodID, List<string> sizesID)
+        public async Task<bool> AddProductDetail(string prodID, List<string> sizesID)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Models.DAO
             }
         }
 
-        public async Task<bool> DeleteProductDetail(int prodID)
+        public async Task<bool> DeleteProductDetail(string prodID)
         {
             try
             {
@@ -98,13 +98,13 @@ namespace Models.DAO
         //    return list;
         //}
 
-        public List<PRODUCTDETAIL> LoadByProductID(int prodID)
+        public List<PRODUCTDETAIL> LoadByProductID(string prodID)
         {
             var param = new SqlParameter("@prodID", prodID);
             return db.Database.SqlQuery<PRODUCTDETAIL>("LoadSize_ByProdID @prodID", param).ToList();
         }
 
-        public async Task<List<SIZE>> LoadSizeProc(int prodID)
+        public async Task<List<SIZE>> LoadSizeProc(string prodID)
         {
             var list = new List<SIZE>();
             var dbs = new SizeDAO();

@@ -21,7 +21,8 @@ namespace Models.EF
         [StringLength(4000)]
         public string DetailImage_3 { get; set; }
 
-        public int? ProductID { get; set; }
+        [StringLength(20)]
+        public string ProductID { get; set; }
 
         public virtual PRODUCT PRODUCT { get; set; }
     }

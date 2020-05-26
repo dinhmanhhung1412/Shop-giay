@@ -30,7 +30,7 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditCategory(CATEGORY model, int id)
+        public async Task<JsonResult> EditCategory(CATEGORY model, string id)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> DeleteCategory(int id)
+        public async Task<JsonResult> DeleteCategory(string id)
         {
             if (await new CategoryDAO().LoadByIDProc(id) == null)
             {

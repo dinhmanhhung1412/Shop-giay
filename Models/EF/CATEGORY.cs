@@ -15,7 +15,8 @@ namespace Models.EF
             PRODUCTs = new HashSet<PRODUCT>();
         }
 
-        public int CategoryID { get; set; }
+        [StringLength(20)]
+        public string CategoryID { get; set; }
 
         [Required]
         [StringLength(250)]

@@ -18,7 +18,7 @@ namespace Models.DAO
             db = new CNWebDbContext();
             db.Configuration.ProxyCreationEnabled = false;
         }
-        public async Task<int>  AddOrderDetailProc(int OrderID, int ProductID, int SizeID, int Quanity)
+        public async Task<int>  AddOrderDetailProc(int OrderID, string ProductID, int SizeID, int Quanity)
         {
             try
             {

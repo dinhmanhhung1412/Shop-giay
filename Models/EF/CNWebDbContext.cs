@@ -25,6 +25,10 @@ namespace Models.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CATEGORY>()
+                .Property(e => e.CategoryID)
+                .IsUnicode(false);
+
             modelBuilder.Entity<CUSTOMER>()
                 .HasMany(e => e.ORDERs)
                 .WithOptional(e => e.CUSTOMER)
@@ -35,10 +39,18 @@ namespace Models.EF
                 .WithOptional(e => e.ORDER)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<ORDERDETAIL>()
+                .Property(e => e.ProductID)
+                .IsUnicode(false);
+
             modelBuilder.Entity<ORDERSTATU>()
                 .HasMany(e => e.ORDERs)
                 .WithOptional(e => e.ORDERSTATU)
                 .HasForeignKey(e => e.OrderStatusID);
+
+            modelBuilder.Entity<PRODUCT>()
+                .Property(e => e.ProductID)
+                .IsUnicode(false);
 
             modelBuilder.Entity<PRODUCT>()
                 .Property(e => e.ProductPrice)
@@ -47,6 +59,10 @@ namespace Models.EF
             modelBuilder.Entity<PRODUCT>()
                 .Property(e => e.PromotionPrice)
                 .HasPrecision(18, 0);
+
+            modelBuilder.Entity<PRODUCT>()
+                .Property(e => e.CategoryID)
+                .IsUnicode(false);
 
             modelBuilder.Entity<PRODUCT>()
                 .HasMany(e => e.ORDERDETAILs)
@@ -62,6 +78,14 @@ namespace Models.EF
                 .HasMany(e => e.PRODUCTIMAGEs)
                 .WithOptional(e => e.PRODUCT)
                 .WillCascadeOnDelete();
+
+            modelBuilder.Entity<PRODUCTDETAIL>()
+                .Property(e => e.ProductID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<PRODUCTIMAGE>()
+                .Property(e => e.ProductID)
+                .IsUnicode(false);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Models.EF
     {
         public int ProductDetailID { get; set; }
 
-        public int? ProductID { get; set; }
+        [StringLength(20)]
+        public string ProductID { get; set; }
 
         public int? SizeID { get; set; }
 

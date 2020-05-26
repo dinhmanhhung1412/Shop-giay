@@ -10,7 +10,7 @@ namespace CNWeb.Areas.Admin.Models
     {
         [Display(Name = "ID")]
         [Required]
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
 
         [Display(Name = "Name")]
         [Required]

@@ -16,6 +16,7 @@ namespace Models.EF
             PRODUCTDETAILs = new HashSet<PRODUCTDETAIL>();
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SizeID { get; set; }
 
         [Column("Size")]

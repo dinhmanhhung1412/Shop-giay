@@ -17,23 +17,32 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    <label class="control-label col-md-6">Category Name</label>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="control-label col-md-6">CategoryID</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CategoryID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="control-label col-md-6">Category Name</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
         }
     </div>
     <div class="col-sm" id="category-partial">
@@ -46,16 +55,18 @@
 </div>
 
 @section Scripts{
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Areas/Admin/assets/js/sweetalert.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script>
         $(document).ready(function () {
 
             $("#cate-submit-form").validate({
                 rules: {
+                    'CategoryID':"required",
                     'CategoryName': "required"
                 },
                 messages: {
+                    'CategoryID': "Please enter category id!",
                     'CategoryName': "Please enter category name!"
                 }
             });

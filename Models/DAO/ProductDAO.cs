@@ -16,7 +16,7 @@ namespace Models.DAO
             db.Configuration.ProxyCreationEnabled = false;
         }
 
-        public async Task<bool> DeleteProductProc<T>(int ID)
+        public async Task<bool> DeleteProductProc<T>(string ID)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Models.DAO
             }
         }
 
-        public async Task<PRODUCT> LoadByIDProc(int ID)
+        public async Task<PRODUCT> LoadByIDProc(string ID)
         {
             var param = new SqlParameter("@id", ID);
             return await db.Database.SqlQuery<PRODUCT>("LoadProd_ByID @id", param).FirstOrDefaultAsync();
@@ -57,12 +57,12 @@ namespace Models.DAO
             return await db.PRODUCTs.AsNoTracking().Where(x => x.ProductName.Contains(prefix)).ToListAsync();
         }
 
-        public async Task<PRODUCT> LoadNameByID(int id)
+        public async Task<PRODUCT> LoadNameByID(string id)
         {
             return await db.PRODUCTs.AsNoTracking().Where(x => x.ProductID == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<PRODUCT>> LoadProduct(int? cate, string searchString, string sort, int pagesize, int pageindex)
+        public async Task<List<PRODUCT>> LoadProduct(string cate, string searchString, string sort, int pagesize, int pageindex)
         {
             //get list
             var list = (from s in db.PRODUCTs select s).AsNoTracking();

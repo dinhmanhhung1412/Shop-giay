@@ -35,7 +35,7 @@ namespace CNWeb.Areas.Admin.Controllers
         //}
 
         [HttpPost]
-        public async Task<JsonResult>  DeleteProduct(int id)
+        public async Task<JsonResult>  DeleteProduct(string id)
         {
             if ( new ProductDAO().LoadByIDProc(id) == null)
             {
@@ -147,9 +147,10 @@ namespace CNWeb.Areas.Admin.Controllers
             return Json(new { Success = false, id }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> EditProduct(int id)
+        public async Task<ActionResult> EditProduct(string id)
         {
             var prod = await new ProductDAO().LoadByIDProc(id);
+            ViewBag.ProductID = prod.ProductID;
             ViewBag.Name = prod.ProductName;
             ViewBag.Description = prod.ProductDescription;
             ViewBag.Price = prod.ProductPrice;
@@ -163,7 +164,7 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditProduct(ProductModel model, int id)
+        public async Task<JsonResult> EditProduct(ProductModel model, string id)
         {
             if (ModelState.IsValid)
             {

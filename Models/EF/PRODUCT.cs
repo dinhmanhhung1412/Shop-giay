@@ -17,7 +17,8 @@ namespace Models.EF
             PRODUCTIMAGEs = new HashSet<PRODUCTIMAGE>();
         }
 
-        public int ProductID { get; set; }
+        [StringLength(20)]
+        public string ProductID { get; set; }
 
         [Required]
         [StringLength(250)]
@@ -47,7 +48,9 @@ namespace Models.EF
 
         public DateTime? CreatedDate { get; set; }
 
-        public int CategoryID { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string CategoryID { get; set; }
 
         public virtual CATEGORY CATEGORY { get; set; }
 

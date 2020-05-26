@@ -18,7 +18,8 @@ namespace Models.EF
 
         public int? SizeID { get; set; }
 
-        public int? ProductID { get; set; }
+        [StringLength(20)]
+        public string ProductID { get; set; }
 
         public virtual ORDER ORDER { get; set; }
 

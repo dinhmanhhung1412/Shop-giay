@@ -26,14 +26,14 @@ namespace CNWeb.Models
     }
     public class CartSession
     {
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
         public int SizeID { get; set; }
         public int Quantity { get; set; }
 
         public CartSession()
         { }
 
-        public CartSession(int ProductID, int SizeID, int Quantity)
+        public CartSession(string ProductID, int SizeID, int Quantity)
         {
             this.ProductID = ProductID;
             this.SizeID = SizeID;
