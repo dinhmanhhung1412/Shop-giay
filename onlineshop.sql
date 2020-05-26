@@ -236,7 +236,7 @@ VALUES(N'hoang', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDAT
 
 
 --------------------------------------------------
-CREATE PROC SelectOrderID
+CREATE PROC SelectOrderID  --lọc đơn hàng theo trạng thái của khách hàng
     @CustomerID INT,
     @StatusID INT
 AS
@@ -257,7 +257,7 @@ BEGIN
 END
 GO
 
-CREATE PROC SelectOrder
+CREATE PROC SelectOrder -- lấy các đơn hàng của 1 khách hàng
     @CustomerID INT
 AS
 BEGIN
@@ -272,7 +272,7 @@ BEGIN
 END
 GO
 
-CREATE PROC SelectOrderProduct
+CREATE PROC SelectOrderProduct -- lấy các sản phẩm của đơn hàng
     @OrderID INT
 AS
 BEGIN
@@ -291,17 +291,6 @@ BEGIN
     WHERE [ORDER].OrderID = @OrderID
 END
 GO
-CREATE TRIGGER tr_update_product_meta
-ON dbo.PRODUCT
-AFTER INSERT
-AS
-BEGIN
-    UPDATE PRODUCT
-SET [MetaKeyword] = [MetaKeyword] + '-' + CAST([ProductID] )
-    WHERE [ProductID] = IDENT_CURRENT('PRODUCT') 
-END
-GO
-
 
 CREATE PROC SelectAllProduct
 AS
@@ -781,7 +770,7 @@ END
 GO
 
 go
-CREATE PROC Add_Order
+CREATE PROC Add_Order_Alt
     @cusID int,
     @total decimal(18,2),
     @ReturnID INT OUTPUT
@@ -802,7 +791,7 @@ END
 GO
 
 DECLARE @ReturnID INT;
-exec Add_Order_Alt @cusID  = 1,
+exec Add_Order_Alt @cusID =1,
     @total = 10000,
     @ReturnID = @ReturnID OUTPUT
     select @ReturnID
