@@ -33,7 +33,6 @@ CREATE TABLE [PRODUCT]
     ProductStatus BIT,
     CreatedDate DATETIME DEFAULT GETDATE(),
 	ViewCount int,
-	PurchaseCount int,
     CategoryID varchar(20) CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
 )
 GO
