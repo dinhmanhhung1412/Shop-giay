@@ -1,6 +1,7 @@
 ﻿using Models.EF;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
@@ -15,10 +16,10 @@ namespace Models.DAO
         public OrderDAO()
         {
             db = new CNWebDbContext();
-           
+
         }
 
-        public async Task<List<ORDER>>  LoadOrderProc()
+        public async Task<List<ORDER>> LoadOrderProc()
         {
             return await db.ORDERs.SqlQuery("Load_Order").AsNoTracking().ToListAsync();
         }
@@ -27,17 +28,25 @@ namespace Models.DAO
         {
             try
             {
+                var returnID = new SqlParameter("@Return", SqlDbType.Int);
+                returnID.Direction = ParameterDirection.Output;
+
                 var cusID = new SqlParameter("@cusID", CustomerID);
                 var tot = new SqlParameter("@total", total);
-                var res = await db.Database.ExecuteSqlCommandAsync("Add_Order @cusID, @total", cusID, tot);
-                return res;
+                var OuputID = new SqlParameter("@ReturnID", SqlDbType.Int);
+                OuputID.Direction = ParameterDirection.Output;
+
+                var data = db.Database.SqlQuery<int>(@"exec @Return = Add_Order_Alt @cusID, @total, @ReturnID OUTPUT", returnID, cusID, tot, OuputID);
+
+                var result = await data.FirstAsync();
+                return result;
             }
             catch
             {
                 return 0;
             }
         }
-  
+
         public async Task<List<ORDER>> LoadOrder(int CustomerID)
         {
             var param = new SqlParameter("@cusID", CustomerID);
@@ -65,7 +74,7 @@ namespace Models.DAO
             try
             {
                 var ID = new SqlParameter("@orderID", OrderID);
-                return await db.Database.ExecuteSqlCommandAsync("Cancel_Order @orderID", ID);               
+                return await db.Database.ExecuteSqlCommandAsync("Cancel_Order @orderID", ID);
             }
             catch
             {

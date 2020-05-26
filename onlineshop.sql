@@ -1,6 +1,6 @@
-USE master
-alter database ONLINESHOP set single_user with rollback immediate
-drop database ONLINESHOP
+--USE master
+--alter database ONLINESHOP set single_user with rollback immediate
+--drop database ONLINESHOP
 
 CREATE DATABASE ONLINESHOP
 GO
@@ -18,6 +18,8 @@ CREATE TABLE [CATEGORY]
 )
 GO
 
+select * from customer
+
 CREATE TABLE [PRODUCT]
 (
     ProductID varchar(20) PRIMARY KEY,
@@ -31,8 +33,9 @@ CREATE TABLE [PRODUCT]
     ProductStock INT DEFAULT 1,
     MetaKeyword NVARCHAR(250),
     ProductStatus BIT,
+	ViewCount INT DEFAULT 0,
+
     CreatedDate DATETIME DEFAULT GETDATE(),
-	ViewCount int,
     CategoryID varchar(20) CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
 )
 GO
@@ -334,27 +337,12 @@ CREATE PROC Create_Product @id varchar(20), @name nvarchar(250), @description nv
 AS
 BEGIN
 INSERT dbo.PRODUCT
-(
-    ProductID,
-    ProductName,
-    ProductDescription,
-    ProductPrice,
-    PromotionPrice,
-    Rating,
-    ShowImage_1,
-    ShowImage_2,
-    ProductStock,
-    MetaKeyword,
-    ProductStatus,
-    CreatedDate,
-    CategoryID
-)
 VALUES
 (
-     @id, @name, @description, 
+    @id, @name, @description, 
 	@price, @promotionprice , 5, 
 	@img1, @img2,
-	@stock, @meta, @status, getdate(),@cate  
+	@stock, @meta, @status, getdate(), 0, @cate  
 )
 END 
 GO 
@@ -624,8 +612,8 @@ BEGIN
 	    @name, -- UserName - NVARCHAR
 	    getdate() -- CreatedDate - DATETIME
 	)
-End 
-
+END 
+GO 
 CREATE PROC Login_Admin @username nvarchar(250),@pass nvarchar(250)
 AS
 BEGIN
@@ -667,8 +655,7 @@ BEGIN
 DELETE dbo.CATEGORY WHERE dbo.CATEGORY.CategoryID=@id
 END
 GO 
-EXEC Delete_Category 12
-SELECT * FROM dbo.CATEGORY c
+
 CREATE PROC Edit_Category @id varchar(20), @name nvarchar(250), @meta nvarchar(250)
 AS
 BEGIN
@@ -702,6 +689,7 @@ AS
 BEGIN
 SELECT * FROM dbo.ORDERSTATUS o
 END
+GO 
 
 CREATE PROC Cancel_Order @orderID int
 AS
@@ -746,10 +734,7 @@ SELECT * FROM dbo.PRODUCT p
 WHERE p.MetaKeyword=@meta
 END
 GO
-SELECT * FROM dbo.PRODUCT p
-SELECT * FROM dbo.PRODUCTDETAIL p
 
-go
 CREATE PROC SelectPaging
     @PageSize INT,
     @PageIndex INT,
@@ -792,4 +777,39 @@ BEGIN
         OFFSET @PageSize * @PageIndex ROWS
         FETCH NEXT @PageSize ROWS ONLY
     END
+END
+GO
+
+go
+CREATE PROC Add_Order
+    @cusID int,
+    @total decimal(18,2),
+    @ReturnID INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT dbo.[ORDER]
+    VALUES
+        (
+            GETDATE(),
+            GETDATE(),
+            @total,
+            1,
+            @cusID
+        )
+    SET @ReturnID = SCOPE_IDENTITY();
+END 
+GO
+
+DECLARE @ReturnID INT;
+exec Add_Order_Alt @cusID  = 1,
+    @total = 10000,
+    @ReturnID = @ReturnID OUTPUT
+    select @ReturnID
+
+CREATE PROC Update_ViewCount
+AS
+BEGIN
+UPDATE dbo.PRODUCT
+SET dbo.PRODUCT.ViewCount = dbo.PRODUCT.ViewCount + 1
 END
