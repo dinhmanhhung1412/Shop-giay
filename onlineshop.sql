@@ -32,7 +32,8 @@ CREATE TABLE [PRODUCT]
     MetaKeyword NVARCHAR(250),
     ProductStatus BIT,
     CreatedDate DATETIME DEFAULT GETDATE(),
-
+	ViewCount int,
+	PurchaseCount int,
     CategoryID varchar(20) CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
 )
 GO
@@ -229,7 +230,7 @@ VALUES
 
     
 INSERT INTO [USER]
-VALUES(N'hoang', N'661512447519149825336913615157157122147', N'Nguyễn Hoàng', GETDATE())
+VALUES(N'hoang', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDATE())
 
 
 --------------------------------------------------
@@ -612,6 +613,19 @@ WHERE c.CustomerID =@id
 END
 GO
 
+CREATE PROC Create_User @username nvarchar(200), @pass nvarchar(200),@name nvarchar(200)
+AS
+BEGIN
+	INSERT INTO dbo.[USER]
+	VALUES
+	(
+	    -- UserId - INT
+	    @username, -- UserUsername - NVARCHAR
+	    @pass, -- UserPassword - NVARCHAR
+	    @name, -- UserName - NVARCHAR
+	    getdate() -- CreatedDate - DATETIME
+	)
+End 
 
 CREATE PROC Login_Admin @username nvarchar(250),@pass nvarchar(250)
 AS
@@ -624,7 +638,7 @@ BEGIN
 		SET @res=1
 	ELSE
 		SET @res=0
-	RETURN @res
+	SELECT @res
 END
 GO
 

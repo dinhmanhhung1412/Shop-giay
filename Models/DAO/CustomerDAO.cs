@@ -68,12 +68,12 @@ namespace Models.DAO
         {
             var param = new SqlParameter("@username", username);
             return await db.CUSTOMERs.SqlQuery("LoadByUserName @username", param).SingleOrDefaultAsync();
-        } 
+        }
 
         public async Task<bool> LoginAsync(string username, string password)
         {
             string encrypt = EncryptPassword(password);
-            var result = await db.CUSTOMERs.AsNoTracking().CountAsync(x => x.CustomerUsername.Equals(username)  && x.CustomerPassword.Equals(encrypt));
+            var result = await db.CUSTOMERs.AsNoTracking().CountAsync(x => x.CustomerUsername.Equals(username) && x.CustomerPassword.Equals(encrypt));
             if (result > 0)
                 return true;
             else
@@ -97,30 +97,29 @@ namespace Models.DAO
             await db.SaveChangesAsync();
             return cus.CustomerID;
         }
-        public async Task<int>  RegisterProc(CUSTOMER cus)
+        public async Task<int> RegisterProc(CUSTOMER cus)
         {
             var db = new CNWebDbContext();
             var username = new SqlParameter("@username", cus.CustomerUsername);
-            var pass = new SqlParameter("@pass", new CustomerDAO().EncryptPassword(cus.CustomerPassword));
+            var pass = new SqlParameter("@pass", EncryptPassword(cus.CustomerPassword));
             var mail = new SqlParameter("@mail", cus.CustomerEmail);
             var name = new SqlParameter("@name", cus.CustomerName);
             var phone = new SqlParameter("@phone", cus.CustomerPhone);
             var res = await db.Database.ExecuteSqlCommandAsync("Create_Customer @username,@pass,@name,@phone,@mail", username, pass, name, phone, mail);
             return res;
         }
-        public string EncryptPassword(string text)
+        public static string EncryptPassword(string input)
         {
-            string password = "";
-            if (!string.IsNullOrEmpty(text))
-            {
-                byte[] data = new MD5CryptoServiceProvider().ComputeHash(ASCIIEncoding.ASCII.GetBytes(text));
+            StringBuilder hash = new StringBuilder();
+            MD5CryptoServiceProvider md5provider = new MD5CryptoServiceProvider();
+            byte[] bytes = md5provider.ComputeHash(new UTF8Encoding().GetBytes(input));
 
-                foreach (byte item in data)
-                {
-                    password += item;
-                }
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                hash.Append(bytes[i].ToString("x2"));
             }
-            return password;
+            return hash.ToString();
         }
+
     }
 }

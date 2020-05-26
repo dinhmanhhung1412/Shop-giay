@@ -18,18 +18,30 @@ namespace CNWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult>  ValidateAdmin(USER model)
+        public async Task<JsonResult> ValidateAdmin(USER model)
         {
             if (ModelState.IsValid)
             {
-                var result = await new UserDAO().LoginAsync(model.UserUsername, model.UserPassword);
+                var result = await new UserDAO().LoginProc(model.UserUsername, model.UserPassword);
                 if (result == true)
                 {
                     Session["AdminLogin"] = model;
+                    ViewBag.AdminName = model.UserName;
                     return Json(new { Success = true, Username = model.UserUsername }, JsonRequestBehavior.AllowGet);
                 }
                 else
                     return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+            }
+            else
+                return Json(new { Success = false }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> CreateUser(USER model)
+        {
+            if (ModelState.IsValid)
+            {
+                    var result = await new UserDAO().RegisterProc(model.UserUsername, model.UserPassword, model.UserName);             
+                    return Json(new { Success = true }, JsonRequestBehavior.AllowGet);             
             }
             else
                 return Json(new { Success = false }, JsonRequestBehavior.AllowGet);

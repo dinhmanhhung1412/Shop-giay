@@ -9,48 +9,49 @@
 <link href="~/Areas/Admin/assets/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/Areas/Admin/assets/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
+
 <div class="card-body">
     <h1 class="header-title">Product List</h1>
     <p class="text-muted">
         @Html.ActionLink("Create New", "CreateProduct")
     </p>
-    
-        <table class="table table-bordered" id="product-table">
-            <thead>
-                <tr>
-                    <th>
-                        Image
-                    </th>
-                    <th class="text-center">
-                        ID
-                    </th>
-                    <th class="text-center">
-                        Name
-                    </th>
-                    <th class="text-center">
-                        Price
-                    </th>
-                    <th class="text-center">
-                        Stock
-                    </th>
-                    <th class="text-center">
-                        Category
-                    </th>
-                    <th class="text-center">
-                        Status
-                    </th>
-                    <th class="text-center">
-                        Created Date
-                    </th>
-                    <th class="text-center">
-                        Options
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    
+
+    <table class="table table-bordered" id="product-table">
+        <thead>
+            <tr>
+                <th>
+                    Image
+                </th>
+                <th class="text-center">
+                    ID
+                </th>
+                <th class="text-center">
+                    Name
+                </th>
+                <th class="text-center">
+                    Price
+                </th>
+                <th class="text-center">
+                    Stock
+                </th>
+                <th class="text-center">
+                    Category
+                </th>
+                <th class="text-center">
+                    Status
+                </th>
+                <th class="text-center">
+                    Created Date
+                </th>
+                <th class="text-center">
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
                 <tr>
                     <form action="/Admin/Product/EditProduct/@item.ProductID">
                         <td>
@@ -96,11 +97,11 @@
                         </td>
                     </form>
                 </tr>
-                    
-                }
-            </tbody>
-        </table>
-        
+
+            }
+        </tbody>
+    </table>
+
 </div>
 
 @section Scripts{

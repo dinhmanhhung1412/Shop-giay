@@ -23,7 +23,34 @@
 
     <div id="slideBox">
         <div class="topLayer">
-            
+            <div class="left">
+                <div class="content">
+                    <h2>Sign Up</h2>
+                    <form id="form-signup" method="post" onsubmit="return false;">
+                        <div class="form-element form-stack">
+                            <label for="name-signup" class="form-label">Full Name</label>
+                            <input id="name-signup" type="text" name="name">
+                        </div>
+                        <div class="form-element form-stack">
+                            <label for="username-signup" class="form-label">Username</label>
+                            <input id="username-signup" type="text" name="username-signup">
+                        </div>
+                        <div class="form-element form-stack">
+                            <label for="password-signup" class="form-label">Password</label>
+                            <input id="password-signup" type="password" name="password-signup">
+                        </div>
+                        <div class="form-element form-submit">
+                            <button id="signUp" class="signup" type="submit" name="signup">Sign up</button>
+                        </div>
+
+                        <h5 class="text-danger" id="signup-text"></h5>
+
+                        <div class="form-element form-submit">
+                            <button id="goLeft" class="signup off">Log In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="right">
                 <div class="content">
                     <h2>Login</h2>
@@ -43,6 +70,9 @@
                             <button id="logIn" class="login" type="submit" name="login">Log In</button>
                         </div>
                     </form>
+                    <div class="form-element form-submit">
+                        <button id="goRight" class="login off" name="signup">Sign Up</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,6 +87,7 @@
         $(document).ready(function () {
             $("#admin-form-login").validate({
                 rules: {
+                    "name": "required",
                     "username": "required",
                     "password": {
                         required: true,
@@ -64,7 +95,7 @@
                     }
                 },
                 messages: {
-                    "username": "Please enter your username",
+                    "name": "Please enter your username",
                     "password": {
                         required: "Please enter your password",
                         minlength: "Password required minimum 6 length"
@@ -87,6 +118,47 @@
                                 window.location.href = "@Url.Action("Index", "Home")";
                             else
                                 $('#login-text').text("Login Failed");
+                        }
+                    });
+                }
+            });
+
+            $("#form-signup").validate({
+                rules: {
+                    "name": "required",
+                    "username-signup": "required",
+                    "password-signup": {
+                        required: true,
+                        minlength: 6
+                    }
+                },
+                messages: {
+                    "name": "Please enter your Fullname",
+                    "username-signup": "Please enter your username",
+                    "password-signup": {
+                        required: "Please enter your password",
+                        minlength: "Password required minimum 6 length"
+                    }
+                },
+                submitHandler: function () {
+                    var data = {
+                        "Username": $("#name-signup").val(),
+                        "UserUsername": $("#username-signup").val(),
+                        "UserPassword": $("#password-signup").val(),
+                    };
+                    $.ajax({
+                        url: "@Url.Action("CreateUser", "Admin")",
+                        type: "post",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (response) {
+                            console.log(response);
+                            if (response.Success == true)
+                                $('#signup-text').text("Create Success");
+                                
+                            else
+                                $('#signup-text').text("Create Failed");
                         }
                     });
                 }
