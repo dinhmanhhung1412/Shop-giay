@@ -63,7 +63,6 @@ namespace Models.DAO
         {
             try
             {
-                var cat = LoadByIDProc(ID);
                 var param = new SqlParameter("@id", ID);
                 var res = await db.Database.ExecuteSqlCommandAsync("Delete_Category @id", param);
                 return true;
