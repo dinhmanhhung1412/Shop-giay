@@ -838,7 +838,7 @@ BEGIN
         CASE 
             WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
         CASE 
-            WHEN @Sort = 'price_asc' THEN ProductName END ASC,
+            WHEN @Sort = 'price_asc' THEN ProductPrice END ASC,
         CASE 
             WHEN @Sort = 'top_view' THEN ViewCount END DESC
         OFFSET @PageSize * @PageIndex ROWS
@@ -859,7 +859,7 @@ BEGIN
         CASE 
             WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
         CASE 
-            WHEN @Sort = 'price_asc' THEN ProductName END ASC,
+            WHEN @Sort = 'price_asc' THEN ProductPrice END ASC,
         CASE 
             WHEN @Sort = 'top_view' THEN ViewCount END DESC
         OFFSET @PageSize * @PageIndex ROWS
