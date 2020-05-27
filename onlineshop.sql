@@ -163,37 +163,37 @@ INSERT INTO [PRODUCT]
 VALUES
     ('2', N'Adidas', N'Phong cách sắc nét,có phần trên bằng da mềm mại cho hình bóng sạch sẽ,tạo cảm giác thể thao',
         150, null, 4,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-old-skool-3_bqwgpx.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-old-skool-3_bqwgpx.png',
         20, N'giay-adidas', 1, 10, GETDATE(), 1)
 
 INSERT INTO [PRODUCT]
 VALUES
     ('3', N'Converse', N'giày có thiết kế đơn giản, sang trọng, gam màu pastel nhẹ nhàng- mang dấu ấn đặc biệt của Converse,giúp người dùng có được sự thoải mái tối đa khi sử dụng. Chất liệu da sang trọng, dễ vệ sinh',
         25, 20, 1,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-canvas-1_gk0yir.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-canvas-1_gk0yir.png',
         15, N'giay-converse', 1, 420, GETDATE(), 1)
 INSERT INTO [PRODUCT]
 VALUES
     ('4', N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
         300, 200, 4,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day-cao-co_k6bx4b.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day-cao-co_k6bx4b.jpg',
         25, N'giay-da', 1, 42, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
     ('5', N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
         20, null, 5,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238043/Thuc-Tap-CSDL/giay-buoc-day-cao-co-2_mnmkjh.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238043/Thuc-Tap-CSDL/giay-buoc-day-cao-co-2_mnmkjh.jpg',
         40, N'giay-cao-got', 1, 200, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
     ('6', N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
         300, null, 1,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day_sotdbg.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day_sotdbg.jpg',
         10, N'giay-boots', 1, 150, GETDATE(), 4)
 
 INSERT INTO [PRODUCT]
@@ -201,8 +201,8 @@ VALUES
     (7, N'Giày lười', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
 thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         100, null , 3,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983743/Thuc-Tap-CSDL/vans-canvas-2_gmizqa.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983743/Thuc-Tap-CSDL/vans-canvas-2_gmizqa.png',
         100, N'giay-luoi', 1, 100, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
@@ -217,48 +217,48 @@ VALUES
     (9, N'Giày Oxford', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         800, 250, 3,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day-cao-co_k6bx4b.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day-cao-co_k6bx4b.jpg',
         80, N'giay-oxford', 1, 500, GETDATE(), 1)
 INSERT INTO [PRODUCT]
 VALUES
     (10, N'Giày Lucite Platform', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         1400, 450, 3,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day_sotdbg.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583238041/Thuc-Tap-CSDL/giay-buoc-day_sotdbg.jpg',
         130, N'giay-lucite-platform', 1, 900, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
     (11, N'Giày Mary Jane', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         400, null , 4,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983743/Thuc-Tap-CSDL/vans-canvas-2_gmizqa.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983743/Thuc-Tap-CSDL/vans-canvas-2_gmizqa.png',
         430, N'giay-mary-jane', 1, 300, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
     (12, N'Giày Ankle Boots', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         400, 100, 2,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234398/Thuc-Tap-CSDL/giay-chay-nike_aoknzb.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234398/Thuc-Tap-CSDL/giay-chay-nike_aoknzb.jpg',
         30, N'giay-ankle-boots', 1, 500, GETDATE(), 4)
 INSERT INTO [PRODUCT]
 VALUES
     (13, N'Giày Nike Air Force', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         1200, null, 4,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-old-skool-3_bqwgpx.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-old-skool-3_bqwgpx.png',
         30, N'giay-nike-air-force', 1, 1500, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
     (14, N'Giày Nike SP', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
         2000, 800 , 4,
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-canvas-1_gk0yir.png',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1582983744/Thuc-Tap-CSDL/vans-canvas-1_gk0yir.png',
         85, N'giay-nike-sp', 1 , 1800, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
