@@ -95,8 +95,8 @@ namespace Models.DAO
                     list = list.OrderBy(s => s.ProductID);
                     break;
             }
-            //return
-            return await list.Skip(pageindex * pagesize).Take(pagesize).ToListAsync();
+
+            return await list.Skip(pagesize * pageindex).Take(pagesize).ToListAsync();
         }
 
         public async Task<List<PRODUCT>> LoadProductProc(int? cate, string searchString, string sort, int pagesize, int pageindex)

@@ -18,8 +18,6 @@ CREATE TABLE [CATEGORY]
 )
 GO
 
-select * from customer
-
 CREATE TABLE [PRODUCT]
 (
     ProductID varchar(20) PRIMARY KEY,
@@ -119,7 +117,8 @@ CREATE TABLE [USER]
     CreatedDate DATETIME
 )
 GO
-SELECT * FROM dbo.CATEGORY c
+
+
 INSERT INTO [CATEGORY]
 VALUES
     ('1',N'Giày da', N'giay-da', GETDATE()),
@@ -158,7 +157,7 @@ VALUES
 		200, 150, 3,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		50, N'giay-nike', 1, GETDATE(), 1)
+		50, N'giay-nike', 1, 199, GETDATE(), 1)
 
 INSERT INTO [PRODUCT]
 VALUES
@@ -166,7 +165,7 @@ VALUES
 		150, null, 4,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		20, N'giay-adidas', 1, GETDATE(), 1)
+		20, N'giay-adidas', 1, 10, GETDATE(), 1)
 
 INSERT INTO [PRODUCT]
 VALUES
@@ -174,28 +173,28 @@ VALUES
 		25, 20, 1,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		15, N'giay-converse', 1, GETDATE(), 1)
+		15, N'giay-converse', 1, 420, GETDATE(), 1)
 INSERT INTO [PRODUCT]
 VALUES
 	('4',N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
 		300, 200, 4,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		25, N'giay-da', 1, GETDATE(), 2)
+		25, N'giay-da', 1, 42, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
 	('5',N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
 		20, null, 5,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		40, N'giay-cao-got', 1, GETDATE(), 3)
+		40, N'giay-cao-got', 1, 200, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
 	('6',N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
 		300, null, 1,
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
 		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		10, N'giay-boots', 1, GETDATE(), 4)
+		10, N'giay-boots', 1, 150, GETDATE(), 4)
 
 INSERT INTO [PRODUCTDETAIL]
 VALUES
@@ -331,7 +330,7 @@ VALUES
     @id, @name, @description, 
 	@price, @promotionprice , 5, 
 	@img1, @img2,
-	@stock, @meta, @status, getdate(), 0, @cate  
+	@stock, @meta, @status, 0, getdate(), @cate  
 )
 END 
 GO 
@@ -436,29 +435,27 @@ SELECT * FROM dbo.SIZE s
 END 
 GO 
 
-CREATE PROC Add_Order @cusID int, @total decimal(18,2)
+CREATE PROC Add_Order
+    @cusID int,
+    @total decimal(18,2),
+    @ReturnID INT OUTPUT
 AS
 BEGIN
-INSERT dbo.[ORDER]
-(
-    --OrderID - column value is auto-generated
-    OrderDate,
-    DeliveryDate,
-    Total,
-    OrderStatusID,
-    CustomerID
-)
-VALUES
-(
-    -- OrderID - INT
-    GETDATE(), -- OrderDate - DATETIME
-    GETDATE(), -- DeliveryDate - DATETIME
-    @total, -- Total - DECIMAL
-    1, -- OrderStatusID - INT
-    @cusID -- CustomerID - INT
-)
+    SET NOCOUNT ON;
+    INSERT dbo.[ORDER]
+    VALUES
+        (
+            GETDATE(),
+            GETDATE(),
+            @total,
+            1,
+            @cusID
+        )
+    SET @ReturnID = SCOPE_IDENTITY()
+	SELECT @ReturnID
 END 
-GO 
+GO
+
 CREATE PROC Add_OrderDetail @orderID int,@prodID varchar(20), @sizeID int, @quantity int
 AS
 BEGIN
@@ -738,6 +735,8 @@ BEGIN
         FROM [PRODUCT]
         WHERE(@Search IS NULL OR [PRODUCT].[ProductName] LIKE '%'+@Search+'%')
         ORDER BY
+		CASE
+			WHEN @Sort = '' THEN ProductID END ASC,
         CASE 
             WHEN @Sort = 'name_desc' THEN ProductName END DESC,
         CASE 
@@ -745,7 +744,9 @@ BEGIN
         CASE 
             WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
         CASE 
-            WHEN @Sort = 'price_asc' THEN ProductName END ASC
+            WHEN @Sort = 'price_asc' THEN ProductName END ASC,
+        CASE 
+            WHEN @Sort = 'top_view' THEN ViewCount END DESC
         OFFSET @PageSize * @PageIndex ROWS
         FETCH NEXT @PageSize ROWS ONLY
     END
@@ -755,6 +756,8 @@ BEGIN
         FROM [PRODUCT]
         WHERE [PRODUCT].CategoryID = @Cate
         ORDER BY
+		CASE
+			WHEN @Sort = '' THEN ProductID END ASC,
         CASE 
             WHEN @Sort = 'name_desc' THEN ProductName END DESC,
         CASE 
@@ -762,44 +765,14 @@ BEGIN
         CASE 
             WHEN @Sort = 'price_desc' THEN ProductPrice END DESC,
         CASE 
-            WHEN @Sort = 'price_asc' THEN ProductName END ASC
+            WHEN @Sort = 'price_asc' THEN ProductName END ASC,
+        CASE 
+            WHEN @Sort = 'top_view' THEN ViewCount END DESC
         OFFSET @PageSize * @PageIndex ROWS
         FETCH NEXT @PageSize ROWS ONLY
     END
 END
 GO
-
-go
-CREATE PROC Add_Order_Alt
-    @cusID int,
-    @total decimal(18,2),
-    @ReturnID INT OUTPUT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    INSERT dbo.[ORDER]
-    VALUES
-        (
-            GETDATE(),
-            GETDATE(),
-            @total,
-            1,
-            @cusID
-        )
-    SET @ReturnID = SCOPE_IDENTITY()
-	SELECT @ReturnID
-END 
-GO
-
-DROP PROC Add_Order_Alt
-
-SELECT* FROM dbo.CUSTOMER c
-
-DECLARE @ReturnID INT;
-exec Add_Order_Alt @cusID =1,
-    @total = 10000,
-    @ReturnID = @ReturnID OUTPUT
-    select @ReturnID
 
 CREATE PROC Update_ViewCount
 AS
@@ -809,12 +782,14 @@ SET dbo.PRODUCT.ViewCount = dbo.PRODUCT.ViewCount + 1
 END
 GO
 
-CREATE PROC Top3_View @topprod int
+CREATE PROC Top_View 
+@topcount int
 AS
 BEGIN 
-SELECT TOP 3 * FROM dbo.PRODUCT p ORDER BY p.ViewCount
+SELECT TOP (@topcount) * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
 END
 GO
+
 
 CREATE PROC Top_View_Desc
 AS
@@ -822,5 +797,3 @@ BEGIN
 SELECT * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
 END
 GO 
-
-SELECT * FROM dbo.ORDERDETAIL o

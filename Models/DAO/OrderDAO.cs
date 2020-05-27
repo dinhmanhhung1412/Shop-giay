@@ -37,7 +37,7 @@ namespace Models.DAO
 
                 var cusID = new SqlParameter("@cusID", CustomerID);
                 var tot = new SqlParameter("@total", total);
-                var data = db.Database.SqlQuery<int>(@"exec Add_Order_Alt @cusID, @total, @ReturnID OUTPUT", cusID, tot, returnID);
+                var data = db.Database.SqlQuery<int>(@"exec Add_Order @cusID, @total, @ReturnID OUTPUT", cusID, tot, returnID);
 
                 var result = await data.FirstAsync();
                 return result;
