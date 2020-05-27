@@ -64,9 +64,10 @@ namespace CNWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> SelectTop(int number = 5)
+        public async Task<ActionResult> SelectTop()
         {
-            var list = await new ProductDAO().SelectTop(number);
+            int top = 6;
+            var list = await new ProductDAO().SelectTop(top);
             return PartialView(list);
         }
 

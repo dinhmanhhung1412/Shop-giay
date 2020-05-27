@@ -57,6 +57,16 @@
     </div>
 </div>
 
+<div class="blog-area pt-150 pb-110">
+    <div class="container">
+        <div class="section-title text-center mb-60">
+            <h2>Được Xem Nhiều</h2>
+        </div>
+        <div class="row" id="top_view">
+        </div>
+    </div>
+</div>
+
 <div class="overview-area pt-135">
     <div class="container">
         <div class="row">
@@ -85,10 +95,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<div id="selecttop">
-
 </div>
 
 <div class="testimonial-area" style="margin-bottom: 100px;">
@@ -144,10 +150,8 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $.get("@Url.Action("SelectTop","Shop")", {
-                "number": "1"
-            }, function (data) {
-                $("#selecttop").append(data);
+            $.get("@Url.Action("SelectTop", "Shop")", function (data) {
+                $("#top_view").append(data);
             });
         });
     </script>

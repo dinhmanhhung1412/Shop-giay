@@ -1,6 +1,6 @@
---USE master
---alter database ONLINESHOP set single_user with rollback immediate
---drop database ONLINESHOP
+-- USE master
+-- alter database ONLINESHOP set single_user with rollback immediate
+-- drop database ONLINESHOP
 
 CREATE DATABASE ONLINESHOP
 GO
@@ -31,7 +31,7 @@ CREATE TABLE [PRODUCT]
     ProductStock INT DEFAULT 1,
     MetaKeyword NVARCHAR(250),
     ProductStatus BIT,
-	ViewCount INT DEFAULT 0,
+    ViewCount INT DEFAULT 0,
 
     CreatedDate DATETIME DEFAULT GETDATE(),
     CategoryID varchar(20) CONSTRAINT fk_p_cgid FOREIGN KEY (CategoryID) REFERENCES [CATEGORY](CategoryID) ON DELETE CASCADE NOT NULL
@@ -121,24 +121,24 @@ GO
 
 INSERT INTO [CATEGORY]
 VALUES
-    ('1',N'Giày da', N'giay-da', GETDATE()),
-    ('2',N'Giày thể thao', N'giay-the-thao', GETDATE()),
-    ('3',N'Giày lifestyle', N'giay-lifestyle', GETDATE()),
-    ('4',N'Giày boots', N'giay-boots', GETDATE())
+    ('1', N'Giày da', N'giay-da', GETDATE()),
+    ('2', N'Giày thể thao', N'giay-the-thao', GETDATE()),
+    ('3', N'Giày lifestyle', N'giay-lifestyle', GETDATE()),
+    ('4', N'Giày boots', N'giay-boots', GETDATE())
 GO
 
 INSERT INTO [SIZE]
 VALUES
-    (1,34, GETDATE()),
-    (2,35, GETDATE()),
-    (3,36, GETDATE()),
-    (4,37, GETDATE()),
-    (5,38, GETDATE()),
-    (6,39, GETDATE()),
-    (7,40, GETDATE()),
-    (8,41, GETDATE()),
-    (9,42, GETDATE()),
-    (10,43, GETDATE())
+    (1, 34, GETDATE()),
+    (2, 35, GETDATE()),
+    (3, 36, GETDATE()),
+    (4, 37, GETDATE()),
+    (5, 38, GETDATE()),
+    (6, 39, GETDATE()),
+    (7, 40, GETDATE()),
+    (8, 41, GETDATE()),
+    (9, 42, GETDATE()),
+    (10, 43, GETDATE())
 GO
 
 INSERT INTO [ORDERSTATUS]
@@ -152,184 +152,193 @@ GO
 
 INSERT INTO [PRODUCT]
 VALUES
-	('1',N'Nike', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+    ('1', N'Nike', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		200, 150, 3,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		50, N'giay-nike', 1, 199, GETDATE(), 1)
+        200, 150, 3,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        50, N'giay-nike', 1, 199, GETDATE(), 1)
 
 INSERT INTO [PRODUCT]
 VALUES
-	('2',N'Adidas', N'Phong cách sắc nét,có phần trên bằng da mềm mại cho hình bóng sạch sẽ,tạo cảm giác thể thao',
-		150, null, 4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		20, N'giay-adidas', 1, 10, GETDATE(), 1)
+    ('2', N'Adidas', N'Phong cách sắc nét,có phần trên bằng da mềm mại cho hình bóng sạch sẽ,tạo cảm giác thể thao',
+        150, null, 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        20, N'giay-adidas', 1, 10, GETDATE(), 1)
 
 INSERT INTO [PRODUCT]
 VALUES
-	('3',N'Converse', N'giày có thiết kế đơn giản, sang trọng, gam màu pastel nhẹ nhàng- mang dấu ấn đặc biệt của Converse,giúp người dùng có được sự thoải mái tối đa khi sử dụng. Chất liệu da sang trọng, dễ vệ sinh',
-		25, 20, 1,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		15, N'giay-converse', 1, 420, GETDATE(), 1)
+    ('3', N'Converse', N'giày có thiết kế đơn giản, sang trọng, gam màu pastel nhẹ nhàng- mang dấu ấn đặc biệt của Converse,giúp người dùng có được sự thoải mái tối đa khi sử dụng. Chất liệu da sang trọng, dễ vệ sinh',
+        25, 20, 1,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        15, N'giay-converse', 1, 420, GETDATE(), 1)
 INSERT INTO [PRODUCT]
 VALUES
-	('4',N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
-		300, 200, 4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		25, N'giay-da', 1, 42, GETDATE(), 2)
+    ('4', N'Giày da', N'Lựa chọn một đôi giày SDROLUN đơn giản, lịch sự kết hợp với nhiều trang phục là tiêu chí lựa chọn của cánh đàn ông',
+        300, 200, 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        25, N'giay-da', 1, 42, GETDATE(), 2)
 INSERT INTO [PRODUCT]
 VALUES
-	('5',N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
-		20, null, 5,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		40, N'giay-cao-got', 1, 200, GETDATE(), 3)
+    ('5', N'Giày cao gót', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
+        20, null, 5,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        40, N'giay-cao-got', 1, 200, GETDATE(), 3)
 INSERT INTO [PRODUCT]
 VALUES
-	('6',N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
-		300, null, 1,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		10, N'giay-boots', 1, 150, GETDATE(), 4)
+    ('6', N'Giày boots', N'giày được thiết kế sang trọng,kiểu dáng thời trang,phù hợp với các bạn trẻ',
+        300, null, 1,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        10, N'giay-boots', 1, 150, GETDATE(), 4)
 
 INSERT INTO [PRODUCT]
 VALUES
-	(7,N'Giày lười', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+    (7, N'Giày lười', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
 thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		100,null , 3,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		100, N'giay-luoi', 1,100, GETDATE(), 2)
+        100, null , 3,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        100, N'giay-luoi', 1, 100, GETDATE(), 2)
 INSERT INTO [PRODUCT]
-VALUES (8,N'Giày Adidas Stan Smith', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (8, N'Giày Adidas Stan Smith', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		500, 150 ,4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		70, N'giay-adidas-stan-smith', 1,400,GETDATE(), 2)
+        500, 150 , 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        70, N'giay-adidas-stan-smith', 1, 400, GETDATE(), 2)
 INSERT INTO [PRODUCT]
-VALUES (9,N'Giày Oxford', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (9, N'Giày Oxford', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		800, 250, 3,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	     80, N'giay-oxford', 1,500, GETDATE(), 1)
+        800, 250, 3,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        80, N'giay-oxford', 1, 500, GETDATE(), 1)
 INSERT INTO [PRODUCT]
-VALUES (10,N'Giày Lucite Platform', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (10, N'Giày Lucite Platform', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		1400, 450, 3,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	    130, N'giay-lucite-platform', 1,900, GETDATE(), 3)
+        1400, 450, 3,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        130, N'giay-lucite-platform', 1, 900, GETDATE(), 3)
 INSERT INTO [PRODUCT]
-VALUES (11,N'Giày Mary Jane', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (11, N'Giày Mary Jane', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		400,null , 4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	    430, N'giay-mary-jane', 1,300, GETDATE(), 3)
+        400, null , 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        430, N'giay-mary-jane', 1, 300, GETDATE(), 3)
 INSERT INTO [PRODUCT]
-VALUES (12,N'Giày Ankle Boots', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (12, N'Giày Ankle Boots', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		400, 100, 2,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	     30, N'giay-ankle-boots', 1,500, GETDATE(), 4)
+        400, 100, 2,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        30, N'giay-ankle-boots', 1, 500, GETDATE(), 4)
 INSERT INTO [PRODUCT]
-VALUES (13,N'Giày Nike Air Force', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (13, N'Giày Nike Air Force', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		1200, null, 4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	     30, N'giay-nike-air-force', 1, 1500, GETDATE(), 2)
+        1200, null, 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        30, N'giay-nike-air-force', 1, 1500, GETDATE(), 2)
 INSERT INTO [PRODUCT]
-VALUES (14,N'Giày Nike SP', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (14, N'Giày Nike SP', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		2000,800 , 4,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	     85, N'giay-nike-sp', 1 ,1800, GETDATE(), 2)
+        2000, 800 , 4,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        85, N'giay-nike-sp', 1 , 1800, GETDATE(), 2)
 INSERT INTO [PRODUCT]
-VALUES (15,N'Giày Nike Metcon', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
+VALUES
+    (15, N'Giày Nike Metcon', N'Chất liệu cao cấp,thiết kế nén khí làm chân tiếp đất êm hơn,
                               thích hợp cho nhiều độ tuổi,vải waffle cao cấp bền cho lực kéo nhiều mặt',
-		1800,700 , 2,
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-		N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
-	     150, N'giay-nike-sp', 1 ,900, GETDATE(), 2)
-
+        1800, 700 , 2,
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        N'https://res.cloudinary.com/dhi8xksch/image/upload/v1583234400/Thuc-Tap-CSDL/giay-chay-nike-2_dlrisy.jpg',
+        150, N'giay-nike-sp', 1 , 900, GETDATE(), 2)
 
 INSERT INTO [PRODUCTDETAIL]
 VALUES
-	(1, 1),
-	(1, 2),
-	(1, 3),
-	(1, 4),
-	(1, 5),
-	(2, 1),
-	(2, 2),
-	(2, 3),
-	(2, 4),
-	(2, 5),
-	(3, 1),
-	(3, 2),
-	(3, 3),
-	(3, 4),
-	(3, 5),
-	(4, 1),
-	(4, 2),
-	(4, 3),
-	(4, 4),
-	(4, 5),
-	(5, 1),
-	(5, 2),
-	(5, 3),
-	(5, 4),
-	(5, 5),
-	(6, 1),
-	(6, 2),
-	(6, 3),
-	(6, 4),
-	(6, 5),
-	(7, 6),
-	(7, 7),
-	(7, 8),
-	(7, 9),
-	(7, 10),
-	(8, 4),
-	(8, 5),
-	(8, 6),
-	(8, 7),
-	(9, 5),
-	(9, 4),
-	(9, 3),
-	(9, 6),
-	(9, 8),
-	(10, 4),
-	(10, 5),
-	(10,7 ),
-	(10, 10),
-	(10, 8)
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (2, 4),
+    (2, 5),
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4),
+    (3, 5),
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4),
+    (4, 5),
+    (5, 1),
+    (5, 2),
+    (5, 3),
+    (5, 4),
+    (5, 5),
+    (6, 1),
+    (6, 2),
+    (6, 3),
+    (6, 4),
+    (6, 5),
+    (7, 6),
+    (7, 7),
+    (7, 8),
+    (7, 9),
+    (7, 10),
+    (8, 4),
+    (8, 5),
+    (8, 6),
+    (8, 7),
+    (9, 5),
+    (9, 4),
+    (9, 3),
+    (9, 6),
+    (9, 8),
+    (10, 4),
+    (10, 5),
+    (10, 7 ),
+    (10, 10),
+    (10, 8)
 
-    
-INSERT INTO [USER]
-VALUES(N'hoang', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDATE())
 
 INSERT INTO [USER]
-VALUES(N'hung', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDATE())
+VALUES(N'hoang', N'4297f44b13955235245b2497399d7a93', N'Hoàng', GETDATE())
 
 INSERT INTO [USER]
-VALUES(N'huong', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDATE())
+VALUES(N'hung', N'4297f44b13955235245b2497399d7a93', N'Mạnh Hùng', GETDATE())
 
 INSERT INTO [USER]
-VALUES(N'hoanganh', N'4297f44b13955235245b2497399d7a93', N'Nguyễn Hoàng', GETDATE())
+VALUES(N'huong', N'4297f44b13955235245b2497399d7a93', N'Bùi Hương', GETDATE())
+
+INSERT INTO [USER]
+VALUES(N'hoanganh', N'4297f44b13955235245b2497399d7a93', N'Phạm Hoàng Anh', GETDATE())
 
 
 --------------------------------------------------
-CREATE PROC SelectOrderID  --lọc đơn hàng theo trạng thái của khách hàng
+GO
+CREATE PROC SelectOrderID
+    --lọc đơn hàng theo trạng thái của khách hàng
     @CustomerID INT,
     @StatusID INT
 AS
@@ -350,7 +359,8 @@ BEGIN
 END
 GO
 
-CREATE PROC SelectOrder -- lấy các đơn hàng của 1 khách hàng
+CREATE PROC SelectOrder
+    -- lấy các đơn hàng của 1 khách hàng
     @CustomerID INT
 AS
 BEGIN
@@ -365,7 +375,8 @@ BEGIN
 END
 GO
 
-CREATE PROC SelectOrderProduct -- lấy các sản phẩm của đơn hàng
+CREATE PROC SelectOrderProduct
+    -- lấy các sản phẩm của đơn hàng
     @OrderID INT
 AS
 BEGIN
@@ -388,8 +399,9 @@ GO
 CREATE PROC SelectAllProduct
 AS
 BEGIN
-	SELECT * FROM PRODUCT
-	
+    SELECT *
+    FROM PRODUCT
+
 END
 
  
@@ -412,30 +424,46 @@ GO
 --crud
 
 -- Thêm sp
-CREATE PROC Create_Product @id varchar(20), @name nvarchar(250), @description nvarchar(250), 
-@price decimal(18,0), @promotionprice decimal(18,2),
-@img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit, @cate int
+CREATE PROC Create_Product
+    @id varchar(20),
+    @name nvarchar(250),
+    @description nvarchar(250),
+    @price decimal(18,0),
+    @promotionprice decimal(18,2),
+    @img1 nvarchar(250),
+    @img2 nvarchar(250),
+    @stock int,
+    @meta nvarchar(250),
+    @status bit,
+    @cate int
 AS
 BEGIN
-INSERT dbo.PRODUCT
-VALUES
-(
-    @id, @name, @description, 
-	@price, @promotionprice , 5, 
-	@img1, @img2,
-	@stock, @meta, @status, 0, getdate(), @cate  
+    INSERT dbo.PRODUCT
+    VALUES
+        (
+            @id, @name, @description,
+            @price, @promotionprice , 5,
+            @img1, @img2,
+            @stock, @meta, @status, 0, getdate(), @cate  
 )
 END 
-GO 
+GO
 -- Update sp
-CREATE PROC Update_Product @id varchar(20), @name nvarchar(250), @description nvarchar(250),
-@price decimal(18,0), @promotionprice decimal(18,2),
-@img1 nvarchar(250), @img2 nvarchar(250),
-@stock int, @meta nvarchar(250), @status bit, @cate int
+CREATE PROC Update_Product
+    @id varchar(20),
+    @name nvarchar(250),
+    @description nvarchar(250),
+    @price decimal(18,0),
+    @promotionprice decimal(18,2),
+    @img1 nvarchar(250),
+    @img2 nvarchar(250),
+    @stock int,
+    @meta nvarchar(250),
+    @status bit,
+    @cate int
 AS
 BEGIN
-UPDATE dbo.PRODUCT
+    UPDATE dbo.PRODUCT
 SET
     dbo.PRODUCT.ProductName = @name, 
     dbo.PRODUCT.ProductDescription = @description, 
@@ -452,82 +480,95 @@ SET
 END
 GO
 -- Delete sp
-CREATE PROC Delete_Product @id varchar(20)
+CREATE PROC Delete_Product
+    @id varchar(20)
 AS
 BEGIN
-DELETE dbo.PRODUCT WHERE dbo.PRODUCT.ProductID=@id
+    DELETE dbo.PRODUCT WHERE dbo.PRODUCT.ProductID=@id
 END
-GO 
-CREATE PROC LoadProd_ByID @id varchar(20)
+GO
+CREATE PROC LoadProd_ByID
+    @id varchar(20)
 AS
 BEGIN
-SELECT * FROM dbo.PRODUCT p
-WHERE p.ProductID=@id
+    SELECT *
+    FROM dbo.PRODUCT p
+    WHERE p.ProductID=@id
 END
 GO
 CREATE PROC ProductList
 AS
 BEGIN
-SELECT * FROM dbo.PRODUCT p
+    SELECT *
+    FROM dbo.PRODUCT p
 END 
-GO 
+GO
 
-CREATE PROC Add_ProductDetail @prodID varchar(20), @sizeID int
+CREATE PROC Add_ProductDetail
+    @prodID varchar(20),
+    @sizeID int
 AS
 BEGIN
-INSERT dbo.PRODUCTDETAIL
-(
-    --ProductDetailID - column value is auto-generated
-    ProductID,
-    SizeID
-)
-VALUES
-(
-    -- ProductDetailID - INT
-    @prodID, -- ProductID - INT
-    @sizeID -- SizeID - INT
+    INSERT dbo.PRODUCTDETAIL
+        (
+        --ProductDetailID - column value is auto-generated
+        ProductID,
+        SizeID
+        )
+    VALUES
+        (
+            -- ProductDetailID - INT
+            @prodID, -- ProductID - INT
+            @sizeID -- SizeID - INT
 )
 END
 GO
 
-CREATE PROC Update_ProductDetail @prodID varchar(20), @sizeID int
+CREATE PROC Update_ProductDetail
+    @prodID varchar(20),
+    @sizeID int
 AS
 BEGIN
-UPDATE dbo.PRODUCTDETAIL
+    UPDATE dbo.PRODUCTDETAIL
 SET
     dbo.PRODUCTDETAIL.SizeID = @sizeID-- INT
 	WHERE dbo.PRODUCTDETAIL.ProductID=@prodID
 END
 GO
 
-CREATE PROC Delete_ProductDetail @prodID varchar(20)
+CREATE PROC Delete_ProductDetail
+    @prodID varchar(20)
 AS
 BEGIN
-DELETE FROM dbo.PRODUCTDETAIL
+    DELETE FROM dbo.PRODUCTDETAIL
 WHERE dbo.PRODUCTDETAIL.ProductID=@prodID
 END
-GO 
+GO
 
-CREATE PROC LoadSize_ByProdID @prodID varchar(20)
+CREATE PROC LoadSize_ByProdID
+    @prodID varchar(20)
 AS
 BEGIN
-SELECT * FROM dbo.PRODUCTDETAIL p
-WHERE p.ProductID=@prodID
+    SELECT *
+    FROM dbo.PRODUCTDETAIL p
+    WHERE p.ProductID=@prodID
 END
 GO
 
 CREATE PROC CategoryList
-AS 
+AS
 BEGIN
-SELECT * FROM dbo.CATEGORY c
+    SELECT *
+    FROM dbo.CATEGORY c
 END
-GO 
+GO
 CREATE PROC SizeList
-AS 
+AS
 BEGIN
-SELECT * FROM dbo.SIZE s
+    SELECT *
+    FROM dbo.SIZE s
 END 
-GO 
+GO
 
 CREATE PROC Add_Order
     @cusID int,
@@ -546,200 +587,236 @@ BEGIN
             @cusID
         )
     SET @ReturnID = SCOPE_IDENTITY()
-	SELECT @ReturnID
+    SELECT @ReturnID
 END 
 GO
 
-CREATE PROC Add_OrderDetail @orderID int,@prodID varchar(20), @sizeID int, @quantity int
+CREATE PROC Add_OrderDetail
+    @orderID int,
+    @prodID varchar(20),
+    @sizeID int,
+    @quantity int
 AS
 BEGIN
-INSERT dbo.ORDERDETAIL
-(
-    --DetailID - column value is auto-generated
-    Quantity,
-    OrderID,
-    SizeID,
-    ProductID
-)
-VALUES
-(
-    -- DetailID - int
-    @quantity, -- Quantity - int
-    @orderID, -- OrderID - int
-    @sizeID, -- SizeID - int
-    @prodID -- ProductID - int
+    INSERT dbo.ORDERDETAIL
+        (
+        --DetailID - column value is auto-generated
+        Quantity,
+        OrderID,
+        SizeID,
+        ProductID
+        )
+    VALUES
+        (
+            -- DetailID - int
+            @quantity, -- Quantity - int
+            @orderID, -- OrderID - int
+            @sizeID, -- SizeID - int
+            @prodID -- ProductID - int
 )
 END
-GO 
-CREATE PROC LoadOrderDetail @orderID int
+GO
+CREATE PROC LoadOrderDetail
+    @orderID int
 AS
 BEGIN
-SELECT * FROM dbo.ORDERDETAIL o
-WHERE o.OrderID=@orderID
+    SELECT *
+    FROM dbo.ORDERDETAIL o
+    WHERE o.OrderID=@orderID
 END
-GO 
-CREATE PROC Create_Size @id int, @sizeName nvarchar(250)
+GO
+CREATE PROC Create_Size
+    @id int,
+    @sizeName nvarchar(250)
 AS
 BEGIN
-INSERT dbo.SIZE
-(
-    SizeID,
-    Size,
-    CreatedDate
-)
-VALUES
-(
-    @id,
-    @sizeName, -- Size - NVARCHAR
-    GETDATE() -- CreatedDate - DATETIME
+    INSERT dbo.SIZE
+        (
+        SizeID,
+        Size,
+        CreatedDate
+        )
+    VALUES
+        (
+            @id,
+            @sizeName, -- Size - NVARCHAR
+            GETDATE() -- CreatedDate - DATETIME
 )
 END 
-GO 
-CREATE PROC Delete_Size @sizeID int
+GO
+CREATE PROC Delete_Size
+    @sizeID int
 AS
 BEGIN
-DELETE dbo.SIZE WHERE dbo.SIZE.SizeID=@sizeID
+    DELETE dbo.SIZE WHERE dbo.SIZE.SizeID=@sizeID
 END
-GO 
-CREATE PROC Update_Size @sizeID int, @sizeName varchar(2)
+GO
+CREATE PROC Update_Size
+    @sizeID int,
+    @sizeName varchar(2)
 AS
 BEGIN
-UPDATE dbo.SIZE
+    UPDATE dbo.SIZE
 SET
     --SizeID - column value is auto-generated
     dbo.SIZE.Size =@sizeName, -- NVARCHAR
     dbo.SIZE.CreatedDate = GETDATE() -- DATETIME
 	WHERE dbo.SIZE.SizeID=@sizeID
 END
-GO 
+GO
 
-CREATE PROC LoadSize_ByID @id int
+CREATE PROC LoadSize_ByID
+    @id int
 AS
 BEGIN
-SELECT * FROM dbo.SIZE s
-WHERE s.SizeID=@id
+    SELECT *
+    FROM dbo.SIZE s
+    WHERE s.SizeID=@id
 END
 GO
 
 
-CREATE PROC Create_Customer @username nvarchar(250), @pass nchar(250),@name nvarchar(250),
-							@phone nvarchar(20),@mail nvarchar(250)
+CREATE PROC Create_Customer
+    @username nvarchar(250),
+    @pass nchar(250),
+    @name nvarchar(250),
+    @phone nvarchar(20),
+    @mail nvarchar(250)
 AS
 BEGIN
-INSERT dbo.CUSTOMER
-(
-    --CustomerID - column value is auto-generated
-    CustomerUsername,
-    CustomerPassword,
-    CustomerEmail,
-    CustomerName,
-    CustomerPhone,
-    CreatedDate
-)
-VALUES
-(
-    -- CustomerID - INT
-    @username, -- CustomerUsername - NVARCHAR
-    @pass, -- CustomerPassword - NVARCHAR
-    @mail, -- CustomerEmail - NVARCHAR
-    @name, -- CustomerName - NVARCHAR
-    @phone, -- CustomerPhone - NVARCHAR
-    GETDATE() -- CreatedDate - DATETIME
+    INSERT dbo.CUSTOMER
+        (
+        --CustomerID - column value is auto-generated
+        CustomerUsername,
+        CustomerPassword,
+        CustomerEmail,
+        CustomerName,
+        CustomerPhone,
+        CreatedDate
+        )
+    VALUES
+        (
+            -- CustomerID - INT
+            @username, -- CustomerUsername - NVARCHAR
+            @pass, -- CustomerPassword - NVARCHAR
+            @mail, -- CustomerEmail - NVARCHAR
+            @name, -- CustomerName - NVARCHAR
+            @phone, -- CustomerPhone - NVARCHAR
+            GETDATE() -- CreatedDate - DATETIME
 )
 END 
-GO 
+GO
 
-CREATE PROC Delete_Customer @id int
+CREATE PROC Delete_Customer
+    @id int
 AS
 BEGIN
-DELETE FROM dbo.CUSTOMER 
+    DELETE FROM dbo.CUSTOMER 
 WHERE dbo.CUSTOMER.CustomerID=@id
 END
 go
 
-CREATE PROC LoadByUserName @username nvarchar(250)
+CREATE PROC LoadByUserName
+    @username nvarchar(250)
 AS
 BEGIN
-SELECT *FROM dbo.CUSTOMER c
-WHERE c.CustomerUsername=@username
+    SELECT *
+    FROM dbo.CUSTOMER c
+    WHERE c.CustomerUsername=@username
 END 
 GO
 
 CREATE PROC	Load_Customer
-AS 
+AS
 BEGIN
-SELECT * FROM dbo.CUSTOMER c
+    SELECT *
+    FROM dbo.CUSTOMER c
 END
 GO
 
-CREATE PROC LoadCustomer_ByID @id int
+CREATE PROC LoadCustomer_ByID
+    @id int
 AS
 BEGIN
-SELECT * FROM dbo.CUSTOMER c
-WHERE c.CustomerID =@id
+    SELECT *
+    FROM dbo.CUSTOMER c
+    WHERE c.CustomerID =@id
 END
 GO
 
-CREATE PROC Create_User @username nvarchar(200), @pass nvarchar(200),@name nvarchar(200)
+CREATE PROC Create_User
+    @username nvarchar(200),
+    @pass nvarchar(200),
+    @name nvarchar(200)
 AS
 BEGIN
-	INSERT INTO dbo.[USER]
-	VALUES
-	(
-	    -- UserId - INT
-	    @username, -- UserUsername - NVARCHAR
-	    @pass, -- UserPassword - NVARCHAR
-	    @name, -- UserName - NVARCHAR
-	    getdate() -- CreatedDate - DATETIME
+    INSERT INTO dbo.[USER]
+    VALUES
+        (
+            -- UserId - INT
+            @username, -- UserUsername - NVARCHAR
+            @pass, -- UserPassword - NVARCHAR
+            @name, -- UserName - NVARCHAR
+            getdate() -- CreatedDate - DATETIME
 	)
 END 
-GO 
-CREATE PROC Login_Admin @username nvarchar(250),@pass nvarchar(250)
+GO
+CREATE PROC Login_Admin
+    @username nvarchar(250),
+    @pass nvarchar(250)
 AS
 BEGIN
-	DECLARE @count int
-	DECLARE @res bit
-	SELECT @count = count(*) FROM dbo.[USER] u 
-	WHERE u.UserUsername=@username AND u.UserPassword=@pass
-	IF @count > 0 
+    DECLARE @count int
+    DECLARE @res bit
+    SELECT @count = count(*)
+    FROM dbo.[USER] u
+    WHERE u.UserUsername=@username AND u.UserPassword=@pass
+    IF @count > 0 
 		SET @res=1
 	ELSE
 		SET @res=0
-	SELECT @res
+    SELECT @res
 END
 GO
 
-CREATE PROC Create_Category @id varchar(20), @name nvarchar(250),@cate nvarchar(250)
+CREATE PROC Create_Category
+    @id varchar(20),
+    @name nvarchar(250),
+    @cate nvarchar(250)
 AS
 BEGIN
-INSERT dbo.CATEGORY
-(
-    CategoryID,
-    CategoryName,
-    MetaKeyword,
-    CreatedDate
-)
-VALUES
-(
-    @id,
-    @name, -- CategoryName - NVARCHAR
-    @cate, -- MetaKeyword - NVARCHAR
-    GETDATE() -- CreatedDate - DATETIME
+    INSERT dbo.CATEGORY
+        (
+        CategoryID,
+        CategoryName,
+        MetaKeyword,
+        CreatedDate
+        )
+    VALUES
+        (
+            @id,
+            @name, -- CategoryName - NVARCHAR
+            @cate, -- MetaKeyword - NVARCHAR
+            GETDATE() -- CreatedDate - DATETIME
 )
 END
 GO
 
-CREATE PROC Delete_Category @id varchar(20)
+CREATE PROC Delete_Category
+    @id varchar(20)
 AS
 BEGIN
-DELETE dbo.CATEGORY WHERE dbo.CATEGORY.CategoryID=@id
+    DELETE dbo.CATEGORY WHERE dbo.CATEGORY.CategoryID=@id
 END
-GO 
+GO
 
-CREATE PROC Edit_Category @id varchar(20), @name nvarchar(250), @meta nvarchar(250)
+CREATE PROC Edit_Category
+    @id varchar(20),
+    @name nvarchar(250),
+    @meta nvarchar(250)
 AS
 BEGIN
-UPDATE dbo.CATEGORY
+    UPDATE dbo.CATEGORY
 SET
     --CategoryID - column value is auto-generated
     dbo.CATEGORY.CategoryName = @name, -- NVARCHAR
@@ -747,71 +824,84 @@ SET
     dbo.CATEGORY.CreatedDate = GETDATE() -- DATETIME
 	WHERE dbo.CATEGORY.CategoryID=@id
 END
-GO 
+GO
 
-CREATE PROC LoadMeta_ByID @id varchar(20)
+CREATE PROC LoadMeta_ByID
+    @id varchar(20)
 AS
-BEGIN 
-SELECT * FROM dbo.CATEGORY c
-WHERE c.CategoryID=@id
+BEGIN
+    SELECT *
+    FROM dbo.CATEGORY c
+    WHERE c.CategoryID=@id
 END 
 GO
 
 CREATE PROC Load_Order
 AS
-BEGIN 
-SELECT * FROM dbo.[ORDER] o
+BEGIN
+    SELECT *
+    FROM dbo.[ORDER] o
 END 
-GO 
+GO
 
 CREATE PROC LoadOrderStatus
 AS
 BEGIN
-SELECT * FROM dbo.ORDERSTATUS o
+    SELECT *
+    FROM dbo.ORDERSTATUS o
 END
-GO 
+GO
 
-CREATE PROC Cancel_Order @orderID int
+CREATE PROC Cancel_Order
+    @orderID int
 AS
-BEGIN 
-UPDATE dbo.[ORDER]
+BEGIN
+    UPDATE dbo.[ORDER]
 SET
     dbo.[ORDER].OrderStatusID = 5
 WHERE dbo.[ORDER].OrderID=@orderID
 END 
 GO
 
-CREATE PROC Change_Order @orderID int, @statusID int
+CREATE PROC Change_Order
+    @orderID int,
+    @statusID int
 AS
 BEGIN
-UPDATE dbo.[ORDER]
+    UPDATE dbo.[ORDER]
 SET
     dbo.[ORDER].OrderStatusID = @statusID
 	WHERE dbo.[ORDER].OrderID=@orderID
 END
-GO 
+GO
 
-CREATE PROC Load_CustomerOrder @cusID int
+CREATE PROC Load_CustomerOrder
+    @cusID int
 AS
 BEGIN
-SELECT *FROM dbo.[ORDER] o
-WHERE o.CustomerID=@cusID
+    SELECT *
+    FROM dbo.[ORDER] o
+    WHERE o.CustomerID=@cusID
 END
 GO
 
-CREATE PROC LoadByMeta_Cate @meta nvarchar(250)
-AS
-BEGIN 
-SELECT * FROM dbo.CATEGORY c
-WHERE c.MetaKeyword=@meta
-END
-GO 
-
-CREATE PROC LoadByMeta_Prod @meta nvarchar(250)
+CREATE PROC LoadByMeta_Cate
+    @meta nvarchar(250)
 AS
 BEGIN
-SELECT * FROM dbo.PRODUCT p
-WHERE p.MetaKeyword=@meta
+    SELECT *
+    FROM dbo.CATEGORY c
+    WHERE c.MetaKeyword=@meta
+END
+GO
+
+CREATE PROC LoadByMeta_Prod
+    @meta nvarchar(250)
+AS
+BEGIN
+    SELECT *
+    FROM dbo.PRODUCT p
+    WHERE p.MetaKeyword=@meta
 END
 GO
 
@@ -868,35 +958,48 @@ BEGIN
 END
 GO
 
-CREATE PROC Update_ViewCount @id varchar(20)
+CREATE PROC Update_ViewCount
+    @id varchar(20)
 AS
 BEGIN
-UPDATE dbo.PRODUCT
+    UPDATE dbo.PRODUCT
 SET dbo.PRODUCT.ViewCount = dbo.PRODUCT.ViewCount + 1
 WHERE dbo.PRODUCT.ProductID=@id
 
-SELECT p.ViewCount FROM dbo.PRODUCT p WHERE p.ProductID=@id
+    SELECT p.ViewCount
+    FROM dbo.PRODUCT p
+    WHERE p.ProductID=@id
 END
 GO
 
-CREATE PROC Top_View 
-@topcount int
+CREATE PROC Top_View
+    @topcount int
 AS
-BEGIN 
-SELECT TOP (@topcount) * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
+BEGIN
+    SELECT TOP (@topcount)
+        *
+    FROM dbo.PRODUCT p
+    ORDER BY p.ViewCount DESC
 END
 GO
 
 CREATE PROC Top_View_Desc
 AS
 BEGIN
-SELECT * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
+    SELECT *
+    FROM dbo.PRODUCT p
+    ORDER BY p.ViewCount DESC
 END
-GO 
+GO
 
 
-SELECT count(o.ProductID) AS ProductCount, o.ProductID from dbo.ORDERDETAIL o
-GROUP BY o.ProductID 
-ORDER BY count(o.ProductID) DESC
+CREATE PROC Top_Purchase
+AS
+BEGIN
+    SELECT count(o.ProductID) AS ProductCount, o.ProductID
+    from dbo.ORDERDETAIL o
+    GROUP BY o.ProductID
+    ORDER BY count(o.ProductID) DESC
+END
 
 

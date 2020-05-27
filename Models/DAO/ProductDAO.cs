@@ -123,8 +123,8 @@ namespace Models.DAO
 
         public async Task<List<PRODUCT>> SelectTop(int number)
         {
-            //return  await db.Database.SqlQuery<PRODUCT>("").ToListAsync();
-            return await db.PRODUCTs.ToListAsync();
+            var top = new SqlParameter("@topcount", number);
+            return  await db.Database.SqlQuery<PRODUCT>("Top_View @topcount", top).ToListAsync();
         }
 
         public async Task <int> UpdateView(string prodID)

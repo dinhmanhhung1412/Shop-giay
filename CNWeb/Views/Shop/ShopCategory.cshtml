@@ -117,10 +117,10 @@
                 }
             );
 
-            $(".sort-filter").click(function (event) {
+            $("#sort-filter").on('change', function (event) {
                 let url =
-                   '@Html.Raw(Url.Action("ShopCategory", "Shop", new { sort = "sort-value" }))';
-                url = url.replace("sort-value", $(this).data("value"));
+                    '@Html.Raw(Url.Action("ShopCategory", "Shop", new { sort = "sort-value" }))';
+                url = url.replace("sort-value", $("#sort-filter").val());
                 window.location.href = url;
             });
 
