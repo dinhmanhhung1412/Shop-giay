@@ -786,10 +786,14 @@ BEGIN
             1,
             @cusID
         )
-    SET @ReturnID = SCOPE_IDENTITY();
+    SET @ReturnID = SCOPE_IDENTITY()
 	SELECT @ReturnID
 END 
 GO
+
+DROP PROC Add_Order_Alt
+
+SELECT* FROM dbo.CUSTOMER c
 
 DECLARE @ReturnID INT;
 exec Add_Order_Alt @cusID =1,
@@ -803,3 +807,20 @@ BEGIN
 UPDATE dbo.PRODUCT
 SET dbo.PRODUCT.ViewCount = dbo.PRODUCT.ViewCount + 1
 END
+GO
+
+CREATE PROC Top3_View @topprod int
+AS
+BEGIN 
+SELECT TOP 3 * FROM dbo.PRODUCT p ORDER BY p.ViewCount
+END
+GO
+
+CREATE PROC Top_View_Desc
+AS
+BEGIN
+SELECT * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
+END
+GO 
+
+SELECT * FROM dbo.ORDERDETAIL o
