@@ -127,6 +127,11 @@ namespace Models.DAO
             return await db.PRODUCTs.ToListAsync();
         }
 
+        public async Task <int> UpdateView(string prodID)
+        {
+            var id = new SqlParameter("@id", prodID);
+            return await db.Database.SqlQuery<int>("Update_ViewCount @id",id).FirstOrDefaultAsync();
+        }
         public string checkdes(string des)
         {
             if (des == null) return ""; else return des;

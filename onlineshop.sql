@@ -774,13 +774,19 @@ BEGIN
 END
 GO
 
-CREATE PROC Update_ViewCount
+CREATE PROC Update_ViewCount @id varchar(20)
 AS
 BEGIN
 UPDATE dbo.PRODUCT
 SET dbo.PRODUCT.ViewCount = dbo.PRODUCT.ViewCount + 1
+WHERE dbo.PRODUCT.ProductID=@id
+
+SELECT p.ViewCount FROM dbo.PRODUCT p WHERE p.ProductID=@id
 END
 GO
+
+EXEC Update_ViewCount '1'
+SELECT p.ViewCount FROM dbo.PRODUCT p WHERE p.ProductID = 1
 
 CREATE PROC Top_View 
 @topcount int
@@ -790,10 +796,13 @@ SELECT TOP (@topcount) * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
 END
 GO
 
-
 CREATE PROC Top_View_Desc
 AS
 BEGIN
 SELECT * FROM dbo.PRODUCT p ORDER BY p.ViewCount DESC
 END
 GO 
+
+SELECT count(o.ProductID) AS ProductCount, o.ProductID from dbo.ORDERDETAIL o
+GROUP BY o.ProductID 
+ORDER BY count(o.ProductID) DESC

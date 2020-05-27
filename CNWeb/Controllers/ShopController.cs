@@ -40,6 +40,7 @@ namespace CNWeb.Controllers
             try
             {
                 var prod = await new ProductDAO().LoadByIDProc(id);
+                prod.ViewCount = await new ProductDAO().UpdateView(id);
                 if (prod == null)
                 {
                     return HttpNotFound();

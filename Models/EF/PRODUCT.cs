@@ -46,6 +46,8 @@ namespace Models.EF
 
         public bool? ProductStatus { get; set; }
 
+        public int? ViewCount { get; set; }
+
         public DateTime? CreatedDate { get; set; }
 
         [Required]
