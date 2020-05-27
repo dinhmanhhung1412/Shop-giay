@@ -441,6 +441,7 @@
     <Content Include="Views\Customer\CustomerProfile.cshtml" />
     <Content Include="Views\Order\OrderList.cshtml" />
     <Content Include="Views\Order\OrderProductList.cshtml" />
+    <Content Include="Views\Shop\SelectTop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

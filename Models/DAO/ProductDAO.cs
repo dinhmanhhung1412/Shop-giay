@@ -13,7 +13,7 @@ namespace Models.DAO
         public ProductDAO()
         {
             db = new CNWebDbContext();
-            db.Configuration.ProxyCreationEnabled = false;
+            //db.Configuration.ProxyCreationEnabled = false;
         }
 
         public async Task<bool> DeleteProductProc<T>(string ID)
@@ -119,6 +119,12 @@ namespace Models.DAO
         {
             var param = new SqlParameter("@meta", meta);
             return await db.Database.SqlQuery<PRODUCT>("LoadByMeta_Prod @meta", param).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<PRODUCT>> SelectTop(int number)
+        {
+            //return  await db.Database.SqlQuery<PRODUCT>("").ToListAsync();
+            return await db.PRODUCTs.ToListAsync();
         }
 
         public string checkdes(string des)

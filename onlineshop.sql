@@ -787,6 +787,7 @@ BEGIN
             @cusID
         )
     SET @ReturnID = SCOPE_IDENTITY();
+	SELECT @ReturnID
 END 
 GO
 

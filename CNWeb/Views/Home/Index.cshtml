@@ -87,6 +87,10 @@
     </div>
 </div>
 
+<div id="selecttop">
+
+</div>
+
 <div class="testimonial-area" style="margin-bottom: 100px;">
     <div class="container">
         <div class="section-title-2 section-title-position">
@@ -136,3 +140,15 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $.get("@Url.Action("SelectTop","Shop")", {
+                "number": "1"
+            }, function (data) {
+                $("#selecttop").append(data);
+            });
+        });
+    </script>
+}

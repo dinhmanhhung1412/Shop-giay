@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Models.EF.PRODUCT>
+
+@if (Model != null)
+{
+    <table style="width:100%;">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductID</td>
+                <td>@item.ProductName</td>
+                <td>@item.CATEGORY.CategoryName</td>
+            </tr>
+        }
+    </table>
+}

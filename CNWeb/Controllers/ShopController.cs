@@ -62,6 +62,13 @@ namespace CNWeb.Controllers
                 await new ProductDAO().LoadProductProc(cate, search, sort, pagesize, pageindex));
         }
 
+        [HttpGet]
+        public async Task<ActionResult> SelectTop(int number = 5)
+        {
+            var list = await new ProductDAO().SelectTop(number);
+            return PartialView(list);
+        }
+
         [HttpPost]
         public async Task<JsonResult> GetProductName(string prefix)
         {
